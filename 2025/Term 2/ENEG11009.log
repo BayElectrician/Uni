@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.9.21)  23 SEP 2025 10:31
+This is pdfTeX, Version 3.141592653-2.6-1.40.27 (MiKTeX 25.4) (preloaded format=pdflatex 2025.9.21)  7 OCT 2025 11:15
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -1239,7 +1239,23 @@ Package pdftex.def Info: ../../Images/ENEG11009/battery-type.png  used on input
 (pdftex.def)             Requested size: 280.8156pt x 91.71243pt.
 
 
-[36 <../../Images/ENEG11009/battery-type.png>] (ENEG11009.aux)
+[36 <../../Images/ENEG11009/battery-type.png>]
+
+[37]
+<../../Images/ENEG11009/3-phase-connection.png, id=356, 279.29344pt x 166.37157
+pt>
+File: ../../Images/ENEG11009/3-phase-connection.png Graphic file (type png)
+<use ../../Images/ENEG11009/3-phase-connection.png>
+Package pdftex.def Info: ../../Images/ENEG11009/3-phase-connection.png  used on
+ input line 801.
+(pdftex.def)             Requested size: 195.50407pt x 116.45929pt.
+
+
+[38 <../../Images/ENEG11009/3-phase-connection.png>]
+
+[39]
+
+[40] (ENEG11009.aux)
  ***********
 LaTeX2e <2025-06-01> patch level 1
 L3 programming layer <2025-08-13>
@@ -1248,10 +1264,10 @@ Package rerunfilecheck Info: File `ENEG11009.out' has not changed.
 (rerunfilecheck)             Checksum: D41D8CD98F00B204E9800998ECF8427E;0.
  ) 
 Here is how much of TeX's memory you used:
- 23706 strings out of 468133
- 430414 string characters out of 5429744
+ 23735 strings out of 468133
+ 431053 string characters out of 5429744
  773224 words of memory out of 5000000
- 51780 multiletter control sequences out of 15000+600000
+ 51789 multiletter control sequences out of 15000+600000
  703834 words of font info for 127 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  84i,7n,91p,503b,523s stack positions out of 10000i,1000n,20000p,200000b,200000s
@@ -1266,9 +1282,9 @@ ers/Lachlan/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix/stix-mathrm.p
 fb><C:/Users/Lachlan/AppData/Local/Programs/MiKTeX/fonts/type1/public/stix/stix
 -mathscr.pfb><C:/Users/Lachlan/AppData/Local/Programs/MiKTeX/fonts/type1/public
 /stix/stix-mathsf.pfb>
-Output written on ENEG11009.pdf (37 pages, 2908218 bytes).
+Output written on ENEG11009.pdf (41 pages, 2976224 bytes).
 PDF statistics:
- 427 PDF objects out of 1000 (max. 8388607)
- 176 named destinations out of 1000 (max. 500000)
- 178 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 465 PDF objects out of 1000 (max. 8388607)
+ 196 named destinations out of 1000 (max. 500000)
+ 183 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -760,4 +760,82 @@
 	\begin{center}
 		\includegraphics[scale=0.4]{battery-type.png}
 	\end{center}
+
+
+	\section*{Week 11 - Grid Connection:}
+	\subsection*{Conventional Electricity Grid:}
+	A conventional grid contains large, centralized power generation. These can include generators (coal, LNG or wind) or solar. Large transmission lines are connected to substations which in turn connect the local housing infrastructure. These substations are also capable to stepping down the voltage to usable levels. Conventional grid infrastructure are designed primarily for fossil fuels and thus are uni-directional and centralized by design.
+
+	\subsection*{Three-phase AC:}
+	Generally electricity is generated in a three-phase waveform. These waveforms are sinusoidal, and with a phase shift of $120^{o}$. The reason that thre-phase power is used is that it is economical to produce and transit over single-phase. By using high voltage within a system, current can be reduced saving on the conducter diameter within a cable.
+
+	\subsection*{Types of Power:}
+	\begin{itemize}
+		\item True Power (P): This is the active component power that does the work. It is measured in Watts
+		\item Reactive Power (Q): It is the rate at which stored energy in an inductor or capacitor is returned to the source. Measured in Volt-Ampere Reactive (VAR), and does not do any useful work. The only bit it does in flow back and forth between the source and the load.
+		\item Apparent Power (S): The product of a root mean sqaure voltage and current. This is measured in Volt-Amperes (VA).
+	\end{itemize}
+	\subsubsection*{Power Factor}
+	The PF is the cosine of the angle between the voltage and current phasors. The PF is a useful component in calculationg the True Power within a system. 
+	$$PF=\frac{True Power(P)}{Apparent Power(S)}$$
+	When providing an answer to the equation it is usually accompanied by the word lagging or leading, depending on whether the lags the voltage or leads the voltage.
+
+	\subsection*{Power in Three-phase Circuit:}
+	$$P_{T}=\sqrt{3}V_{L}I_{L}\cos(\phi)$$
+	Where:
+	\begin{itemize}
+		\item $P_{T}$ - True(active) power (in W)
+		\item $V_{L}$ - Line voltage (V)
+		\item $I-{L}$ - Line current (A)
+		\item $\cos(\phi)$ - The power factor
+	\end{itemize}
+
+	\subsection*{Three-Phase Connections:}
+	At the source side, the three-phase transformer winding are connected in a Y or $\Delta$. The transformers will contain a primary and secondary windings. This can be mimicked on the load side.\hfill\break
+	In a $\Delta$ connection:
+	$$I_{Phase}=\frac{I_{line}}{\sqrt{3}}\;\text{and}\;V_{Phase}=V_{line}$$
+	In a Y connection:
+	$$I_{Phase}=I_{line}\;\text{and}\;V_{Phase}=\frac{V_{line}}{\sqrt{3}}$$
+	\hfill\break
+	\begin{center}
+		\includegraphics[scale=0.7]{3-phase-connection.png}
+	\end{center}
+
+	\subsection*{Power Transmission:}
+	Power transmission involves moving energy around, such as from a source to a load. To do this it requires the installations of substations between the source and load. Based upon where the substations are placed, they will be called transmission or distribution substations.
+
+	\subsection*{Substations:}
+	A substation typically consists of a network of switching equipment, control equipment and transformers to change the voltage. Closer to the source a transmission substation will be utilized to step up the voltage for easier/better transportation. Whereas a distribution substation is used to connect a load, and consists where the voltage will be stepped down for distribution.
+
+	\section*{Week 12 - The Effects of Renewable Energy:}
+	\subsection*{Intergrating Renewable Energy Sources to the Grid:}
+	\subsubsection*{Positives}
+	\begin{itemize}
+		\item No greenhouse gas emissions or air pollutants
+		\item For small scale operations, it has a lower initial costs
+		\item Allows new creation of jobs
+		\item As long as the base is there, the renewable can be used, e.g. with solar, as long as there is generally sunshine
+		\item The triple bottom line is generally considered to be good
+	\end{itemize}
+	\subsubsection*{Negatives}
+	\begin{itemize}
+		\item Power quality of the source, such as 230V @ 50Hz when generating the power
+		\item Variation and intermittency of the power generation, e.g. solar having maximum power during midday and zero power during the night
+		\item The best source of power generation is always different based upon where the location of them is being placed.
+		\item Forecasting the future amount of power based upon the weather data/trends
+		\item Making a large system to supplement/replace and entire grid will becomes very expensive, very quickly
+	\end{itemize}
+
+	\subsection*{Grid Connection Criteria:}
+	The voltage and frequency of the soucre must match with the grid's voltage, frequency and phase. This all combines into the power quality, where the waveform must also match or be changed to matched the grids. Reducing the amount of the harmonics present within the power source.
+	\subsubsection*{Harmonics}
+	Harmonics are produced at the source where electricity is produced or used.
+	\subsubsection*{Noise}
+	RF noise may be induced in power lines due to high frequency switching of equipment in the vicinity. To remove harmonic components and noise, a filter can be used to extract specific aspects from the voltage waveform.
+
+	\subsection*{Low Voltages Ride Through:}
+	This is considered when the voltage is <90% of the ideal power voltages. It must be able to ride through with extra voltage supplied, or contain the ability to reconnect once the voltage as increased to an acceptable level. Such as through a battery system.
+
+	\subsubsection*{Flicker:}
+	Flicker is a momentary drop in system voltage level. This can only be for a few milliseconds. Flicker is most notable through standalone renewable energy systems, but an inverter can be used to control and limit the amonut of flicker within an electricity network.
 \end{document}
