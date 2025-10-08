@@ -10,6 +10,7 @@
 \usepackage{tikz}
 \usepackage{stix}
 \usepackage{ragged2e}
+\usepackage{enumitem}
 \usepackage{polynom}
 
 \title{MATH11218 \\ Methods and Basically Specialist Revision}
@@ -48,11 +49,11 @@
 	\begin{center}
 		\polylongdiv{x^{3}+3x^{2}-10x-24}{x+2}\\
 		\smallskip
-		\begin{align}
+		\begin{align*}
 			\therefore\;\;x^{3}+3x^{2}-10x-24\;&=\;(x+2)(x^{2}-x-12)\\
 			&=\;(x+2)(x-4)(x+3)\\
 			x\;&=\;-3,\;-2,\;4
-		\end{align}
+		\end{align*}
 	\end{center}
 
 	\subsection{Algebraic Functions:}
@@ -62,11 +63,72 @@
 		\item Improper fractions, where the denominator is less or equal to the numerator.
 	\end{enumerate}
 	It is important to note, that the greater, equal to, and less than are only relative to polynomial degree. Some parts to with division of fraction is just the multiplication of the recipricol, $\frac{a}{b}\;\div\;\frac{c}{d}\;=\frac{a}{b}\;\times\;\frac{d}{c}$.
-	\begin{align}
-		&\frac{2}{x+1}\;+\;\frac{4}{x+2}\\
+	\begin{align*}
+		\frac{2}{x+1}\;+\;\frac{4}{x+2}\;&=\;0\\
 		&=\;\frac{2(x+2)\;+\;4(x+1)}{(x+1)(x+2)}\\
 		&=\;\frac{2x+4+4x+4}{(x+1)(x+2)}\\
 		&=\;\frac{6x+8}{(x+1)(x+2)}\\
 		\therefore\;\;x&\not =\;-2,\;-1
-	\end{align}
+	\end{align*}
+
+	\section{Sum Notation}
+	\subsection{Inequalities:}
+	\begin{align*}
+		&<\;\text{- Less than}\\
+		&>\;\text{- Greater than}\\
+		&\leq\;\text{- Less than or equal to}\\
+		&\geq\;\text{- Greater than or equal to}
+	\end{align*}
+	For example:
+	\begin{align*}
+		1\;-\;2t\;&<\;7\\
+		-2t\;&<\;6\\
+		t\;&>\;-3
+	\end{align*}
+	\smallskip
+	$\frac{x}{y}\;>\;0\;\text{OR}\;xy\;>\;0$, presents two different cases in the possible solutions that it presents:
+	\begin{enumerate}[start=1,label={Case \roman* - },wide = 25pt, leftmargin = 3em]
+		\item $x\;\&\;y\;>\;0$
+		\item $x\;\&\;y\;<\;0$
+	\end{enumerate}
+	\smallskip
+	$\frac{x}{y}\;<\;0\;\text{OR}\;xy\;<\;0$, also presents two different cases in the possible solutions that it presents:
+	\begin{enumerate}[start=1,label={Case \roman* - },wide = 25pt, leftmargin = 3em]
+		\item $x\;<\;0\&\;y\;>\;0$
+		\item $x\;>\;0\&\;y\;<\;0$
+	\end{enumerate}
+
+	\subsection{Partial Fractions:}
+	These are used on improper fractions to complete polynomial long division.
+	\smallskip
+	\begin{center}
+		\polylongdiv{2x^{3}+4x-1}{2x-2}
+		\break\hfill\break\break
+		$2x^{3}+4x-1=x^{2}+x+3+\frac{5}{2x-2}$
+	\end{center}
+	Some equations for the partial fractions, always assuming that the denominator is of a higher degree than the numerator:
+	\begin{enumerate}
+		\item $\frac{f(x)}{(x+a)(x+b)}\;=\;\frac{A}{x+a}\;+\;\frac{B}{x+b}$
+		\item $\frac{g(x)}{(x+c)^{n}}\;=\;\frac{A}{x+c}\;+\;\frac{B}{(x+c)^{2}}\;+\ldots+\;\frac{Z}{(x+c)^{n}}$
+		\item $\frac{h(x)}{(ax^{2}+bx+c)(x+d)}\;=\;\frac{Ax\;+\;B}{ax^{2}+bx+c}\;+\;\frac{C}{x+d}$
+	\end{enumerate}
+	(e.g.)
+	\begin{center}
+		$$\frac{2x^{4}-8x{2}+5x-2}{x^{3}-4x}$$\\
+		\polylongdiv{2x^{4}-8x^{2}+5x-2}{x^{3}-4x}\\
+		\begin{align*}
+			\frac{2x^{4}-8x{2}+5x-2}{x^{3}-4x}&=2x+\frac{5x-2}{x^{3}-4x}\\\\
+			\frac{5x-2}{x(x^{2}-4)}&=\frac{A}{x}+\frac{Bx+C}{x^{2}-4}\\
+			&=\frac{A(x^{2}-4)+(Bx+C)x}{x(x^{2}-4)}\\\\
+			\therefore\;\;5x-2&=A(x^{2}-4)+(Bx+C)x\\
+			&=Ax^{2}-4A+Bx^{2}+Cx
+		\end{align*}
+	
+		\begin{align*}
+			x^{2} & x^{1} & x^{0} \\
+			0&=A+B & 5&=C & -2&=-4A \\
+			0&=\frac{1}{2}+B &  &  & A&= \frac{1}{2} \\
+			B&=-\frac{1}{2} &  &  &  &
+		\end{align*}
+	\end{center}
 \end{document}
