@@ -348,4 +348,211 @@
 		e^{x}&=\cosh(x)+\sinh(x)\\
 		e^{-x}&=\cosh(x)-\sinh(x)
 	\end{align*}
+
+	\pagebreak
+
+	\section{Trignometry}
+	\subsection{Angles:}
+	Positives angles rotate anti-clockwise, with negatives being in a clockwise direction. The two lengths that an angles rotates between is called the initial \& terminal sides. When measuring angles on a cartesian plane, the standard position is the positive x-axis and rotating the standard anti-clockwise.
+
+	\subsection{Trig Ratios:}
+	\begin{center}
+	\begin{tikzpicture}
+	    % Draw the triangle
+	    \draw[thick] (0, 0) -- (4, 0) -- (4, 3) -- cycle;
+	    
+	    % Draw the altitude
+	    \draw[dashed] (4, 0) -- (4, 3);
+
+	    % Label the sides
+	    \node at (2, -0.3) {Adjacent};
+	    \node at (4.75, 1.5) {Opposite};
+	    \node at (1.5, 2) {Hypotenuse};
+
+	    % Label the angles
+	    \draw[-, thick] (1, 0) arc (0:36.87:1) node[midway,right] {$\theta$};
+	\end{tikzpicture}
+	\end{center}
+
+	\begin{align*}
+		\sin(\theta)&=\frac{O}{H} & \cos(\theta)&=\frac{A}{H} & \tan(\theta)&=\frac{O}{A}\\\\
+		\csc(\theta)&=\frac{1}{\sin(\theta)} & \sec(\theta)&=\frac{1}{\cos(\theta)} & \cot(\theta)&=\frac{1}{\tan(\theta)}\\
+			    &=\frac{H}{O} & &=\frac{H}{A} & &=\frac{A}{O}
+	\end{align*}
+	To remember the ratios of trig functions to fractions of the sides remember the accroymn SOH CAH TOA.
+
+	\subsection{Unit Circle:}
+	\begin{center}
+	\begin{tikzpicture}[scale=2] % Increase scale for better visibility
+	    % Draw the unit circle
+	    \draw[thick] (0,0) circle(1);
+
+	    % Draw the axes
+	    \draw[->, thick] (-1.5, 0) -- (1.5, 0) node[right] {$x$};
+	    \draw[->, thick] (0, -1.5) -- (0, 1.5) node[above] {$y$};
+
+	    % Draw coordinate points
+	    \fill (1, 0) circle (0.5pt) node[below right] {$0,\;2\pi$};
+	    \fill (0.3, 0.5) node[below right] {A};
+	    \fill (0, 1) circle (0.5pt) node[above left] {$\frac{\pi}{2}$};
+	    \fill (-0.5, 0.5) node[below right] {S};
+	    \fill (-1, 0) circle (0.5pt) node[below left] {$\pi$};
+	    \fill (-0.5, -0.3) node[below right] {T};
+	    \fill (0, -1) circle (0.5pt) node[below right] {$\frac{3\pi}{2}$};
+	    \fill (0.3, -0.3) node[below right] {C};
+
+	\end{tikzpicture}
+	\end{center}
+	When dealing angle accuracy is key, so a system was developed to make angles more accurate. To do this fractions of $\pi$ was used, known as radians.
+	$$D\rightarrow R=\theta\times\frac{\pi}{180}$$
+	$$R\rightarrow D=\phi\times\frac{180}{\pi}$$
+
+	\subsection{Exact Values:}
+	\subsubsection{Triangles}
+	\begin{center}
+		\includegraphics{exact-value-triangle.png}
+	\end{center}
+	\subsubsection{Table}
+	\begin{center}
+	\begin{tabular}{ | l || c | c | c | c | c | c | }
+		\hline
+		Angle & 0 & $\frac{\pi}{6}$ & $\frac{\pi}{4}$ & $\frac{\pi}{3}$ & $\frac{\pi}{2}$ & $\pi$ \\
+		\hline
+		$\sin(\theta)$ & 0 & $\frac{1}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{\sqrt{3}}{2}$ & 1 & 0 \\
+		\hline
+		$\cos(\theta)$ & 1 & $\frac{\sqrt{3}}{2}$ & $\frac{\sqrt{2}}{2}$ & $\frac{1}{2}$ & 0 & -1 \\
+		\hline
+		$\tan(\theta)$ & 0 & $\frac{\sqrt{3}}{3}$ & 1 & $\sqrt{3}$ & undef & 0 \\
+		\hline
+		$\csc(\theta)$ & undef & 2 & $\sqrt{2}$ & $\frac{2\sqrt{3}}{3}$ & 1 & undef \\
+		\hline
+		$\sec(\theta)$ & 1 & $\frac{2\sqrt{3}}{3}$ & $\sqrt{2}$ & 2 & undef & -1 \\
+		\hline
+		$\cot(\theta)$ & 0 & $\sqrt{3}$ & 1 & $\frac{\sqrt{3}}{3}$ & 0 & undef \\
+		\hline
+	\end{tabular}
+	\end{center}
+
+	\subsection{Graphing:}
+	\begin{center}
+	\begin{tikzpicture}
+		\begin{axis}[
+			title={Sine Graph},
+			xlabel={$ x $},
+			ylabel={$ y $},
+			grid=both,
+			xmin=0, xmax=8,
+			ymin=-1, ymax=1, 
+			xtick={0, pi/2, pi, 3*pi/2, 2*pi},
+			xticklabels={0, $\frac{\pi}{2}$, $\pi$, $\frac{3\pi}{2}$, $2\pi$},
+			ytick={-1, 0, 1},
+			domain=0:7,
+			samples=100,
+			axis lines=middle,
+		]
+		\addplot[black, smooth, thick] {sin(deg(x))};
+		\end{axis}
+	\end{tikzpicture}
+	\break
+	\begin{tikzpicture}
+		\begin{axis}[
+			title={Cosine Graph},
+			xlabel={$ x $},
+			ylabel={$ y $},
+			grid=both,
+			xmin=0, xmax=8,
+			ymin=-1, ymax=1, 
+			xtick={0, pi/2, pi, 3*pi/2, 2*pi},
+			xticklabels={0, $\frac{\pi}{2}$, $\pi$, $\frac{3\pi}{2}$, $2\pi$},
+			ytick={-1, 0, 1},
+			domain=0:7,
+			samples=100,
+			axis lines=middle,
+		]
+		\addplot[black, smooth, thick] {cos(deg(x))};
+		\end{axis}
+	\end{tikzpicture}
+	\break\break
+	\begin{tikzpicture}
+		\begin{axis}[
+			title={Tangent Graph},
+			xlabel={$ x $},
+			ylabel={$ y $},
+			grid=both,
+			xmin=0, xmax=8,
+			ymin=-1, ymax=1, 
+			xtick={0, pi/2, pi, 3*pi/2, 2*pi},
+			xticklabels={0, $\frac{\pi}{2}$, $\pi$, $\frac{3\pi}{2}$, $2\pi$},
+			ytick={-1, 0, 1},
+			domain=0:7,
+			samples=100,
+			axis lines=middle,
+		]
+		% vertical asymptotes
+		\draw[dashed, thick,red] (pi/2,-4.2)    --  (pi/2,4.2);
+		\draw[dashed, thick,red] (3*pi/2,-4.2)  --  (3*pi/2,4.2);
+		\draw[dashed, thick,red] (-pi/2,-4.2)   --  (-pi/2, 4.2);
+		\draw[dashed, thick,red] (-3*pi/2,-4.2) --  (-3*pi/2, 4.2);
+		% tangent between vertical asymptotes
+		\draw[thick,color=black, <->] plot [domain=-0.425*pi:0.425*pi] (\x,{tan(\x r)});
+		\draw[thick,color=black, <->] plot [domain= 0.573*pi:2*pi] (\x,{tan(\x r)});
+		\draw[thick,color=black, <->] plot [domain= -1.425*pi:-0.573*pi] (\x,{tan(\x r)});
+		% x tick labels
+		\node[below right] at (-3*pi/2, 0)  {$-\frac{3\pi}{2}$};
+		\node[below right] at (-pi, 0)      {$-\pi$};
+		\node[below right] at (-pi/2, 0)    {$-\frac{\pi}{2}$};
+		\node[below right] at (0, 0)        {$0$};
+		\node[below right] at (pi/2, 0)     {$\frac{\pi}{2}$};
+		\node[below right] at (pi, 0)       {$\pi$};
+		\node[below right] at (3*pi/2, 0)   {$\frac{3\pi}{2}$};
+		\end{axis}
+	\end{tikzpicture}
+	\end{center}
+	It is important to understand that 1 period in a tan/cot graph is $\frac{\pi}{B}$.
+
+	\subsection{Quadrant System:}
+	When using angles outside of the first quadrant, it is important to keep in mind the sign of the trig function (CAST system) and using the reference angle.
+
+	\subsection{Trig Identities:}
+	\begin{align*}
+		\tan(\theta)&=\frac{\sin(\theta)}{\cos(\theta)}\\\\
+		\cos^{2}(\theta)+\sin^{2}(\theta)&=1\\
+		\tan^{2}(\theta)+1&=\sec^{2}(\theta)\\
+		\cot^{2}(\theta)+1&=\csc^{2}(\theta)\\\\
+		\sin(A\pm B)&=\sin(A)\cos(B)\pm\cos(A)\sin(B)\\
+		\cos(A\pm B)&=\cos(A)\cos(B)\mp\sin(A)\sin(B)\\
+		\tan(A\pm B)&=\frac{\tan(A)\pm\tan(B)}{1\mp\tan(A)\tan(B)}\\\\
+		\sin(2A)&=2\sin(A)\cos(B)\\
+		\cos(2A)&=\cos^{2}(A)-\sin^{2}(A)\\
+			&=1-2\sin^{2}(A)\\
+			&=2\cos^{2}(A)\\
+		\tan(2A)&=\frac{2\tan(A)}{1-\tan^{2}(A)}\\\\
+		\sin(A)\pm\sin(B)&=2\sin(\frac{A\pm B}{2})\cos(\frac{A\mp B}{2})\\
+		\cos(A)+\cos(B)&=2\cos(\frac{A+B}{2})\cos(\frac{A-B}{2}\\
+		\cos(A)-\cos(B)&=-2\sin(\frac{A+B}{2})\sin(\frac{A-B}{2})
+	\end{align*}
+	Example of using these equations:
+	\begin{align*}
+		\frac{2\cos^{2}(x)-1}{\sin(x)\cos(x)}&=\cot(x)-\tan(x)\\\\
+		LHS&=\frac{2\cos^{2}(x)-1}{\sin(x)\cos(x)}\\
+		   &=\frac{\cos(2x)}{\frac{1}{2}\sin(2x)}\\
+		   &=2\times\frac{\cos(2x)}{\sin(x)}\\
+		   &=2\times\cot(2x)\\
+		   &=2\times\frac{1}{\tan(x)}\\
+		   &=2\times\frac{1-\tan^{2}(x)}{2\tan(x)}\\
+		   &=\frac{1}{\tan(x)}-\tan(x)\\
+		   &=\cot(x)-\tan(x)\\
+		   &=RHS
+	\end{align*}
+	\subsection{Modelling Waveforms:}
+	$$y=A\sin(\omega t+\phi)\text{ OR } y=A\cos(\omega t+\phi)$$
+	\begin{itemize}
+		\item A: Amplitude
+		\item $\omega$: Angular frequency (rad/sec)
+		\item $\phi$: Phase angle (rad)
+		\item f: Frequency ($\frac{\omega}{2\pi}$)
+		\item T: Period ($\frac{2\pi}{\omega}$ OR $\frac{1}{f}$)
+		\item s: Time displacement ($\frac{\phi}{\omega}$)
+	\end{itemize}
+	To combine waveforms into one single waveform, expand the waveform function required with the appriotate trig identities.
 \end{document}
