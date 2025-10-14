@@ -49,14 +49,14 @@
 
 	\subsection{Poynomials:}
 	A polynomial explains/denotes the degree or curviness that a line is at. Such as a constant can be described as being degree 0, linear degree 1, quadratic degree 2, cubic degree 3 and  so on.
-	\subsubsection*{Quadratics}
+	\subsubsection{Quadratics}
 	With quadratics it is important to understand that it can contain multiple different types of roots. For example, iff: $\Delta=b^{2}-4ac$
 	\begin{itemize}
 		\item $\Delta\;>\;0$, when it contains 2 real roots, e.g. $(x+a)(x+b)$.
 		\item $\Delta\;=\;0$, when there is 1 real root, e.g. $(x+a)^{2}$.
 		\item $\Delta\;<\;0$, when no real roots are found, e.g $(x+aj)(x+bj)$.
 	\end{itemize}
-	\subsubsection*{Polynomials with Degrees Greater than 2}
+	\subsubsection{Polynomials with Degrees Greater than 2}
 	When a polynomial contains a degree that is greater than 2, it roots can be found through a process called polynomial long division.
 	\medskip
 	\begin{center}
@@ -555,4 +555,52 @@
 		\item s: Time displacement ($\frac{\phi}{\omega}$)
 	\end{itemize}
 	To combine waveforms into one single waveform, expand the waveform function required with the appriotate trig identities.
+
+	\pagebreak
+
+	\section{Complex Numbers}
+	\subsection{The Basics:}
+	By utilizing complex numbers, it allows mathematicians to complete $\sqrt(-x)$, where x > 0. As such the complex plane is just the standard number plane rotated $90^{o}$. In electrical engineering the complex numbers are represented by the letter $j$ rather then the standard $i$.
+	\begin{center}
+		\includegraphics{complex-planes.png}
+	\end{center}
+
+	\subsection{Complex Number Forms:}
+	\subsubsection{Cartesian Form}
+	This form represents a complex number as parts of the Re(z) and Im(z).
+	$$z=a+bj$$
+	With it there are two points to remember. Equality, when the Re=Re and Im=Im, and conjugates, the complex number is reflected over the $x$-axis.
+	\subsubsection{Polar Form}
+	\begin{align*}
+		z&=(a,b)\\
+		 &=r<\theta\\
+		 &=r\cos(\theta)+r\sin(\theta)j\\\\
+		r&=a^{2}+b^{2}\\
+		\theta&=\arctan(\frac{b}{a})\\
+		-\pi&<\theta\leq\pi
+	\end{align*}
+	\subsubsection{Exponential Form}
+	\begin{align*}
+		re^{j\theta}&=r\cos(\theta)+r\sin(\theta)j\\
+		re^{-j\theta}&=r\cos(\theta)-r\sin(\theta)j\\\\
+		\cos(\theta)&=\frac{e^{j\theta}+e^{-j\theta}}{2}\\
+		\sin(\theta)&=\frac{e^{j\theta}-e^{-j\theta}}{2}\\\\
+		\cos(j\theta)&=\cosh(\theta)\\
+		\sin(j\theta)&=\sinh(\theta)\\
+	\end{align*}
+
+	\subsection{Operations on Complex Numbers:}
+	\subsubsection{Addition \& Substraction}
+	This can really only be done on complex numbers in cartesian form. Any complex numbers in other forms must first be convereted to this form first before doing the addition and subtraction.
+	\subsubsection{Multiplication \& Division}
+	Whilst you can multiply complex numbers in cartesian form through the operation like Crab Claw, and division by multiplication of 1 through conjutate($\bar{z}$) divide conjutate($\bar{z}$).
+	\hfill\break\break
+	A much more simple method using the complex numbers in polar form.
+	\begin{align*}
+		z_{1}&=r_{1}<\theta_{1}\\
+		z_{2}&=r_{2}<\theta_{2}\\\\
+		z_{1}z_{2}&=r_{1}r_{2}<(\theta_{1}+\theta_{2})\\
+		\frac{z_{1}}{z_{2}}&=\frac{r_{1}}{r_{2}}<(\theta_{1}-\theta_{2})\\
+		z_{1}^{n}&=1
+	\end{align*}
 \end{document}
