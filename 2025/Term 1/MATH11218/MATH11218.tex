@@ -33,6 +33,7 @@
 	\maketitle
 	\tableofcontents
 	\pagebreak
+	\raggedright
 
 	\section{Introduction}
 	\subsection{Indices:}
@@ -601,6 +602,46 @@
 		z_{2}&=r_{2}<\theta_{2}\\\\
 		z_{1}z_{2}&=r_{1}r_{2}<(\theta_{1}+\theta_{2})\\
 		\frac{z_{1}}{z_{2}}&=\frac{r_{1}}{r_{2}}<(\theta_{1}-\theta_{2})\\
-		z_{1}^{n}&=1
+		z_{1}^{n}&=r_{1}^{n}<n\theta_{1}\\
+		\bar{z_{1}}&=r_{1}<-\theta_{1}
 	\end{align*}
+
+	\subsection{De Moivre's Theorem:}
+	This theorem allow the quick multiplication of the same complex number multiple times, such as having the number to a power.
+	\begin{align*}
+		z&=x+yj\\
+		 &=r<\theta\\
+		 &=r[\cos(\theta)+\sin(\theta)j]\\
+		 &=re^{j\theta}\\\\
+		(re^{j\theta})^{n}&=r^{n}e^{jn\theta}\\
+		(r[\cos(\theta)+\sin(\theta)j])^{n}&=r^{n}[\cos(n\theta)+\sin(n\theta)j]\\
+		(r<\theta)^{n}&=r^{n}<n\theta
+	\end{align*}
+	\subsection{\texorpdfstring{n\textsuperscript{th} Roots of Unity:}{n-th Roots of Unity:}}
+	\begin{align*}
+		z^{n}&=w<\theta\\
+		z&=w^{\frac{1}{n}}<\frac{\theta+2k\pi}{n}
+	\end{align*}
+	When using this, convert the complex number to polar form and place the values into the formula.
+
+	\subsection{Exponential Form:}
+	\begin{align*}
+		z^{n}&=e^{jn\theta} & z^{-n}&=e^{-jn\theta}\\
+		     &=\cos(n\theta)+\sin(n\theta)j & &=\cos(n\theta)-\sin(n\theta)j\\\\
+		z^{n}+z^{-n}&=2\cos(n\theta) & &\\
+		z^{n}-z^{-n}&=2\sin(n\theta)j & &\\\\
+		\cos(n\theta)+\sin(n\theta)j&=[\cos(\theta)+\sin(\theta)j]^{n} & &
+	\end{align*}
+	\break\break
+	For example to prove one of the trig identities:
+	\begin{align*}
+		[2\cos(\theta)]^{2}&=\Bigl(z+\frac{1}{z}\Bigr)^{2}\\
+		4\cos^{2}(\theta)&=z^{2}+2+\frac{1}{z^{2}}\\
+				 &=2\cos(2\theta)+2\\
+		\cos^{2}(\theta)&=\frac{1}{2}[\cos(2\theta)+1]
+	\end{align*}
+	
+	\subsection{Loci \& Regions:}
+	This is just the space used and graphing of the complex numbers. Such as,
+	$(x-a)^{2}+(y-b)^{2}+(z-c)^{2}=r^{2}$ to graph a circle.
 \end{document}
