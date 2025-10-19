@@ -19,7 +19,12 @@
 
 \newcommand{\sech}{\mathrm{sech}}
 \newcommand{\csch}{\mathrm{csch}}
-
+\setcounter{secnumdepth}{4}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+% display heading, like subsubsection
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
 \sisetup{
 	round-mode = places,
 	round-precision = 2,
@@ -644,4 +649,202 @@
 	\subsection{Loci \& Regions:}
 	This is just the space used and graphing of the complex numbers. Such as,
 	$(x-a)^{2}+(y-b)^{2}+(z-c)^{2}=r^{2}$ to graph a circle.
+
+	\pagebreak
+
+	\section{Matrices}
+	\subsection{Matrix Notation:}
+	Matrices can be defined by the $m\times n$, with m being the number of row and n the columns. E.g. a $3\times3$ array:
+	$$
+	\begin{bmatrix}
+		a_{11} & a_{12} & a_{13}\\
+		a_{21} & a_{22} & a_{23}\\
+		a_{31} & a_{32} & a_{33}
+	\end{bmatrix}
+	$$
+	
+	\subsection{Matrix Operations:}
+	\subsubsection{Addition \& Subtraction}
+	These are simple operations happen as one would expect. However they only require to the matrices to be the exact same in size. That is $m_{1}=m_{2}$ and $n_{1}=n_{2}$. E.g. $3\times3\;+\;3\times3$ works but a $3\times2\;+\;3\times1$ would not.
+	\subsubsection{Multiplication \& Division}
+	Matrices cannot be technically divide at all, only multiplied by the recipricol (the inverse) of the matrix. To multiply different matrices, you multiply the rows of the firts by the columns of the second. This can only happen when $m_{1}=n_{2}\;\&\;n_{1}=m_{2}$. To multiply by a scalar just do the same as in algebra.
+	\hfill\break
+	\begin{equation*}
+	\begin{split}
+		&\begin{bmatrix}
+			1 & 2\\
+			3 & 4
+		\end{bmatrix}
+		\times
+		\begin{bmatrix}
+			2 & 0 & 3\\
+			1 & 5 & 7
+		\end{bmatrix}\\
+		=
+		&\begin{bmatrix}
+			1\times2+2\times1 & 1\times0+2\times5 & 1\times3+2\times7\\
+			3\times2+4\times1 & 3\times0+4\times5 & 3\times3+4\times7
+		\end{bmatrix}\\
+		=
+		&\begin{bmatrix}
+			4 & 10 & 17\\
+			10 & 20 & 37
+		\end{bmatrix}
+	\end{split}
+	\end{equation*}
+	\subsubsection{Properties of Matrix Operations}
+	\begin{center}
+		\includegraphics{matrix-operations.png}
+	\end{center}
+	\subsubsection{Matrix Transposition}
+	To transpose a matrix, just swap the columns \& rows with each other.
+	$$
+	A=
+	\begin{bmatrix}
+		a & b & c\\
+		d & e & f
+	\end{bmatrix}
+	$$
+	$$
+	A^{T}=
+	\begin{bmatrix}
+		a & d\\
+		b & e\\
+		c & f
+	\end{bmatrix}
+	$$
+
+	\subsection{Matrix Determinants:}
+	\subsubsection{\texorpdfstring{$2\times2$}{2 x 2}}
+	$$
+	A=
+	\begin{bmatrix}
+		a & b\\
+		c & d
+	\end{bmatrix}
+	$$
+	$$
+	\det(A) = ad-bc
+	$$
+	$$
+	A^{-1}=\frac{1}{\det(A)}
+	\begin{bmatrix}
+		d & -b\\
+		-c & a
+	\end{bmatrix}
+	$$
+	\subsubsection{\texorpdfstring{$3\times3$}{3 x 3}}
+	\paragraph{Minors of a Matrix}
+	The minor of $a_{ij}(m_{ij})$, is just the determinant of the the other items not in the row or the column, e.g.:
+	\begin{equation*}
+	\begin{split}
+		&\begin{bmatrix}
+			2 & 1 & -1\\
+			0 & 4 & 3 \\
+			-5 & 0 & -2
+		\end{bmatrix}\\\\
+		&\begin{bmatrix}
+			4\times(-2)-3\times0 & 0\times(-2)-(-5)\times3 & 0\times0-(-5)\times4\\
+			1\times(-2)-(-1)\times0 & 2\times(-2)-(-5)\times(-1) & 2\times0-(-5)\times1\\
+			... & ... & ...
+		\end{bmatrix}\\
+		=&
+		\begin{bmatrix}
+			-8 & 15 & 20 \\
+			-2 & -9 & 5 \\
+			... & ... & ...
+		\end{bmatrix}
+	\end{split}
+	\end{equation*}
+	\paragraph{Co-factors}
+	Once the $mA^{T}$ has been found, then alternate +/- throughout the matrix makes it become the adjacent matrix [adj(A)], e.g.
+	$$
+	\begin{bmatrix}
+		+ & - & + & -\\
+		- & + & - & +\\
+		+ & - & + & -\\
+		- & + & - & +\\
+		+ & - & + & -\\
+	\end{bmatrix}
+	$$
+	\paragraph{Inverse}
+	$$A^{-1}=\frac{1}{\det(A)}\text{adj}(A)$$
+
+	\subsection{Solving Linear Equations:}
+	\subsubsection{Using Matrices}
+	\begin{align*}
+		AX&=B\\
+		X&=A^{-1}B
+	\end{align*}
+	\subsubsection{Cramer's Rule}
+	\begin{align*}
+		a_{1}x+b_{1}y&=C_{1}\\
+		a_{2}x+b_{2}y&=C_{2}\\
+		x&=\frac{
+		\begin{vmatrix}
+			C_{1} & b_{1}\\
+			C_{2} & b_{2}
+		\end{vmatrix}
+		}{
+		\begin{vmatrix}
+			a_{1} & b_{1}\\
+			a_{2} & b_{2}
+		\end{vmatrix}
+		}\\\\
+		y&=\frac{
+		\begin{vmatrix}
+			a_{1} & C_{1}\\
+			a_{2} & C_{2}
+		\end{vmatrix}
+		}{
+		\begin{vmatrix}
+			a_{1} & b_{1}\\
+			a_{2} & b_{2}
+		\end{vmatrix}
+		}
+	\end{align*}
+	\subsubsection{Gaussin Elmination}
+	Uses an augmented matrix with basic equations to generate a leading diagonal to find the relevant values, e.g.
+	$$
+	\left[\begin{array}{cc|c}
+		x_{1} & y_{1} & A\\
+		x_{2} & y_{2} & B\\
+	\end{array}\right]
+	\rightarrow
+	\left[\begin{array}{cc|c}
+		1 & 0 & x\\
+		0 & 1 & y
+	\end{array}\right]
+	$$
+	The solution to GE gives an idea to type of equations present within the solution.
+	\begin{enumerate}
+		\item Unique Solution, eg. where z=3
+		\item Infinite Solution, eg. where 0z=0
+		\item No Solution, eg. where 0z=3
+	\end{enumerate}
+	Gaussin Elimination is mostly really useful for creating inverse matrices of >3x3 without needing to do all the steps by hand, this is done through turning [A|I] to [I|A$^{-1}$].
+
+	\subsection{EigenValues and Eigenvectors:}
+	\begin{center}
+		\includegraphics{eigen-stuff.png}
+	\end{center}
+	\begin{align*}
+		Ax&=\lambda x\\
+		Ax-\lambda x&=0\\
+		Ax-\lambda Ix&=0\\
+		[A-\lambda I]x&=0
+	\end{align*}
+
+	\subsection{Estimation of an Answer:}
+	\subsubsection{Jacobi Technique}
+	\begin{enumerate}
+		\item No zeros on leading diagonal
+		\item Check that the numbers in the leading diagonal are the largest in the row
+		\item Set $x_{1}=\frac{1}{a_{n1}}\Bigl(b_{n}-a_{n2}x_{2}-a_{n3}x_{3}\Bigr)$. 
+		\item Sub $x=0$
+		\item For future ones, sub the previous iteration.
+		\item Repeat until the answer does not change with a new iteration.
+	\end{enumerate}
+	\subsubsection{Gauss-Siedel Method}
+	Same method as above, but the values are subbed in equations as soon as they are available, rather than waiting until the next iteration.
 \end{document}
