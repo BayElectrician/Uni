@@ -136,4 +136,62 @@
 		\hline
 	\end{tabular}
 	\end{center}
+
+	\section{Techniques of Differentiation}
+	\subsection{Product Rule:}
+	The product rule is used to differentiate two functions multiplied together.
+	\begin{align*}
+		y=&f(x)g(x) \\
+		\frac{dy}{dx}=&f'(x)g(x)+f(x)g'(x)\\\\
+		y=&uv\\
+		\frac{dy}{dx}=&u'v+v'u
+	\end{align*}
+	\subsection{Quotient Rule:}
+	This rule is used when two functions divide each other. It is important to know that the order of functions matter with this rule. As this subtracts rather then addition.
+	\begin{align*}
+		y&=\frac{u}{v}\\
+		\frac{dy}{dx}&=\frac{u'v-v'u}{v^{2}}
+	\end{align*}
+	\subsection{Chain Rule:}
+	By using differentiation by substitution (A.K.A) chain rule, function within other functions can be derived.
+	\begin{align*}
+		y=&f(g(x))\\
+		\frac{dy}{dx}=&g'(x)f'(g(x))
+	\end{align*}
+
+	\subsection{Implicit Differentiation}
+	This is used when the equation is not simply $y=f(x)$, e.g.:
+	\begin{align*}
+		x^{2}-y^{3}+\sin{(x)}-\cos{(y)}&=1 \\\\
+		\frac{d}{dx}(x^{2})&=2x \\
+		\frac{d}{dx}(-y^{3})&=-3y^{2}\frac{dy}{dx}\\
+		\frac{d}{dx}(\sin{(x)})&=\cos{(x)}\\
+		\frac{d}{dx}(-\cos{(y)})&=\sin{(y)}\frac{dy}{dx}\\
+		\frac{d}{dx}(1)&=0\\\\
+		\frac{d}{dx}(x^{2}-y^{3}+\sin{(x)}-\cos{(y)})&=\frac{d}{dx}1\\
+		2x-3y^{2}\frac{dy}{dx}+\cos{(x)}+\sin{(y)}\frac{dy}{dx}&=0\\
+		\frac{dy}{dx}&=\frac{-2x-\cos{(x)}}{\sin{(y)}-3y^{2}}\\
+			     &=\frac{2x+\cos{(x)}}{3y^{2}-\sin{(y)}}
+	\end{align*}
+
+	\subsection{Parametric Differentiation}
+	Basically just multiplying the derivatives together.
+	$$\frac{dy}{dx}=\frac{\frac{dy}{dt}}{\frac{dx}{dt}}$$
+
+	\pagebreak
+
+	\subsection{Logarithmic Differentiation}
+	Just follow the basic steps and the derivative will be found. Mostly useful for a short version of the product rule.
+	\begin{enumerate}
+		\item Find the log of each side of the equation, \& use log laws to expand the equation
+		\item Differentiate each side with respect too the independent variable
+		\item Rearrange and substitute
+		\item Simplify
+	\end{enumerate}
+	
+	\subsection{Higher Derivatives}
+	Found by differentiating the function multiple times.\\
+	These are useful as they can describe the nature of a function, such as\\
+	If $\frac{dy}{dx}>0$, the gradient can be said to be increasing, or $\frac{dy}{dx}<0$, the gradient is decreasing and $\frac{dy}{dx}=0$ the gradient is stable.\\
+	Or $\frac{d^{2}y}{dx^{2}}>0$, concavity is up and the point (x,y) is described as a minimum. $\frac{d^{2}y}{dx^{2}}=0$, described as a Point of Inflection. Basically just the point where the concavity of a function changes. $\frac{d^{2}y}{dx^{2}}<0$, concave down and point (x,y) is a maximum.
 \end{document}
