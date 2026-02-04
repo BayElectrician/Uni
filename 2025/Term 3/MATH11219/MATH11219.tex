@@ -188,10 +188,64 @@
 		\item Rearrange and substitute
 		\item Simplify
 	\end{enumerate}
+	For Example,
+	\begin{align*}
+		y=&t^{2}(1+t)^{3}\\\\
+		\ln{(y)}=&\ln{(t^{2}[1+t]^{3})}\\
+			=&\ln{(t^{2})}+\ln{([1+t]^{3})}\\
+			=&2\ln{(t)}+3\ln{(1+t)}\\\\
+		\frac{d}{dt}\ln{(y)}=&\frac{d}{dt}[2\ln{(t)}+3\ln{(1+t)}]\\
+		\frac{1}{y}\frac{dy}{dt}=&\frac{2}{t}+\frac{3}{1+t}\\
+		\frac{dy}{dt}=&y(\frac{2}{t}+\frac{3}{1+t})
+	\end{align*}
 	
 	\subsection{Higher Derivatives}
 	Found by differentiating the function multiple times.\\
 	These are useful as they can describe the nature of a function, such as\\
 	If $\frac{dy}{dx}>0$, the gradient can be said to be increasing, or $\frac{dy}{dx}<0$, the gradient is decreasing and $\frac{dy}{dx}=0$ the gradient is stable.\\
 	Or $\frac{d^{2}y}{dx^{2}}>0$, concavity is up and the point (x,y) is described as a minimum. $\frac{d^{2}y}{dx^{2}}=0$, described as a Point of Inflection. Basically just the point where the concavity of a function changes. $\frac{d^{2}y}{dx^{2}}<0$, concave down and point (x,y) is a maximum.
+
+	\section{Applications of Derivatives}
+	\subsection{Maximum \& Minimum Points}
+	\begin{center}
+	\begin{tikzpicture}
+	    \begin{axis}[
+		axis lines = middle,
+		xlabel = $x$,
+		ylabel = {$f(x)$},
+		xmin = -2.5, xmax = 4,
+		ymin = -4.5, ymax = 2.5,
+		grid = both,
+		minor tick num = 1,
+		legend pos = north east,
+	    ]
+		% Plot the function: f(x) = x^3 - 3x^2 + 1
+		\addplot [
+		    domain=-2:4, 
+		    samples=100, 
+		    color=blue,
+		    thick,
+		]
+		{x^3 - 3*x^2 + 1};
+
+		% Local Maximum (Label placed directly above)
+		\fill[red] (axis cs:0,1) circle (2pt) 
+		    node[above right, xshift=-2pt, yshift=2pt, black] {\scriptsize \textbf{Local Maximum}};
+
+		% Local Minimum (Label placed directly below)
+		\fill[red] (axis cs:2,-3) circle (2pt) 
+		    node[below left, xshift=2pt, yshift=-2pt, black] {\scriptsize \textbf{Local Minimum}};
+	    \end{axis}
+	\end{tikzpicture}
+	\end{center}
+	These points are found by substituting the $x$-values found when $\frac{dy}{dx}=0$ into $\frac{d^{2}y}{dx^{2}}$. In addition POIs can be found when $\frac{d^{2}y}{dx^{2}}=0$. A simple way for remembering which point is what is understanding how the gradient is achieved around the point.
+
+	\subsection{Points of Inflextion (POI)}
+	This is the point in which the graph changes in concavity.\\
+	Maximum - Concave Down\\
+	Minimum - Concave Up
+
+	\subsection{Newton-Raphson Method}
+	This is an estimation method used to find roots within an equation. The reason for this is for polynomials not able to be found by hand. For the method to work it assumes point $x_{2}$ is closer too the root value than $x_{1}$. However the method can come off course as it is entirely dependent upon the intial value chosen to represent point $x_{1}$. As this can cause the approximation to diverge (rather than converge) upon a particuar point.
+	$$x_{n+1}=x_{n}-\frac{f(x)}{f'(x)}$$
 \end{document}
