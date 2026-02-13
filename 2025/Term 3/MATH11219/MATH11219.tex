@@ -8,6 +8,7 @@
 \usepackage{tikz}
 \usepackage{stix}
 \usepackage{pgfplots}
+\usepgfplotslibrary{fillbetween}
 \pgfplotsset{compat=1.18}
 
 \date{27\textsuperscript{th} of Jan 2026}
@@ -319,4 +320,77 @@
 	\subsection{Maclaurin Series}
 	Think of this as a Taylor polynomial, except that it rotates around the point $x=0$.
 	$$f(x)=f(0)+f'(0)x+\frac{f''(0)}{2!}+\frac{f^{(3)}(0)}{3!}x^{3}+\ldots$$
+	
+	\pagebreak
+
+	\section{Intergration}
+	This is just anti-differentiation.
+	\subsection{Common Derivatives}
+	\begin{center}
+	\begin{tabular}{ |c|c| }
+		\hline
+		$f(x)$ & $F(x)$\\
+		\hline
+		$k$ &  $kx+c$\\
+		$x^{n}$ & $\frac{1}{n+1}x^{n+1}+c$\\
+		$x^{-1}$ & $\ln{(x)}+c$\\
+		$e^{ax}$ & $\frac{1}{a}e^{ax}+c$\\
+		$\sin{(ax+b)}$ & $-\frac{1}{a}\cos{(ax+b)}+c$\\
+		$\cos{(ax+b)}$ & $\frac{1}{a}\sin{(ax+b)}+c$\\
+		$\tan{(ax+b)}$ & $\frac{1}{a}\ln{[\sec{(ax+b)}]}+c$\\
+		$\csc{(ax+b)}$ & $\frac{1}{a}\ln{[\csc{(ax+b)}-\cot{(ax+b)}]}+c$\\
+		$\sec{(ax+b)}$ & $\frac{1}{a}\ln{[\sec{(ax+b)}+\tan{(ax+b)}]}+c$\\
+		$\cot{(ax+b)}$ & $\frac{1}{a}\ln{[\sin{(ax+b)}]}+c$\\
+		$\frac{1}{\sqrt{a^{2}-x^{2}}}$ & $\arcsin{(\frac{x}{a})}+c$\\
+		$\frac{-1}{\sqrt{a^{2}-x^{2}}}$ & $\arccos{(\frac{x}{a})}+c$\\
+		$\frac{1}{a^{2}+x^{2}}$ & $\frac{1}{a}\arctan{(\frac{x}{a})}+c$\\
+		\hline
+	\end{tabular}
+	\end{center}
+
+	\subsection{Kinematics}
+	Kinematics is just the algebra of motion.\\
+	Distance $\to\;x$\\
+	Velocity $\to\;v=\frac{dy}{dx}$\\
+	Accelaration $\to\;a=\frac{dv}{dt}=\frac{d^{2}x}{dt^{2}}=v\frac{dv}{dx}=\frac{d}{dx}(\frac{1}{2}v^{2})$
+
+	\subsection{Trig Functions}
+	Trig functions presented to a power (e.g. $\sin^{5}{(x)}$) cannot be easily integrated. As such, for these to be integrated, they must come down to an index of 1, through the use of trigonometric identities to seperate out the powers.
+	
+	\subsection{Definite Integration}
+	\begin{tikzpicture}
+	    \begin{axis}[
+		axis lines = middle,
+		xlabel = $x$,
+		ylabel = {$f(x)$},
+		ymin = -0.5, ymax = 4.5,
+		xmin = -0.5, xmax = 5.5,
+		xtick = {1, 4},
+		xticklabels = {$a$, $b$}, % Labeling the bounds
+		ytick = \empty,
+		enlargelimits = true
+	    ]
+		% Define the function (a simple parabola)
+		\addplot[name path=F, blue, thick, domain=0.5:4.5, samples=100] 
+		    {-(x-2.5)^2 + 4};
+
+		% Define the x-axis as a path for filling
+		\path[name path=G] (axis cs:1,0) -- (axis cs:4,0);
+
+		% Shade the area between the curve (F) and the axis (G)
+		\addplot[orange!30] fill between[
+		    of=F and G, 
+		    soft clip={domain=1:4}
+		];
+
+		% Add vertical dashed lines at the boundaries
+		\draw[dashed] (axis cs:1,0) -- (axis cs:1,1.75);
+		\draw[dashed] (axis cs:4,0) -- (axis cs:4,1.75);
+
+		% Label the area
+		\node at (axis cs:2.5, 1.2) {\large $y=\int_{a}^{b} f(x) \, dx$};
+	    \end{axis}
+	\end{tikzpicture}
+	\break
+	A note on definite integration. Make sure that the everything between the boundaries is either above or below the relevant axs. Else multiple integration will be required as some of the area will be considered negative.
 \end{document}
