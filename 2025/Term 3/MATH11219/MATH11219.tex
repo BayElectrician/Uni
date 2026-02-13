@@ -298,4 +298,25 @@
 		\therefore x&=e^{-x}\\
 		x_{n+1}&=e^{x_{n}}
 	\end{align*}
+
+	\section{Taylor \& Maclaurin Series}
+	\subsection{Approximating Points on a Function}
+	Think amount the point (Q) on a function. When an approximation of the function is close to Q it is considered to be fairly accurate. However as the distance between the approximation and Q grows.
+	$$f(x)=f(a)+f'(a)(x-a)$$
+
+	\subsection{Taylor Series}
+	Taylor Series becomes more accurate the higher order (highest power in the set) is.\\
+	Zero: $p_{0}(x)=f(a)$\\
+	First: $p_{1}(x)=f(a)+f'(a)(x-a)$\\
+	Second: $p_{2}(x)=f(a)+f'(a)(x-a)+\frac{f''(a)}{2!}(x-a)^{2}$\\
+	Continues with higher orders
+
+	\subsection{Remainder Term}
+	This is the error in the $n^{th}$ term of a Taylor Polynomial.
+	$$f(x)=p_{n}(x)+R_{n}(x)$$
+	$$R_{n}(x)=\frac{y^{n+1}(c)(x-a)}{(n+1)!},\;\text{where}\;a<c<x$$
+
+	\subsection{Maclaurin Series}
+	Think of this as a Taylor polynomial, except that it rotates around the point $x=0$.
+	$$f(x)=f(0)+f'(0)x+\frac{f''(0)}{2!}+\frac{f^{(3)}(0)}{3!}x^{3}+\ldots$$
 \end{document}
