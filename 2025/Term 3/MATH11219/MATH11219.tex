@@ -358,6 +358,7 @@
 	Trig functions presented to a power (e.g. $\sin^{5}{(x)}$) cannot be easily integrated. As such, for these to be integrated, they must come down to an index of 1, through the use of trigonometric identities to seperate out the powers.
 	
 	\subsection{Definite Integration}
+	\raggedright
 	\begin{tikzpicture}
 	    \begin{axis}[
 		axis lines = middle,
@@ -391,6 +392,49 @@
 		\node at (axis cs:2.5, 1.2) {\large $y=\int_{a}^{b} f(x) \, dx$};
 	    \end{axis}
 	\end{tikzpicture}
-	\break
+	\break\break
 	A note on definite integration. Make sure that the everything between the boundaries is either above or below the relevant axs. Else multiple integration will be required as some of the area will be considered negative.
+
+	\pagebreak
+
+	\section{Techniques of Integration}
+	\subsection{Integration by Parts:}
+	When thinking about the product rule ($\frac{d}{dx}(uv)=u'v+v'u$), integration by parts is a way of doing a reverse product rule.
+	$$\int u'v=uv-\int uv'$$
+	The key to solving the above equations is making smart choices about which parts of the functions are $u$ and $v$. The following guide can be utilized when making that descision:\\
+	\begin{enumerate}
+		\item Logs
+		\item Inverse Trigonometric
+		\item Algebraic (Polynomials)
+		\item Normal Trigonometric
+		\item Exponential
+	\end{enumerate}
+	For Example:
+	\begin{align*}
+		\int(5x+1)&\cos{(2x)}dx\\
+		\text{let}\;u=5x&+1\;\;\;v'=cos(2x)\\
+		u'=&5\;\;\;\;\;v=\frac{1}{2}\sin{(2x)}\\
+		\therefore\int uv'=&uv-\int u'v\\
+		=&\frac{1}{2}(5x+1)\sin{(2x)}-\int\frac{5}{2}\sin{(2x)}dx\\
+		=&\frac{1}{2}(5x+1)\sin{(2x)}+\frac{5}{4}\cos{(2x)}+c
+	\end{align*}
+	\subsection{Integration via Substitution:}
+	This allows a chain rule derivative to be integrated. It does this by splitting the terms down into usable terms. However, it is important to note that the seeminly obvious solution is not always the correct one. E.g.
+	\pagebreak
+	$$\int x\sqrt{1-x^{2}}dx$$
+	\begin{align*}
+		\text{let}\;u=&1-x^{2}\\
+		\frac{du}{dx}=&-2x\\
+		dx=&-\frac{du}{2x}
+	\end{align*}
+	\begin{align*}
+		\int x\sqrt{1-x^{2}}dx=&\int x\sqrt{u}(-\frac{du}{2x})\\
+		=&-\frac{1}{2}\int\sqrt{u}du\\
+		=&-\frac{1}{2}\cdot\frac{2}{3}u^{\frac{3}{2}}+c\\
+		=&-\frac{1}{3}(1-x^{2})^{\frac{3}{2}}+c
+	\end{align*}
+	\subsection{Integrals in Forms:}
+	When $\int\frac{f'(x)}{f(x)}=\ln{\|f(x)\|}+c$. This can just be a simple way of immediately recognizing an integration via substitution.
+	\subsection{Integration via Partial Fractions:}
+	Turn a integral not in form (i.e. not substitution) into standard natural log form. This can then be integrated as normal.
 \end{document}
