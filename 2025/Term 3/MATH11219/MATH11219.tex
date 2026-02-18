@@ -534,4 +534,37 @@
 
 	\pagebreak
 
+	\section{Ordinary Differentiation}
+	\subsection{Numerical Integration:}
+	Numerical Integration is a set of principles to follow for equations that cannot be solved analytically (I.E. $\sin{(x^{2})}$). The two most common techniques to are approximation of the solution to the integration of the formula. These are the Trapezoidal and Simpson's Rule.
+	\subsubsection{Trapezoidal Rule}
+	$$\int^{b}_{a}f(x)dx\approx\frac{b-a}{2n}[f(x_{0})+2(f(x_{1})+f(x_{2})+\ldots+f(x_{n-1}))+f(x_{n})]$$
+	\subsubsection{Simpson's Rule}
+	Similar too the Trapezoidal Rules, Simpson's Rule provides an approximation that is considered even more accurate at width $h$ ($\frac{b-a}{n}$). It does this through utilizing the sum of multiqle quadratic equations.
+	$$\int^{b}_{a}f(x)dx\approx\frac{h}{3}[f(x_{0})+4[f(x_{\text{odd}})]+2[f(x_{\text{even}})]+f(x_{n})]$$
+	\subsection{Standard Ordinary Differential Equations:}
+	\begin{align*}
+		F_{1}=-ky\;\;&\;\;F_{2}=ma\\
+		F_{1}=&F_{2}\\
+		\therefore-ky=&ma\\
+		a=&-\frac{ky}{m}\\
+		\frac{d^{2}y}{dx^{2}}=&-\frac{ky}{m}\\
+		m\frac{d^{2}y}{dx^{2}}+ky=&0
+	\end{align*}
+	Above is an example of a second-order differential equation.
+	\subsection{Linear Differential Equations:}
+	A differential equation is said to be linear, if and only if:
+	\begin{enumerate}
+		\item The dependent variable and derivative are of the first order (index 1)
+		\item No products of dependent variable and derivative are present
+		\item No non-linear functions are present within the equation
+	\end{enumerate}
+	\subsection{Seperation of Variables:}
+	\begin{align*}
+		\frac{dy}{dx}&=f(x)g(y)\\
+		\int\frac{1}{g(y)}dy&=\int f(x)dx
+	\end{align*}
+	\subsection{Standard Form:}
+	$$\frac{dy}{dx}+P(x)y=Q(x)$$
+	$$y(x)=\frac{\int\mu Q(x)dx}{\mu},\;\text{where}\;\mu=e^{\int P(x)dx}$$
 \end{document}
