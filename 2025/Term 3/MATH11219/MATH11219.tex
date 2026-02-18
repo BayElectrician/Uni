@@ -567,4 +567,46 @@
 	\subsection{Standard Form:}
 	$$\frac{dy}{dx}+P(x)y=Q(x)$$
 	$$y(x)=\frac{\int\mu Q(x)dx}{\mu},\;\text{where}\;\mu=e^{\int P(x)dx}$$
+
+	\section{Ordinary Differential Equations}
+	\subsection{Second Order Linear Equations:}
+	$$p(x)\frac{d^{2}y}{dx^{2}}+q(x)\frac{dy}{dx}+r(x)y=f(x)$$
+	This is the standard form of second order linear equations. Where each function can be of $x$ only. The solution to this integral is $y_{p}(x)$ (A.K.A the particular integral). \\
+	The general solution is $y(x)=y_{H}(x)+y_{p}(x)$.
+	\subsubsection{Homogenous equations}
+	$$a\frac{d^{2}y}{dx^{2}}+b\frac{dy}{dx}+cy=f(x)\;\text{or}\;0$$
+	$$ak^{2}+bk+c=0$$
+	\begin{center}
+	\begin{tabular}{ |c|c|c| }
+		\hline
+		Type of Root & Roots Equality & General Solution\\
+		\hline
+		Unique & $b^{2}-4ac>0,\;k_{1}\neq k_{2}$ & $y_{H}(x)=Ae^{k_{1}x}+Be^{k_{2}x}$\\
+		       & & \\
+		Repeated & $b^{2}-4ac=0,\;k_{1}=k_{2}$ & $y_{H}(x)=Ae^{kx}+Bxe^{kx}$\\
+			 & & \\
+		Complex & $b^{2}-4ac<0,\;k_{1,2}=\alpha\pm\beta j$ & $y_{H}(x)=e^{\alpha x}[A\cos{(\beta x)}$\\
+			& & $+B\sin{(\beta x)}]$\\
+		\hline
+	\end{tabular}
+	\end{center}
+	\subsection{Non-homogenous Constant Coefficients:}
+	\begin{center}
+	\begin{tabular}{ |c|c| }
+		\hline
+		Form of $f(x)$ & Form of Integral\\
+		\hline
+		Constant & $y_{p}(x)=c$\\
+			 & \\
+		Polynomial of Degree $m$ & $y_{p}(x)=Ax^{m}+Bx^{m-1}+\ldots+Yx+Z$\\
+					 & \\
+		$\cos{(mx)}$ and/or $\sin{(mx)}$ & $y_{p}(x)=A\cos{(mx)}+B\sin{(mx)}$\\
+						 & \\
+		$ae^{mx}$ & $y_{p}(x)=Ae^{mx}$\\
+			  & \\
+		$e^{mx}\cos{(mx)}$ and/or $e^{mx}\sin{(mx)}$ & $y_{p}(x)=[A\cos{(mx)}+B\sin{(mx)}]$\\
+		\hline
+	\end{tabular}
+	\end{center}
+	To find the specific values of A and B in the table above, substitute the derivatives into the original ordinary differential equation.
 \end{document}
