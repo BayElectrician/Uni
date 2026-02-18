@@ -609,4 +609,45 @@
 	\end{tabular}
 	\end{center}
 	To find the specific values of A and B in the table above, substitute the derivatives into the original ordinary differential equation.
+
+	\pagebreak
+
+	\section{Functions of Several Variables}
+	In engineering it is fairly common to have functions that contain multiple independent variables. This is where multi variable calculus comes into play.
+	\subsection{3D Co-Ordinate Systems:}
+	\begin{center}
+	\begin{tabular}{ |c|c| }
+		\hline
+		System & Types\\
+		\hline
+		Cartesian & $f(x,y,z)$\\
+			  & \\
+		Cylindrical & $f(r,\theta,z)$, where\\
+			    & $r=sqrt{x^{2}+y^{2}}$\\
+			    & $\theta=\arctan{(\frac{y}{x})}$\\
+			    & \\
+		Spherical & $f(R,\theta,\phi)$, where\\
+			  & $R=\sqrt{x^{2}+y^{2}+z^{2}}$\\
+			  & $\theta=\arctan{(\frac{y}{x})}$\\
+			  & $\phi=\arctan{(\frac{\sqrt{x^{2}+y^{2}}}{z})}$\\
+			  & $\;=\arccos{(\frac{z}{\sqrt{x^{2}+y^{2}}})}$\\
+		\hline
+	\end{tabular}
+	\end{center}
+	\subsection{Partial Differentiation:}
+	\begin{align*}
+		\text{If}\;z=&f(x,y)\\
+		\frac{\partial z}{\partial x}=&\frac{df(x,y)}{dx}\\
+		\frac{\partial z}{\partial y}=&\frac{df(x,y)}{dy}
+	\end{align*}
+	When doing partial differentiation, the normal rules apply. The only thing to consider is when differentiating one independent variable, the others are considered to just be constants. For example
+	\begin{align*}
+		z=&x\sin{(t)}\\
+		\frac{\partial z}{\partial x}=&\sin{(t)}\\
+		\frac{\partial z}{\partial t}=&x\cos{(t)}
+	\end{align*}
+	\subsection{Further Derivatives:}
+	$$\frac{\partial}{\partial x}(\frac{\partial z}{\partial x})=\frac{\partial^{2}z}{\partial x^{2}}$$
+	$$\frac{\partial}{\partial y}(\frac{\partial z}{\partial y})=\frac{\partial^{2}z}{\partial y\partial x}$$
+	The order on the denominator is important as it tells which partial derivative is conducted in which order.
 \end{document}
