@@ -10,6 +10,7 @@
 \usepackage{pgfplots}
 \usepgfplotslibrary{fillbetween}
 \pgfplotsset{compat=1.18}
+\usetikzlibrary{arrows.meta, patterns}
 
 \date{27\textsuperscript{th} of Jan 2026}
 \setcounter{section}{0}
@@ -437,4 +438,100 @@
 	When $\int\frac{f'(x)}{f(x)}=\ln{\|f(x)\|}+c$. This can just be a simple way of immediately recognizing an integration via substitution.
 	\subsection{Integration via Partial Fractions:}
 	Turn a integral not in form (i.e. not substitution) into standard natural log form. This can then be integrated as normal.
+
+	\pagebreak
+
+	\section{Further Integration}
+	\subsection{Average Value of a Function:}
+	Often wanting to know the average value within a function is useful. The independent variable within mostly a period of time over a specified interval. The main example of this is time. I.E. finding the average velocity of car going certain speeeds.\\
+	$$\overline{x}=\frac{1}{b-a}\int^{b}_{a}f(x)dx$$
+	\\
+	E.g. Find the Average value of $f(t)=t^{2}$, $t\in[1,3]$
+	\begin{align*}
+		AV=&\frac{1}{3-1}\int^{3}_{1}t^{2}dt\\
+		=&\frac{1}{2}[\frac{1}{3}t^{3}]^{3}_{1}\\
+		=&\frac{1}{2}([\frac{27}{3}]-[\frac{1}{3}])\\
+		=&\frac{1}{2}(\frac{26}{3})\\
+		=&\frac{13}{3}
+	\end{align*}
+	\subsection{RMS Value of a Function:}
+	The RMS value of a function is the $2^{nd}$ root of the mean value over a given period.
+	\\
+	$$RMS=\sqrt{\frac{1}{b-a}\int^{b}_{a}[f(t)]^{2}dt}$$
+	\\
+	One of the main applications for this in alternating currents \& voltages between DC \& AC circuits.
+	\subsection{Volume of Revolution:}
+	Rotating a function (here $f(x)$) around an axis ($x$), producing a 3D shape. Most of the time makign a cone-like shape.
+	\\
+	$$V=\pi\int^{b}_{a}[f(x)]^{2}dx$$
+	\\
+	E.g. Find the volume of $y=2x$ for $0\leq x\leq 3$
+	\begin{align*}
+		V=&\pi\int^{3}_{0}[2x]^{2}dx\\
+		=&\pi\int^{3}_{0}4x^{2}dx\\
+		=&4\pi[\frac{1}{3}x^{3}]^{3}_{0}\\
+		=&4\pi([\,\frac{27}{3}]-[0])\\
+		=&36\pi\text{units}^{3}
+	\end{align*}
+	\subsection{Centriod of a Plane Figure:}
+	When looking for the point at which the whole acts. This means that the overall mass could be replaced with a point at this location (E.g. Center of Gravity). It could then be said that this is the balance point for the plane.
+	\begin{center}
+	\begin{tabular}{ c c }
+		$Area\;x\approx\sum^{x=b}_{x=a}xy\Delta x$ & $\overline{x}=\frac{\int^{b}_{a}xydx}{\int^{b}_{a}ydx}$\\
+							   & \\
+		$Area\;y\approx\sum^{x=b}_{x=a}\frac{1}{2}y^{2}\Delta x$ & $\overline{x}=\frac{\int^{b}_{a}y^{2}dx}{2\int^{b}_{a}ydx}$\\
+									 &\\
+									 &\\
+	\end{tabular}
+	
+	\begin{tikzpicture}[scale=0.75]
+		% --- Axis ---
+		\draw[->, thick] (-0.5,0) -- (6,0) node[below] {$x$};
+		\draw[->, thick] (0,-0.5) -- (0,5) node[left] {$y$};
+		\node[below left] at (0,0) {$0$};
+
+		% --- Curve ---
+		% Drawing the function y = f(x)
+		\draw[very thick] (0,1.2) .. controls (2,1.8) and (4,2.5) .. (5.5,4.5) 
+		node[above] {$y = f(x)$};
+
+		% --- Boundaries a and b ---
+		\draw (1.5,0) -- (1.5,2) node[above left] {$A$};
+		\node[below] at (1.5,0) {$a$};
+
+		\draw (4.8,0) -- (4.8,3.9) node[above left] {$B$};
+		\node[below] at (4.8,0) {$b$};
+
+		% --- Centroid Point C ---
+		\coordinate (C) at (3.1, 1.6);
+		\fill (C) circle (2pt) node[above] {$C$};
+
+		% Centroid dashed lines and labels
+		\draw[dashed] (3.1,0) -- (C);
+		\draw[<->] (0,-0.8) -- (3.1,-0.8) node[midway, fill=white] {$\bar{x}$};
+		\draw[<->] (2.5,0) -- (2.5,1.6) node[midway, fill=white] {$\bar{y}$};
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Center of Gravity of a Solid Revolution:}
+	\begin{align*}
+		\overline{x}=&\frac{\int^{x=b}_{x=a}xy^{2}dx}{\int^{x=b}_{x=a}y^{2}dx}\\
+		\overline{y}=&0
+	\end{align*}
+	The above formulas assume a rotation around the $x$-axis. Swap $x\to y$ for rotations around the $y$-axis.
+	\subsection{Length of a Curve:}
+	Measures the actual length of the arc of a curve between the two points.
+	$$s=\int^{b}_{a}\sqrt{1+(\frac{dy}{dx})^{2}}dx$$
+	\subsection{Surface Area of Revolution:}
+	$$SA=2\pi\int^{b}_{a}y\sqrt{1+(\frac{dy}{dx})^{2}}dx$$
+	\subsection{Volumes of Washers:}
+	\subsubsection{Basic Formula}
+	This only works when rotating around an axis
+	$$V=\pi\int^{b}_{a}[f(x)]^{2}-[g(x)]^{2}dx$$
+	\subsubsection{Complex Formula}
+	When rotating around a specific point. A note with these is that the second function is only used when a second function is also being used.
+	\paragraph{About $y=c$:}
+	$$V=\pi\int^{x=b}_{x=a}[c-f(x)]^{2}-[c-g(x)]^{2}dx$$
+
+	\pagebreak
+
 \end{document}
