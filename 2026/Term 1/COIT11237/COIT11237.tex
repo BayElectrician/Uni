@@ -1,0 +1,138 @@
+
+\documentclass[a5paper]{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{graphicx}
+\graphicspath{ {../../../Images/COIT11237/} }
+\usepackage[breaklinks, hidelinks]{hyperref}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{external}
+\usepackage{stix}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{polynom}
+
+\newcommand{\sech}{\mathrm{sech}}
+\newcommand{\csch}{\mathrm{csch}}
+\setcounter{secnumdepth}{4}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+% display heading, like subsubsection
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+\sisetup{
+	round-mode = places,
+	round-precision = 2,
+}
+
+\date{11\textsuperscript{th} of June 2026}
+
+\begin{document}
+	\begin{titlepage}
+		\centering
+		{\Huge \textsc{COIT11237}\par}
+		\vspace{1cm}
+		{\Large \textsc{Lecture Notes}\par}
+		\vspace{2.5cm}
+		\vfill
+		Authored by\par
+		Lachlan J. W. Wyer
+		\vfill
+		\makeatletter
+		{\large Document Start Date: \@date \par}
+		\makeatother
+		{\large Latest Update: \today\par}
+	\end{titlepage}
+	\tableofcontents
+	\pagebreak
+
+	\section{Introduction to Databases}
+	\subsection{What is MySQL?:}
+	Structured Query Language (SQL) is the language used to manage relational database management systems (RDBMS). It follows the CRUD principles. In that it Create, Replace, Update, \& and Deletes. SQL is used in both small \& large scale applications.
+	\subsection{Databases:}
+	A database (DB) can be made up of multiple tables. The conventional naming is singular. For examples, a customers' information DB would just be named customer, not customers. The table also needs a primary key (PK) as a unique identifier. This is so a singular record can be found. Tables can also be linked together through foreign keys (FK) which is just a PK in another table. When this is done, a relational database is created.
+	\subsection{Problems with Spreadsheets}
+	\begin{enumerate}
+		\item Have redundant/wrong/out-of-date data present within the sheet. This can create conflicting copies throughout.
+		\item Multiple themes per row creates modification problems
+		\begin{itemize}
+			\item Insertion anomalies
+			\item Deletion anomalies
+		\end{itemize}
+	\end{enumerate}
+	\subsection{Database System Components:}
+	\begin{itemize}
+		\item Users use forms/reports to modify data
+		\item Database application converts user inputs into SQL data, which is then sent to DBMS
+		\item DBMS:
+		\begin{itemize}
+			\item Processes the SQL
+			\item Enforces the DB rules
+			\item Provides concurrency, security, back-up and recovery
+		\end{itemize}
+		\item Database is where the data is physically stored
+	\end{itemize}
+	\subsection{SQL:}
+	SQL is an international standard for the talking with DBs and their tables. For example:\\[1\baselineskip]
+	SELECT *\\
+	FROM Table.name\\
+	WHERE ID = 1
+	\subsection{Personal DBs:}
+	These are typically just local DBs and tables stored on the system. They can be found with the localhost flags. A crucial part of local DBs is that they only support one connection at a time.
+	\subsection{Commercial DBs:}
+	Multiple connections with many things happening at once. Connections are usually facillitated through JAVA or C\#.
+
+	\section{SQL Part 1}
+	\subsection{Keys:}
+	\subsubsection{Primary}
+	When creating a table in SQL it must have a unique identifier. For example:
+	\begin{center}
+	\begin{tabular}{ c | c }
+		EmployeeID & FirstName\\
+		\hline
+		1 & Lachlan \\
+		2 & Paul \\
+		3 & Paul
+	\end{tabular}
+	\end{center}
+	\subsubsection{Composite}
+	Sometimes a comp PK is utilized to define N:M relational tables. As long as the pair of keys is unique, the table will not break. For example:
+	\begin{center}
+	\begin{tabular}{ c | c }
+		ProjectID & EmployeeID\\
+		\hline
+		1200 & 1\\
+		1300 & 1\\
+		1300 & 2\\
+		1400 & 2
+	\end{tabular}
+	\end{center}
+	\subsubsection{Foreign}
+	These keys allow relationships between tables to form. The link must be done back to a PK in the other table. When setting a FK during the creation of the table there are two points to understand:
+	\begin{enumerate}
+		\item Cascade Delete: Once the original PK is deleted all rows with it as a FK
+		\item Cascade Update: Same as delete, but with updating all FK rows
+	\end{enumerate}
+	\subsection{SELECT Clause:}
+	Used to select rows of data from a table. There are only two compulsary parts to the statements. That being the column names and table name or names. To remove duplicate rows doing a SELECT DISTINCT statement will remove duplicate rows.
+	\subsection{WHERE Clause:}
+	Filters rows by constraining items that are in the column name. For example:\\
+	SELECT EmployeeName\\
+	FROM employee\\
+	WHERE EmployeeID = 1\\[1\baselineskip]
+	Further constraints can be added to the WHERE clause. Such as, IN, NOT, ALL, BETWEEN, IS NULL/IS NOT NULL, and LIKE. The LIKE can be defined with \% for infinite number of characters and \_ for 1 character. The \_ can be done multiple times (e.g. \_ \_ \_, but joined together like \_\_\_) for a set defined number of characters.
+	\subsection{Ordering Rows:}
+	Use the ORDER BY after the WHERE. Ordering can either be defined DESC or ASC, with most DBMSs having ASC as the default.
+	\subsection{Having:}
+	This is basically just a WHERE clause for grouped functions. When in a statement with WHERE clauses, the WHERE clause is applied before the HAVING.
+	\subsection{Subqueries:}
+	SELECT * \\
+	FROM table1\\
+	WHERE column IN (subquery)
+\end{document}
