@@ -135,4 +135,86 @@
 	SELECT * \\
 	FROM table1\\
 	WHERE column IN (subquery)
+
+	\section{SQL - Part 2}
+	\subsection{Joins of Tables:}
+	There a number of different types of joins. Joins can be used consecutaley to have multiple different tables joined together. The column used to join the table must be the same in each one. For example, an INNER JOIN is similary to,\\
+	FROM table1 as T1 \\
+	INNER JOIN table2 as T2 ON T1.id = T2.id
+	\begin{center}
+		\includegraphics[scale=0.75]{joins.png}
+	\end{center}
+	\subsection{Union:}
+	These are used to completely join two tables together. This is similar to a full join. For example,\\
+	(SELECT * FROM table1)\\
+	UNION\\
+	(SELECT * FROM table2)
+	\subsection{Modifying Data:}
+	Used when updating/deleting a row of data. As well as creating or dropping a table.
+
+	\section{ER Diagrams}
+	A formal presentation of user requirements. They help refine the requirements before a database is created.
+	\subsection{Purpose:}
+	Help visualizes the relationships between the tables.
+	\begin{itemize}
+		\item What thing's are stored within the DB?
+		\item What do we want to know about these things?
+		\item Are there any relationships between the tables?
+		\item Are there any constraints in the DB?
+	\end{itemize}
+	To summmarize ER diagrams help define the entire requirements of the DB system.
+	\subsection{Database Definition:}
+	A DB contains a definition of its data. Specifically, the meta-data is the specific data describing the structure of DBs data. These include the datatype (INT, DATE, CHAR \& VARCHAR), uniqueness, auto-increment, and length.
+	\subsection{Entity Representation:}
+	Simply, name it an entity if it is more than just a name of something. I.E. Has non-key attributes or relationships with multiple entities.
+	\subsection{Identifier:}
+	Entity instances have an identifier. These are attributes that are unique (E.g. PKs) across all instances. Sometimes a composite of 2 or more identifiers to make a unique key.
+	\subsection{Relationships:}
+	Minimum cardinality: The minimum number of instances that must be involved with an instance.\\
+	Maximum cardinality: The maximum number of instances that a relationships can have.
+	\begin{center}
+		\includegraphics[scale=0.35]{cardinality-symbols.png}
+	\end{center}
+	When drawing these, if connected by a dashed line, both entities are independent of each other.
+	\subsection{Modelling ERDs:}
+	\begin{enumerate}
+		\item Write out all entities
+		\item Display relationships and state any assumptions made with them
+		\item Check if any extra modelling is required
+	\end{enumerate}
+	\subsection{Weak Entity:}
+	A WE is an entity that cannot exist in a DB without another entity also existing. That being if the strong entity is removed, the weak one must also be removed.
+	\begin{center}
+		\includegraphics[scale=0.5]{weak-entity.png}
+	\end{center}
+	\subsubsection{Id-dependent}
+	This relies on its parent entity for its identifier. They usually have composite identifiers within the DB. Represented through a solid line.
+	\subsubsection{Non-Identifying}
+	Does not rely on its parent entity for its unique identification. Illustrated by a dashed line to represent the lack of dependency.
+
+	\section{ER Digrams - 2}
+	\subsection{Associative Entities:}
+	It is best practice to avoid N:M relationships between entities. To do this a third entity is made with 2 1:N relationships. This entity is then an id-dependent on both sides.
+	\subsection{Subtype:}
+	A type of entity that inherts the attributes and relationships of the more general super-type. Further specifc attributes can be added to the sub-type entities. Sub-type entities reduce reduncy by placing common atrributes in a super-type, whilst also keeping singular attributes in the sub-type.
+	\begin{center}
+		\includegraphics[scale=0.75]{sub-type-entity.png}
+	\end{center}
+	\subsection{Notation:}
+	Exclusive is related to atmost one sub-type.
+	\begin{center}
+		\includegraphics[scale=0.75]{exclusive-notation.png}
+	\end{center}
+	Inclusive is where a super-type can be related to more than 1 sub-type.
+	\begin{center}
+		\includegraphics[scale=0.75]{inclusive-notation.png}
+	\end{center}
+	Sub-type entities are not suitable when:
+	\begin{itemize}
+		\item Categories change frequently
+		\item The difference is in a represented value not in its attributes
+		\item Individuals move between categories over time
+	\end{itemize}
+	\subsection{Recursive Relationships:}
+	When a FK links too the PK within the same table. For example, an employee is supervised by a manager, who in turn an employee of the company.
 \end{document}
