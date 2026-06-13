@@ -217,4 +217,57 @@
 	\end{itemize}
 	\subsection{Recursive Relationships:}
 	When a FK links too the PK within the same table. For example, an employee is supervised by a manager, who in turn an employee of the company.
+
+	\section{Normalization}
+	\subsection{Data Redundancy:}
+	List and spreadsheets store excess amount of redundant data. This can cause modification anomalies craeting conflicting copies/records in the table. They also have multiple themes per row. Where deletaion anomalies, delete everything within that record, and insertion anomalies, where blank cell are created when data is inserted.
+	\subsection{Relational DBs:}
+	Relational DBs split the spreadsheet into smaller tables that are linked through keys. They are more work to maintain up-front, but solves the problems associated with the spreadsheets.
+	\subsection{Relational Checklists:}
+	All following conditions must be met to make a spreadsheet a relational DB.
+	\begin{center}
+		\includegraphics[scale=0.35]{relational-checklist.png}
+	\end{center}
+	\subsection{Candidate Keys:}
+	Candidate keys are a unique set of keys that identify a single record. All these keys are capable of becoming a PK.
+	\subsection{Primary Keys:}
+	Notation is used to declare a relation. These include underlining \underline{PKs} and italicized \textit{FKs}. For exmaple,
+	\begin{center}
+		TableName(\underline{PK}, Col1, Col2, \textit{Col3})
+	\end{center}
+	\subsection{Boyce-Codd Normal Form:}
+	BCNF is based on a concept that an attribute determines another set of attributes. If nothing determines an attribute, a unique key is added to the system. This is known as a surrogate key.
+	\subsubsection{Referential Integrity:}
+	For tables to satisfy it, every FK value must match  a PK value in another table.
+	\subsubsection{NULL Values:}
+	It is better to aviod having NULL values present within DB. This is because the specified value in the row and column is ambiguous.
+	\subsubsection{Functional Dependancy:}
+	Are when an attribute determines all other attribute. The main example for this is when a PK determines all values within a table.
+	\subsection{BCNF:}
+	The BCNF is a form of normalisation:
+	\begin{itemize}
+		\item Break up tables to remove anomalies
+		\item Stream line data
+		\item Stops replication of data points
+	\end{itemize}
+
+	\section{Database Design}
+	\subsection{ER Diagrams to Tables:}
+	Defining the data types present. This determines what will be placed within the column, INT or VARCHAR. Each column also needs to be assigned one specific data type. Further points can be NULL level status, whether a value can be a NULL value or whether a default value should be assigned. In addition the data in the column can also be constrained to a specifc type. E.g. a minimum birth year of 1800.\\
+	Each entity within an ERD should have its own table created.
+	\subsection{Constraints:}
+	Unique constraints is similar to a PK, in that each value must be unique to each other within that column. Columns that can have this are usernames or phone numbers. An advantage of this is that the table maintains an idex. Making the sorting of unique data faster.
+	\subsubsection{Checks}
+	Checks force values to be within a user defined range or values. If multiple check clauses are used, the standardised way it to have seperate check statements. A check can also reference multiple columns.
+	\subsection{Referential Integrity:}
+	The FK needs to match PK in the parent table. When something is modified in the parent table, the FK needs to also be modified in the same way. For example, determining if when the FK in parent table is deleted do all rows with FK need to also be deleted.
+	\subsection{Overall Steps:}
+	\begin{enumerate}
+		\item Create a table for each entity
+		\item Identify the PK
+		\item Identify data types
+		\item Verify Normalisation
+		\item Identify id-dependent/id-independent weak entity relatioships
+		\item Create relatioships using FKs
+	\end{enumerate}
 \end{document}
