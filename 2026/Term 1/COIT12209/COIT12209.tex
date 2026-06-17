@@ -9,6 +9,7 @@
 \usepackage[breaklinks, hidelinks]{hyperref}
 \usepackage{siunitx}
 \usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
 \usepackage{pgfplots}
 \pgfplotsset{compat=newest}
 \usepgfplotslibrary{external}
@@ -30,12 +31,12 @@
 	round-precision = 2,
 }
 
-\date{11\textsuperscript{th} of June 2026}
+\date{18\textsuperscript{th} of June 2026}
 
 \begin{document}
 	\begin{titlepage}
 		\centering
-		{\Huge \textsc{COIT11237}\par}
+		{\Huge \textsc{COIT12209}\par}
 		\vspace{1cm}
 		{\Large \textsc{Lecture Notes}\par}
 		\vspace{2.5cm}
@@ -50,4 +51,195 @@
 	\end{titlepage}
 	\tableofcontents
 	\pagebreak
+
+	\section{What is Data Science?}
+	\subsection{Data Science:}
+	The collection, preperation, analysis, visualization, management and presentation of large collections of data. Data science specifically is the exploration of data via the scientific method. It  is crucial we understnad data science as we are in an age where everything is going digital. For example, targeted advertising and sponsored results.
+	\subsection{History of Data Science:}
+	FAANGY (Facebook, Apple, Amazon, Netflix, Google and Yahoo!) realised they have copious amount of data laying around. If they applied machine lear\-ning techniques to the data, significant business benefits occur. These can include better product recommendations, fraudulant activity monitoring, and click through rates.
+	\subsection{Data Science Sub-Fields:}
+	\begin{itemize}
+		\item Mathematics and Statistics
+		\item Machine Learning
+		\item Software Engineering
+		\item Domain Knowledge
+	\end{itemize}
+	\subsection{What is Data?:}
+	Data usually refers to raw/unprocessed facts. Once anything is done to these facts, in way normies can understand, these facts are considered information.
+	\subsubsection{Data Types}
+	\begin{tikzpicture}[
+	    % Style for the orthogonal branching lines
+	    edge from parent path={(\tikzparentnode.south) -- +(0,-0.6cm) -| (\tikzchildnode.north)},
+	    level 1/.style={sibling distance=6cm, level distance=1.5cm},
+	    level 2/.style={sibling distance=4.5cm, level distance=1.5cm},
+	    % Styles for text nodes and annotation lines
+	    main node/.style={font=\Large\sffamily, text=black},
+	    annotation/.style={font=\normalsize\sffamily, text=violet, align=center},
+	    arrow/.style={->, >=Stealth, thick, violet}
+	]
+
+	% Main tree structure
+	\node[main node] {Data}
+	    child { node[main node] (cat) {Categorical} }
+	    child { node[main node] (num) {Numerical}
+		child { node[main node] (disc) {Discrete} }
+		child { node[main node] (cont) {Continuous} }
+	    };
+	% Purple annotations with upward arrows
+	\node[annotation, below=1cm of cat] (cat_ann) {Defined\\categories};
+	\draw[arrow] (cat_ann) -- (cat);
+
+	\node[annotation, below=1cm of disc] (disc_ann) {Specific\\Numbers};
+	\draw[arrow] (disc_ann) -- (disc);
+
+	\node[annotation, below=1cm of cont] (cont_ann) {Infinite\\Measurements};
+	\draw[arrow] (cont_ann) -- (cont);
+	\end{tikzpicture}
+	\subsection{Big Data:}
+	Comprised of 3 main characteristics:
+	\begin{enumerate}
+		\item Volume
+		\item Velocity
+		\item Variety
+	\end{enumerate}
+	Structured Big Data is the common. The formats this comes in is SQL, or CSVs. The positives of these formats is that they can be easily searched. However, must follow strict schema, offering limited flexibility.\\
+	Semi-structured have a litt bit of organization like tags or keys, but does not follow strict schema rules. This giver more flexibility too the data but makes it harder to query. Formats can include XML, YAML, and JSON.\\
+	Unstructured data follows no consistent formatting. These include text files, PDFs and A/V files. They are rich in formation but hard to store and query efficiently.\\
+	Big Data plays a crucial role in industry as it allows data driven descion making.
+
+	\section{Identifying Data}
+	\subsection{Data Mining Task:}
+	Data mining tasks are specific operations or processes to find extra patterns or insights from the data. By breaking down big data into smaller chunks an easier insight can be found. This allows humans to only do the part where creativity can be found, I.E engaging with stakeholders.
+	\subsection{Business Problems:}
+	Business analystics and problem solving require data scientists to find "cor\-relations" between variables, their meanings and relationships to other variables. In additon it allows informed descion making based on a data driven approach.
+	\subsection{Data Mining Task:}
+	Data mining taks are designed to extract insights or knowlegde from a data set. This is split into 2 categories:
+	\begin{enumerate}
+		\item Predictive tasks: Use historic data to predict future values
+		\item Descriptive tasks: Discovering patterns without prior labels
+	\end{enumerate}
+	\subsubsection{Predictive Tasks}
+	\begin{itemize}
+		\item Classification and class probability: Predicting a category label for each instance.
+		\item Regression: Predict a continuous numeric value.
+		\item Similarity matching: Predict which past records are most alike a new input.
+		\item Link prediction: Predicting future or missing connections in a network.
+		\item Casual modeling: Estimation of the effect of an invention.
+	\end{itemize}
+	\subsubsection{Descriptive Tasks}
+	\begin{itemize}
+		\item Clustering: Discovering groupings or clustering within data sets.
+		\item Co-occurence grouping: Items found frequently together.
+		\item Profiling (Behaviour description): Describes typical behaviour within a group.
+		\item Data reduction: Simplify or compress data while preserving key information.
+	\end{itemize}
+	\subsection{Classification:}
+	Predicting discrete class labels from the class probability. That being the likelihood that an instance belongs to a particular class.
+	\subsection{Data Collection:}
+	\begin{enumerate}
+		\item Manual Collection
+			\begin{itemize}
+				\item Observing and recording
+				\item Interviews
+				\item Questionares
+				\item Pros:
+					\begin{itemize}
+						\item Fine-tuned
+						\item Accurate
+					\end{itemize}
+				\item Cons:
+					\begin{itemize}
+						\item Scale
+						\item Cost
+						\item Reachablility
+					\end{itemize}
+			\end{itemize}
+		\item Automatic Approach
+			\begin{itemize}
+				\item Transaction history or logs
+				\item Sensors suchas, GPS, IoT or Lab equipment
+				\item Web crawler
+				\item Social media
+				\item Pros:
+					\begin{itemize}
+						\item Mass collection
+						\item Easy
+						\item Cheap on a large scale
+					\end{itemize}
+				\item Cons:
+					\begin{itemize}
+						\item Mass collection comes with increased mess
+					\end{itemize}
+			\end{itemize}
+	\end{enumerate}
+	\subsection{Sampling:}
+	Data sampling is a statistical analysis technique used to select, manipulate and analyse a subset of representative data. This is done to reduce compute time, resource allocation, and time limits. Sampling types include:
+	\begin{itemize}
+		\item Simple random sampling
+		\item Stratified sampling
+		\item Cluster sampling
+		\item Systematic sampling
+		\item Multi-stage sampling
+	\end{itemize}
+	\subsection{Data Mining Process:}
+	Industry standard is CRIP-DM. This stands for Cross Industry Standard Process for Data Mining.
+
+	\section{Ethics and Law}
+	\subsection{Ethics, Morality and Law:}
+	Ethics is purely a branch of philosophy that consist of a set of values to define the rightness and wrongness of an action. Morality is th ethics and belief held by a group, and usually constituated from cultural and relgious principles. Law is defined by a set of rules determined by a governing body. Usually informed through legal instituation and carries consequence to those who break it.
+	\subsection{Organizational Evil:}
+	OE involves systemic or institutional wrong doing that harms consumers. Basically designed to maximise a companies profits. OE can take various forms:
+	\begin{itemize}
+		\item Unethical practices
+		\item Abusive behaviour
+		\item Corruption
+		\item Disegard to human-rights.
+	\end{itemize}
+	\subsection{Digital Era Bias:}
+	Bias is shown through favouritism toward opinions, action or descions.
+	\begin{enumerate}
+		\item Algorithmic Bias: AI powered systems ignore bias training data to favour particular outcomes.
+		\item Sampling Bias: Showed dataset containing societal inequalities. Usually happens because of wrong sampling processes.
+		\item Confirmation Bias: Recommendations enforcing existing beliefs.
+		\item Representation Bias: Occurs when certain groups or characteristics are over represented.
+		\item Accessibility Bias: Design choices affecting those with a disability.
+		\item Language Bias: LLMs may exhibt a bias towards a particular language.
+	\end{enumerate}
+	\subsection{Gen AI Ethics:}
+	Gen AI should address concerns related to its generated content.
+	\subsection{Ethical Dilemma:}
+	This occurs when tow or more ethical principles conflict. A solution can be difficult to find.
+	\subsection{Ethical Data Science:}
+	EDS refers to a set of moral principles and guidelines outlining data use. Its about making companies think about utilizing data fairly. Australia subscribes to the follow 10 rules for data research:
+	\begin{enumerate}
+		\item Acknowledge that data are people and can do harm.
+		\item Recognize that privacy is more than a binary value.
+		\item Guard against the reidentification of your data.
+		\item Practice ethical data sharing.
+		\item Consider the strengths and limitations of your data; big data does not automatically mean better.
+		\item Debate the tough, ethical choices.
+		\item Develop a Code of Conduct for your organization, research community, or industry.
+		\item Design your data and systems for auditability.
+		\item Engage with the broader consequences of data and analysis practices.
+		\item Know when to break these rules.
+	\end{enumerate}
+
+	\section{Data Presentation}
+	\subsection{Data and Computers:}
+	Computers deal with many different types of data when processing commands and presenting answers. These can be text, audio, video or pictures.
+	\subsection{Analog and Digital:}
+	Information is presented in 2 main ways:
+	\begin{enumerate}
+		\item Analog: A continuous representation that changes smoothly over time.
+		\item Digital: Discrete values, that are broken up using binary code.
+	\end{enumerate}
+	\subsection{Representing Data:}
+	\subsubsection{Text}
+	The most common is the ASCII set. Since its introduction in 1968 it has become the default way of doing text with 1Byte per character. 
+	\subsubsection{Audio}
+	Soundwaves are an analog signal. Computers need to convert the analog signal to digital for storage and back again for use. It does this through taking small discrete samples at regular intervals.
+	\subsubsection{Video}
+	A video file consists of multiple sub files. Suchas, photos, audio, and subtitles.
+	\subsection{Effictive Presentation:}
+	Raw and processed is not interesting or easy to understand for normies. Making this data easy to digest and understand is critical. Effective data presentation follows the following principles; clear, concise, attractive and attentionable.
 \end{document}
