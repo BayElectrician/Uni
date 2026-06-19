@@ -399,4 +399,285 @@
 
 	\section{Nodal Analysis}
 	\subsection{Planar Circuit:}
+	A circuit in which there are no crossing branches that can be drawn on plane. In the image shown below, the top circuit can be redrawn to the bottom one. Turning it into a planar circuit.
+	\begin{center}
+		\includegraphics[scale=0.35]{planar-circuit.png}
+	\end{center}
+	\subsection{Essential Points:}
+	Node: A point in a circuit which two or more elements join.\\
+	Essential Node: Where three or more elements join.\\
+	Path: A trace of adjoining basic elements with no repition.\\
+	Branch: A path connecting two nodes.\\
+	Essential Branch: A path connecting two essential nodes.\\
+	Loop: First and last node are the same node.\\
+	Mesh: A loop that does not enclose another loop.
+	\subsection{Nodal Analysis:}
+	Nodal analysis is known as the node-voltage method. This is a method calculating node voltages in a planar circuit. It utilizes the fundamentals of KCL and Ohm's Law.
+	\subsubsection{Procedure}
+	\begin{enumerate}
+		\item Identify each essential node.
+		\item Pick and label a reference node (usually ground), then label the node voltages at the remaining essential nodes.
+		\item Write KCL equations for each non-reference essential node.
+		\item Solve equations.
+		\item Find voltages, power and current at each node.
+	\end{enumerate}
+	\subsubsection{NA Example}
+	\begin{tikzpicture}[thick, font=\large]
+	    % Bottom continuous wire
+	    \draw (0,0) -- (9,0);
+	    % Top wire segments
+	    \draw (0,3.5) -- (4.4,3.5);
+	    \draw (7,3.5) -- (9,3.5);
+	    % Branch 1: 15A Current Source
+	    \draw (0,0) to[I, l_=$15\text{A}$] (0,3.5);
+	    \node[above left] at (0,3.5) {A};
+	    % Branch 2: 60 ohm Resistor
+	    \draw (2.2,3.5) to[R, l=$60\Omega$, v={\color{cyan}$v_1$}] (2.2,0);
+	    \node[above] at (2.2,3.5) {B};
+	    \filldraw (2.2,3.5) circle (1.5pt);
+	    \filldraw (2.2,0) circle (1.5pt);
+	    % Branch 3: 18 ohm Resistor
+	    \draw (4.4,3.5) to[R, l=$18\Omega$] (4.4,0);
+	    \node[above left] at (4.4,3.5) {C};
+	    \filldraw (4.4,3.5) circle (1.5pt);
+	    \filldraw (4.4,0) circle (1.5pt);
+	    % Ground and 'G' label at bottom of Branch 3
+	    \draw (4.4,0) node[ground] {};
+	    \node[draw=purple, thick, rounded corners=3pt, inner sep=3pt, text=black] at (5.0, 0.5) {G};
+	    \draw (4.4,3.5) to[R, l=$5\Omega$, i_={\color{cyan}$i_2$}] (7,3.5);
+	    % Branch 4: 2 ohm Resistor
+	    \draw (7,3.5) to[R, l=$2\Omega$, v={\color{cyan}$v_2$}] (7,0);
+	    \node[above right] at (7,3.5) {D};
+	    \filldraw (7,3.5) circle (1.5pt);
+	    \filldraw (7,0) circle (1.5pt);
+	    % Branch 5: 5A Current Source (pointing down)
+	    \draw (9,3.5) to[I, l=$5\text{A}$] (9,0);
+	    \node[above right] at (9,3.5) {E};
+	\end{tikzpicture}\\
+	Voltage at Node C:
+	\begin{align*}
+		15=&\frac{V_{C}-0}{60}+\frac{V_{C}-0}{15}+\frac{V_{C}-V_{D}}{5}\\
+		=&\frac{V_{C}}{60}+\frac{V_{C}}{15}+\frac{V_{C}-V_{D}}{5}\\
+		15=&V_{C}(\frac{17}{60})+V_{D}(-\frac{1}{5})
+	\end{align*}
+	Voltage at Node D:
+	\begin{align*}
+		\frac{V_{C}-V_{D}}{5}=&\frac{V_{D}-0}{2}+5\\
+		-5=&\frac{V_{D}-V_{C}}{5}+\frac{V_{D}}{2}\\
+		-5=&V_{C}(-\frac{1}{5})+V_{D}(\frac{7}{10})
+	\end{align*}
+	Solving with GC:
+	$$V_{C}=60V$$
+	$$V_{D}=10V$$
+	\subsection{Super Node:}
+	A circuit with a voltage source that does not have a series resistance that would permit a conversion to a current source. In this situtation there are two options that can be done:
+	\begin{enumerate}
+		\item Pace a comparitavely small resistor in series to the voltage source.
+		\item Use the supernode approach; That is to assume a virtual S/C across the voltage source.
+	\end{enumerate}
+	\begin{tikzpicture}[thick]
+	    % Bottom continuous wire
+	    \draw (0,0) -- (7.5,0);
+	    % Leftmost branch: 50V Voltage Source
+	    \draw (0,0) to[V, invert, v=$50\text{V}$] (0,3.5) -- (1.5,3.5);
+	    % Node 1 vertical branch: 40 ohm resistor
+	    \draw (1.5,3.5) to[R, l=$40\Omega$, v=$v_1$] (1.5,0);
+	    \node[above] at (1.5,3.7) {1};
+	    \filldraw (1.5,3.5) circle (1.5pt);
+	    \filldraw (1.5,0) circle (1.5pt);
+	    % Ground at Node 1 bottom
+	    \draw (1.5,0) node[ground]{};
+	    % Node 1 to Node 2 horizontal branch: 5 ohm resistor
+	    \draw (1.5,3.5) to[R, l=$5\Omega$] (3.8,3.5);
+	    % Current arrow for i_Delta (pointing left)
+	    \draw[->, thick] (3.0, 2.7) -- (2.3, 2.7) node[midway, below] {$i_{\Delta}$};
+	    % Node 2 vertical branch: 50 ohm resistor
+	    \draw (3.8,3.5) to[R, l=$50\Omega$, v=$v_2$] (3.8,0);
+	    \node[above] at (3.8,3.7) {2};
+	    \filldraw (3.8,3.5) circle (1.5pt);
+	    \filldraw (3.8,0) circle (1.5pt);
+	    % Node 2 to Node 3 horizontal branch: Dependent Voltage Source
+	    \draw (3.8,3.5) to[cV, l=$10 i_\Delta$] (6.2,3.5);
+	    % Right-pointing current arrow under dependent source
+	    \draw[->, thick] (4.7, 2.6) -- (5.3, 2.6) node[midway, below] {$i_{\phi}$};
+	    % Purple curve for "sc virtual" (Supernode)
+	    \draw[purple, thick] (3.8,3.5) to[out=60, in=120] (6.2,3.5);
+	    \node[purple, right, align=left] (scnode) at (5.5, 4.7) {Virtual\\S/C};
+	    \draw[purple, ->, thick] (scnode.west) -- (5.2, 4.2);
+	    % Node 3 vertical branch: 100 ohm resistor
+	    \draw (6.2,3.5) to[R, l=$100\Omega$, v=$v_3$] (6.2,0);
+	    \node[above] at (6.2,3.7) {3};
+	    \filldraw (6.2,3.5) circle (1.5pt);
+	    \filldraw (6.2,0) circle (1.5pt);
+	    % Node 3 to Rightmost branch
+	    \draw (6.2,3.5) -- (7.5,3.5);
+	    % Rightmost branch: 4A Current Source (pointing up)
+	    \draw (7.5,0) to[I, l_=$4\text{A}$] (7.5,3.5);
+	\end{tikzpicture}\\
+	At Node 2:
+	\begin{align*}
+		\frac{V_{3}-0}{100}+\frac{V_{2}-0}{50}+\frac{V_{2}-V_{1}}{5}=&4\\
+		V_{3}(\frac{1}{100})+V_{2}(\frac{11}{50})+V_{1}(-\frac{1}{5})=&4
+	\end{align*}
+	Using KVL:
+	\begin{align*}
+		V_{3}=&V_{2}+10i_{\phi}\\
+		V_{1}=&50V\\
+		i_{\phi}=&\frac{V_{2}-V_{1}}{5}\\
+		=&\frac{V_{2}-50}{5}\\
+		V_{3}=&V_{2}+10(\frac{V_{2}-50}{5})\\
+		=&3V_{2}-100
+	\end{align*}
+	Solving for Node voltages:
+	$$V_{1}=50V$$
+	$$V_{2}=60V$$
+	$$V_{3}=80V$$
+	$$i_{\phi}=2A$$
+
+	\section{Mesh Analysis}
+	\subsection{Branch Current Analysis:}
+	\begin{enumerate}
+		\item Assign a distinct current of arbitrary direction to each direction.
+		\item Polarities of circuit elements are determined by assumed current direction.
+		\item Apply KVL around each loop.
+		\item Apply KCL at each essential node.
+		\item Solve for current values.
+	\end{enumerate}
+	\subsection{Mesh Analysis:}
+	Extension of the above method. It defines currents in such a way that there is no need to apply KCL.
+	\begin{itemize}
+		\item Define currents for each mush of the networks.
+		\item Branch current is now expressed in terms of unique mesh currents.
+	\end{itemize}
+	\subsubsection{Procedure}
+	\begin{enumerate}
+		\item Assign distinct current to each mesh. The easiest way is have them all going in the same direction.
+		\item Indictate polarities through the loop with respect to current direction.
+		\item Apply KVL on each mesh.
+		\item Solve for currents.
+	\end{enumerate}
+	\subsubsection{Example}
+	\begin{center}
+	\begin{tikzpicture}[thick]
+	    % Bottom continuous wire
+	    \draw (0,0) -- (8,0);
+	    
+	    % Top wire segments
+	    \draw (0,3) -- (2,3);
+	    \draw (2,3) to[R] (4,3); % Unlabeled resistor between B and C
+	    \draw (4,3) -- (6,3);
+	    \draw (6,3) -- (8,3);
+
+	    % Leftmost branch: 6A Current Source (pointing up)
+	    \draw (0,0) to[I, l=$6\text{A}$] (0,3);
+	    \node[above] at (0,3.2) {A};
+
+	    % Branch B to F: 40 ohm Resistor
+	    \draw (2,3) to[R, l=$40\Omega$] (2,0);
+	    \node[above] at (2,3.2) {B};
+	    \node[below] at (2,-0.2) {F};
+	    \filldraw (2,3) circle (1.5pt);
+	    \filldraw (2,0) circle (1.5pt);
+	    
+	    % Cyan +/- labels for 40 ohm
+	    \node[cyan] at (1.6, 2.5) {$+$};
+	    \node[cyan] at (1.6, 0.5) {$-$};
+
+	    % Branch C to G: 80 ohm Resistor
+	    \draw (4,3) to[R, l=$80\Omega$] (4,0);
+	    \node[above] at (4,3.2) {C};
+	    \node[below] at (4,-0.2) {G};
+	    \filldraw (4,3) circle (1.5pt);
+	    \filldraw (4,0) circle (1.5pt);
+
+	    % Branch D to H: 120 ohm Resistor
+	    \draw (6,3) to[R, l=$120\Omega$] (6,0);
+	    \node[above] at (6,3.2) {D};
+	    \node[below] at (6,-0.2) {H};
+	    \filldraw (6,3) circle (1.5pt);
+	    \filldraw (6,0) circle (1.5pt);
+	    
+	    % Cyan +/- labels for 120 ohm
+	    \node[cyan] at (5.6, 2.5) {$+$};
+	    \node[cyan] at (5.6, 0.5) {$-$};
+
+	    % Rightmost branch: 1A Current Source (pointing down)
+	    \draw (8,3) to[I, l=$1\text{A}$] (8,0);
+	    \node[above] at (8,3.2) {E};
+	    
+	    % Cyan Loop Currents
+	    % Loop 1 (6A)
+	    \draw[->, cyan, thick] (0.8, 2.0) arc (150:-120:0.4) node[midway, left=2pt] {$6\text{A}$};
+	    
+	    % Loop 2 (i_1)
+	    \draw[->, cyan, thick] (2.8, 2.0) arc (150:-120:0.4) node[midway, left=2pt] {$i_1$};
+	    
+	    % Loop 3 (i_2)
+	    \draw[->, cyan, thick] (4.8, 2.0) arc (150:-120:0.4) node[midway, left=2pt] {$i_2$};
+	    
+	    % Loop 4 (i_3 or 1A loop)
+	    \draw[->, cyan, thick] (6.8, 2.0) arc (150:-120:0.4) node[midway, left=2pt] {$1\text{A}$};
+
+	\end{tikzpicture}
+	\end{center}
+	Mesh GFBCG:
+	\begin{align*}
+		0=&40(i_{1}-6)+8i_{1}+80(i_{1}-i_{2})\\
+		240=&128i_{1}-80i_{2}
+	\end{align*}
+	Mesh GCDHG:
+	\begin{align*}
+		0=&80(i_{2}-i_{1})+120(i_{2}-1)\\
+		120=&-80i_{1}+120i_{2}
+	\end{align*}
+	Solving with GC gives:
+	$$i_{1}=3A$$
+	$$i_{2}=1.8A$$
+	\subsection{Super Mesh:}
+	Where an independent current has no parrallel resistor to convert to a voltage source. Assume a virtual O/C and apply the mesh analysis method. Add constraint for KCL at its node.
+	\begin{center}
+	\begin{tikzpicture}[thick, scale=0.85, transform shape]
+	    % Bottom wire
+	    \draw (0,0) to[R, l_=$6\Omega$] (4,0);
+	    \draw (4,0) to[R, l_=$4\Omega$] (8,0);
+
+	    % Left vertical branch: 100V source
+	    \draw (0,0) to[V, v=$100\text{V}$] (0,3);
+
+	    % Right vertical branch: 50V source
+	    \draw (8,0) to[V, v_=$50\text{V}$] (8,3);
+
+	    % Middle horizontal wire
+	    \draw (0,3) to[R, l=$3\Omega$] (4,3);
+	    \draw (4,3) to[R, l=$2\Omega$] (8,3);
+
+	    % Top horizontal wire
+	    \draw (0,3) -- (0,5) to[R, l=$10\Omega$] (8,5) -- (8,3);
+
+	    % Center vertical branch: 2A source
+	    \draw (4,0) to[I, l_=$2\text{A}$] (4,3);
+
+	    % Voltage v across the 2A source
+	    \node[cyan] at (3.5, 2.5) {$+$};
+	    \node[cyan] at (3.5, 0.5) {$-$};
+	    \node[cyan] at (3.5, 1.5) {$v$};
+
+	    % Cyan loop currents
+	    \draw[->, cyan, thick] (1.5, 2.0) arc (150:-120:0.6) node[midway, below left] {$i_a$};
+	    \draw[->, cyan, thick] (3.5, 4.5) arc (150:-120:0.5) node[midway, right=2pt] {$i_b$};
+	    \draw[->, cyan, thick] (5.5, 2.0) arc (150:-120:0.6) node[midway, below right] {$i_c$};
+
+	    % Red text and arrow pointing to dependent source
+	    \node[red, align=center, font=\small\sffamily] (text) at (6.5, 6.2) {contains independent\\current source};
+	    \draw[->, red, thick] (text.south west) to[out=200, in=60] (4.2, 2.5);
+
+	    % Junction dots
+	    \filldraw (0,3) circle (1.5pt);
+	    \filldraw (4,3) circle (1.5pt);
+	    \filldraw (8,3) circle (1.5pt);
+	    \filldraw (4,0) circle (1.5pt);
+	    \filldraw (0,0) circle (1.5pt);
+	    \filldraw (8,0) circle (1.5pt);
+	\end{tikzpicture}
+	\end{center}
 \end{document}
