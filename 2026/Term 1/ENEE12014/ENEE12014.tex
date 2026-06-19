@@ -680,4 +680,108 @@
 	    \filldraw (8,0) circle (1.5pt);
 	\end{tikzpicture}
 	\end{center}
+
+	\section{Equivalent Circuits}
+	\subsection{Source Conversion:}
+	\begin{center}
+	\begin{tikzpicture}[thick, font=\Large, scale=0.9, transform shape]
+	    % --- Top Circuit: Thevenin Equivalent (Voltage Source) ---
+	    \begin{scope}[shift={(0,0)}]
+		% Voltage Source
+		\draw (0,0) to[V, l_=$V_S$] (0,3);
+		
+		% Top branch with Series Resistor
+		\draw (0,3) -- (1,3) to[R, l_=$R_S$] (4,3) to[short, -o] (5,3);
+		
+		% Bottom branch
+		\draw (0,0) to[short, -o] (5,0);
+		
+		% Equation
+		\node[right] at (6, 1.5) {$V_S = I_S R_S$};
+	    \end{scope}
+
+	    % --- Bottom Circuit: Norton Equivalent (Current Source) ---
+	    \begin{scope}[shift={(0,-5)}]
+		% Current Source
+		\draw (0,0) to[I, l=$I_S$] (0,3);
+		
+		% Top and bottom connecting wires
+		\draw (0,3) -- (2.5,3);
+		\draw (0,0) -- (2.5,0);
+		
+		% Parallel Resistor
+		\draw (2.5,3) to[R, l=$R_S$, *-*] (2.5,0);
+		
+		% Output terminals
+		\draw (2.5,3) to[short, -o] (5,3);
+		\draw (2.5,0) to[short, -o] (5,0);
+		
+		% Equation
+		\node[right] at (6, 1.5) {$\displaystyle I_S = \frac{V_S}{R_S}$};
+	    \end{scope}
+	\end{tikzpicture}
+	\end{center}
+	A voltage source in series with a resistor has an equivalent current in parrallel. There are two main types of equivalent circuits.  Th\'evenin equivalent is with voltage, where as the Norton equivalent deals with current. Using the rules in the image above, they can be converted between.
+	\subsubsection{Th\'evenin Circuits}
+	\begin{center}
+	\begin{tikzpicture}[thick, font=\Large, scale=0.75, transform shape]
+	    % Voltage Source
+	    \draw (0,0) to[V, invert, l=$V_{TH}$] (0,4);
+	    % Top branch with Thevenin Resistor
+	    \draw (0,4) to[R, l_=$R_{TH}$] (4,4);
+	    % Nodes A and B with Load Resistor
+	    \draw (4,4) node[ocirc, label=above right:A] {}
+		  to[R, l=$R_L$] (4,0) 
+		  node[ocirc, label=below right:B] {};
+	    % Bottom branch connecting back to source
+	    \draw (4,0) -- (0,0);
+	    % Load Current Arrow (drawn separately to match the sketch style)
+	    \draw[-stealth, thick] (5, 2.8) -- (5, 1.2) node[midway, right] {$I_L$};
+	\end{tikzpicture}
+	\end{center}
+	If $R_{L}$ is infinitely large, causing an O/C $V_{TH}=V_{AB}$. Else if $R_{L}$ is 0, it causes a S/C, making $R_{TH}=\frac{V_{TH}}{I_{L}}$.
+	\subsubsection{Norton Circuits}
+	Usualy a Norton equivalent circuit is easier too calculate the S/C current then O/C voltage. However most of the time it is easier to convert from the Th\'evenin circuit.
+	\subsection{Th\'evenin Equivalent Resistance:}
+	Only works with independent sources. The short cut method:
+	\begin{itemize}
+		\item Deactivate all power sources
+			\begin{itemize}
+				\item Ideal voltage sources become S/C
+				\item Ideal current sources become O/C
+				\item Internal resistance sources are included in circuit
+			\end{itemize}
+		\item Resistance is calculated from the reference terminals
+	\end{itemize}
+	\subsection{Maximum Power Transfer:}
+	Important parameters describing the power transfer from source too load. It tells us 2 main things:
+	\begin{enumerate}
+		\item Amount of power transferred
+		\item Efficiency
+	\end{enumerate}
+	\begin{center}
+	\begin{tikzpicture}[thick, font=\Large, scale=0.75, transform shape]
+	    % Voltage Source
+	    \draw (0,0) to[V, invert, l=$V_{TH}$] (0,4);
+	    % Top branch with Thevenin Resistor
+	    \draw (0,4) to[R, l_=$R_{TH}$] (4,4);
+	    % Nodes A and B with Load Resistor
+	    \draw (4,4) node[ocirc, label=above right:A] {}
+		  to[R, l=$R_L$] (4,0) 
+		  node[ocirc, label=below right:B] {};
+	    % Bottom branch connecting back to source
+	    \draw (4,0) -- (0,0);
+	    % Load Current Arrow (drawn separately to match the sketch style)
+	    \draw[-stealth, thick] (5, 2.8) -- (5, 1.2) node[midway, right] {$I_L$};
+	\end{tikzpicture}
+	\end{center}
+	$$P_{L}=(\frac{V_{TH}}{R_{TH}+R_{L}})^{2}\times R_{L}$$
+	Max Power are $R_{TH}=R_{L}$
+	$$\therefore\;\;P_{L_{max}}=\frac{V_{TH}^{2}}{4R_{TH}}$$
+	$$\text{Eff}=\frac{P_{L}}{P_{S}}=\frac{R_{L}}{R_{TH}R_{L}}$$
+	\subsection{Superposition Theorem:}
+	Linear circuit systems observe the principal of superposition. That is the total system response is the sum of all individual responses.\\[1\baselineskip]
+	Voltage sources are S/C\\
+	Current sources are O/C\\[1\baselineskip]
+	Utilized to analyse circuits with both DC \& AC components.
 \end{document}
