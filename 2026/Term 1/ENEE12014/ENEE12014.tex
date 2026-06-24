@@ -1148,6 +1148,186 @@
 		=&2\times10^{3}\times500\times10^{-9}\\
 		=&10^{-3}\\\\
 		v(t)=&-6.1e^{-\frac{t-1100\times10^{-6}}{10^{-3}}}\\
-		v(1500\mu s)=&-4.1V
+		v(1500\mu s)\approx&-4.1V
 	\end{align*}
+
+	\section{RL Circuits}
+	\subsection{Energy Flow in Inductors:}
+	Here, only circuits consisting of inductors and resistors will be considered. This simplifies equations to first ODEs. Inductors are similar to capacitors in that it stores energy.
+	\subsection{Steady State:}
+	When an inductor reaches DC steady state, it acts as a S/C.
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % Main Circuit Outline
+	    \draw (0,0) to[I, l=$I_0$] (0,3) -- (2.5,3);
+	    
+	    % Resistor R0 Branch
+	    \draw (2.5,3) to[R, l=$R_0$] (2.5,0);
+	    \draw (0,0) -- (2.5,0);
+	    
+	    % Switch
+	    \draw (2.5,3) to[spst] (5,3);
+	    
+	    % Inductor L Branch
+	    \draw (5,3) to[L, l=$L$] (5,0);
+	    \draw (2.5,0) -- (5,0);
+	    
+	    % Resistor R Branch
+	    \draw (5,3) -- (8,3);
+	    \draw (8,3) to[R, l=$R$] (8,0);
+	    \draw (5,0) -- (8,0);
+
+	    % --- Blue Handwritten Annotations ---
+	    % Custom color to match the light blue ink
+	    \definecolor{penblue}{RGB}{0, 170, 255}
+
+	    % Current 'i' on the top wire
+	    \draw[-{Stealth[length=2.5mm]}, penblue, thick] (6, 3.2) -- (7, 3.2);
+	    \node[penblue, above] at (6.5, 3.2) {$i$};
+
+	    % Voltage 'v' across Resistor R
+	    \node[penblue, font=\large] at (7.4, 2.5) {$+$};
+	    \node[penblue, font=\large] at (7.4, 0.5) {$-$};
+	    \node[penblue, font=\large] at (7.4, 1.5) {$v$};
+
+	\end{tikzpicture}
+	\end{center}
+	At DC Steady State:
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % Current Source (arrow pointing down)
+	    \draw (0,3) to[I, l_=$I_0$] (0,0);
+	    
+	    % Wire Loop
+	    \draw (0,3) -- (2.5,3) -- (2.5,0) -- (0,0);
+
+	\end{tikzpicture}
+	\end{center}
+	$$i(0^{-})=I_{0}$$
+	$$i(0^{+})=I_{0}$$
+	After Switching
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % Left Branch: Inductor L
+	    % Drawing from bottom to top; l_ puts the label on the right side of the component
+	    \draw (0,0) to[L, l_=$L$] (0,3); 
+	    
+	    % Right Branch: Resistor R
+	    % Drawing from top to bottom; l puts the label on the right side of the component
+	    \draw (3,3) to[R, l=$R$] (3,0);
+	    
+	    % Connecting Wires
+	    \draw (0,3) -- (3,3);
+	    \draw (0,0) -- (3,0);
+
+	    % Initial Current I0 Annotation (Black)
+	    \draw[-{Stealth[length=2.5mm]}, thick] (-0.8, 1) -- (-0.8, 2);
+	    \node[left] at (-0.8, 1.5) {$I_0$};
+
+	    % --- Blue Handwritten Annotations ---
+	    \definecolor{penblue}{RGB}{0, 170, 255}
+
+	    % Current 'i' on the top wire
+	    \draw[-{Stealth[length=2.5mm]}, penblue, thick] (1.2, 3.2) -- (1.8, 3.2);
+	    \node[penblue, above] at (1.5, 3.2) {$i$};
+
+	    % Voltage 'v' across Resistor R
+	    \node[penblue, font=\large] at (2.4, 2.5) {$+$};
+	    \node[penblue, font=\large] at (2.4, 0.5) {$-$};
+	    \node[penblue, font=\large] at (2.4, 1.5) {$v$};
+
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		L\frac{di}{dt}+iR=&0\\
+		\frac{di}{dt}+\frac{iR}{L}=&0\\
+		i(t)=&\frac{\int e^{\int\frac{R}{L}dt}\times 0dt+K}{e^{\int\frac{R}{L}dt}}\\
+		=&Ke^{-\frac{Rt}{L}}\\\\
+		\tau=&\frac{L}{R}\\\\
+		\therefore i(t)=&Ke^{-\frac{t}{\tau_{L}}}\\
+		=&I_{0}e^{-\frac{t}{\tau_{L}}}\\\\
+		v_{L}(t)=&L\frac{di}{dt}\\
+		=&L(-I_{0}\cdot\frac{1}{\tau_{L}}e^{-\frac{t}{\tau_{L}}}\\
+		=&-I_{0}Re^{-\frac{t}{\tau_{L}}}\\
+		v_{R}(t)=&-v_{L}(t)\\
+		=&I_{0}Re^{-\frac{t}{\tau_{L}}}
+	\end{align*}
+	\subsection{Power \& Energy in Inductors:}
+	\begin{align*}
+		p(t)=&i(t)\times v(t)\\
+		=&I_{0}e^{-\frac{t}{\tau_{L}}}\cdot I_{0}Re^{-\frac{t}{\tau_{L}}}\\
+		=&I_{0}^{2}Re^{-\frac{2t}{\tau_{L}}},\;t>0\\\\
+		w=&\int^{t}_{0}p(x)dx\\
+		=&\int^{t}_{0}I_{0}Re^{-\frac{2x}{\tau_{L}}}dx\\
+		=&\frac{1}{2}LI_{0}^{2}[1-e^{-\frac{2t}{\tau_{L}}}],\;t\geq0
+	\end{align*}
+	\subsection{Get Energy going through Resistor:}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+	    % Define blue color for handwritten annotations
+	    \definecolor{penblue}{RGB}{0, 170, 255}
+
+	    % --- Main Circuit Branches ---
+	    
+	    % Left Branch: Voltage Source Vs
+	    % Default battery draws positive (long line) at the destination node (top)
+	    \draw (0,0) to[battery, invert, l=$V_s$] (0,3);
+	    
+	    % Top Branch: Resistor R and Switch
+	    \draw (0,3) to[R, l_=$R$] (3.5,3) to[spst] (6,3);
+	    
+	    % Right Branch: Inductor L
+	    % l_ places the label on the right side of the downward path (inside the loop)
+	    \draw (6,3) to[L, l_=$L$] (6,0);
+	    
+	    % Bottom Branch: Connecting Wire
+	    \draw (0,0) -- (6,0);
+
+	    % --- Black Labels ---
+	    
+	    % Nodes A, B, C, D
+	    \node[below left] at (0,0) {A};
+	    \node[above left] at (0,3) {B};
+	    \node[above right] at (6,3) {C};
+	    \node[below right] at (6,0) {D};
+	    
+	    % Voltage V(t)
+	    \node[right] at (6.5, 1.5) {$V(t)$};
+
+	    % --- Blue Handwritten Annotations ---
+	    
+	    % Switch closing time (centered under the switch)
+	    \node[penblue, below] at (4.75, 2.7) {$t=0$};
+
+	    % Loop Current i (Clockwise arc starting from left, ending at bottom)
+	    \draw[-{Stealth[length=2.5mm]}, penblue, thick] (2.9, 1.5) arc (180:-90:0.6);
+	    \node[penblue, left] at (2.9, 1.5) {$i$};
+
+	    % Voltage polarities across inductor
+	    \node[penblue, font=\large] at (5.7, 2.7) {$+$};
+	    \node[penblue, font=\large] at (5.7, 0.3) {$-$};
+
+	\end{tikzpicture}
+	\end{center}
+	KVL around ABCDA
+	\begin{align*}
+		v_{R}+v_{L}=&v_{S}\\
+		iR+L\frac{dv}{dt}=&v_{S}\\
+		\frac{di}{dt}+\frac{iR}{L}=&\frac{v_{S}}{L}\\
+		i(t)=&\frac{\int e^{\int\frac{R}{L}dt}(\frac{v_{S}}{L})dt+K}{e^{\int\frac{R}{L}dt}}\\
+		=&\frac{v_{S}}{R}+Ke^{-\frac{t}{\tau_{L}}}
+	\end{align*}
+	Assuming @ $t=0$, $i=I_{0}$, that when the switch closes there is some energy already in the inductor.
+	\begin{align*}
+		K=&I_{0}-\frac{I_{S}}{R}\\
+		\therefore i(t)=&\frac{v_{S}}{R}+(I_{0}-\frac{v_{S}}{R})e^{-\frac{t}{\tau_{L}}}
+	\end{align*}
+	\subsection{Summary:}
+	If at $t=0$, $I_{0}=0$ then:
+	$$i(t)=\frac{v_{S}}{R}(1-e^{-\frac{t}{\tau_{L}}})$$
+	$$v_{L}(t)=v_{S}e^{-\frac{t}{\tau_{L}}},\;\tau_{L}=\frac{L}{R}$$
+	$$v_{R}=V_{S}-v_{L}$$
 \end{document}
