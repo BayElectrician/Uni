@@ -1330,4 +1330,860 @@
 	$$i(t)=\frac{v_{S}}{R}(1-e^{-\frac{t}{\tau_{L}}})$$
 	$$v_{L}(t)=v_{S}e^{-\frac{t}{\tau_{L}}},\;\tau_{L}=\frac{L}{R}$$
 	$$v_{R}=V_{S}-v_{L}$$
+
+	\section{RLC Circuits - Parallel}
+	\subsection{Second Order Differential Equations:}
+	RLC circuits consist of $2^{\text{nd}}$ ODEs in homogeneous constant coefficient equations.
+	$$\frac{d^{2}y}{dx^{2}}+A\frac{dy}{dx}+By=0$$
+	$$s^{2}+As+B=0$$
+	$$s=\frac{-A\pm\sqrt{A^{2}-4B}}{2}$$
+	$$\therefore y=k_{1}e^{s_{1}t}+k_{2}e^{s_{1}t}$$
+	$k_{1}$ \& $k_{2}$ are found in the initial conditions within the circuit.
+	\subsection{Natural Response:}
+	Discharging within a circuit,
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % --- Main Circuit Rails ---
+	    % Extending slightly past the first and last components
+	    \draw (1.5,3) -- (9,3);
+	    \draw (1.5,0) -- (9,0);
+	    
+	    % --- Capacitor Branch ---
+	    % Using *-* to create the solid junction nodes automatically
+	    \draw (1.5,3) to[C, *-*] (1.5,0);
+	    \node[left] at (1.3, 2.5) {$I_C$};
+	    
+	    % --- Voltage V0 Labels ---
+	    \node[font=\large] at (3, 2.5) {$+$};
+	    \node[font=\large] at (3, 1.5) {$V_0$};
+	    \node[font=\large] at (3, 0.5) {$-$};
+	    
+	    % --- Inductor Branch ---
+	    \draw (4.5,3) to[L, *-*] (4.5,0);
+	    \node[left] at (4.0, 1.5) {$L$};
+	    \node[left] at (4.3, 2.5) {$I_L$};
+	    
+	    % --- Resistor Branch ---
+	    \draw (7.5,3) to[R, *-*] (7.5,0);
+	    \node[right] at (8.0, 1.5) {$R$};
+	    \node[left] at (7.3, 2.5) {$I_R$};
+	    
+	    % --- Output Voltage v Labels ---
+	    \node[font=\large] at (9, 2.5) {$+$};
+	    \node[font=\large] at (9, 1.5) {$v$};
+	    \node[font=\large] at (9, 0.5) {$-$};
+
+	    % --- Blue Handwritten Annotations ---
+	    \definecolor{penblue}{RGB}{0, 170, 255}
+	    
+	    % Current I0 (Downward pointing arrow next to Inductor)
+	    \draw[-{Stealth[length=3mm]}, penblue, thick] (5.3, 2.2) -- (5.3, 0.8);
+	    \node[penblue, below] at (5.3, 0.8) {$I_0$};
+
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		I_{C}+I_{L}+I_{R}+I_{0}=&0\\
+		C\frac{dv}{dt}+\frac{1}{L}\int^{t}_{0}v\;d\tau+\frac{V}{R}+I_{0}=&0\\
+		\frac{dv}{dt}+\frac{1}{LC}\int^{t}_{0}v\;d\tau+\frac{V}{RC}+\frac{I_{0}}{C}=&0\\
+		\frac{d^{2}v}{dt^{2}}+\frac{1}{RC}\frac{dv}{dt}+\frac{1}{LC}V=&0
+	\end{align*}
+	\begin{align*}
+		v(t)=&k_{1}e^{s_{1}t}+k_{2}e^{s_{2}t}\\
+		s_{1}=&\frac{-1}{2RC}+\sqrt{(\frac{1}{2RC})^{2}-\frac{1}{LC}}\\
+		s_{2}=&\frac{-1}{2RC}-\sqrt{(\frac{1}{2RC})^{2}-\frac{1}{LC}}
+	\end{align*}
+	Neper Frequency of a parallel RLC circuit:
+	$$\alpha=\frac{1}{2RC}$$
+	Resonant Radian Frequency of paralllel RLC circuit:
+	$$\omega_{0}=\frac{1}{\sqrt{LC}}$$
+	All of these are frequencies and measured in $\frac{\text{rad}}{\text{s}}$.
+	\begin{center}
+	\begin{tabular}{ c c }
+		Iff & Then\\
+		$\alpha^{2}-\omega_{0}^{2}>0$ & Over Damped\\
+		$\alpha^{2}-\omega_{0}^{2}<0$ & Under Damped\\
+		$\alpha^{2}-\omega_{0}^{2}=0$ & Critically Damped
+	\end{tabular}
+	\end{center}
+	Using $I_{0}$ throug inductor and $V_{0}$ across capacitor.
+	$$V_{0}=k_{1}+k_{2}$$
+	$$C(k_{1}s_{1}+k_{2}s_{2})=-I_{0}+\frac{V_{0}}{R}$$
+	\subsection{Over-damped Response:}
+	\begin{center}
+		\includegraphics[scale=0.25]{overdamped-response.png}
+	\end{center}
+	\subsection{Under-damped:}
+	$$(\frac{1}{2RC})^{2}-\frac{1}{LC}<0$$
+	\begin{align*}
+		s&=-\alpha+\sqrt{\alpha^{2}-\omega_{0}^{2}}\\
+		     &=-\alpha+j\sqrt{\omega_{0}^{2}-\alpha^{2}}\\\\
+		s_{1}&=-\alpha+j\omega_{d}\\
+		s_{2}&=-\alpha-j\omega_{d}
+	\end{align*}
+	This is where $\omega_{d}$ is the damped radian frequency.
+	$$v(t)=k_{1}e^{-\alpha t}\cos{(\omega_{d}t)}+k_{2}e^{-\alpha t}\sin{(\omega_{d}t)}$$
+	$$V_{0}=k_{1}$$
+	$$C(-k_{1}\alpha+k_{2}\omega_{d})=-(I_{0}+\frac{V_{0}}{R})$$
+	\begin{itemize}
+		\item Oscillatory with period damped radian frequency.
+		\item Amplitude decreases at the rate $\alpha$, this is called the damping factor.
+		\item Oscillates due to two stored energies.
+		\item Overdamped - Takes times to reach final value, but transients do not exceeed intitial value.
+		\item Underdamped - Reaches final value, oscilates around it before reaching steady state. Transient spikes can be few orders of magnitude larger then initial values.
+	\end{itemize}
+	\subsubsection{Small Resistor}
+	\begin{center}
+		\includegraphics[scale=0.3]{underdamped-small-R.png}
+	\end{center}
+	\subsubsection{Large Resistor}
+	\begin{center}
+		\includegraphics[scale=0.3]{underdamped-large-R.png}
+	\end{center}
+	\subsection{Critically Damped Response:}
+	$$(\frac{1}{RC})^{2}-\frac{1}{LC}=0$$
+	$$\alpha=\omega_{0}$$
+	$$v(t)=k_{1}te^{-\alpha t}+k_{2}e^{-\alpha t}$$
+	$$V_{0}=k_{2}$$
+	$$C(k_{1}-k_{2}\alpha)=-(I_{0}+\frac{V_{0}}{R})$$
+	Rarely happens as values need to match exactly for it to be achieved.
+	\begin{center}
+		\includegraphics[scale=0.3]{critically-damped.png}
+	\end{center}
+	\subsection{Step Response:}
+	\begin{center}
+	\begin{tikzpicture}[scale=0.8, transform shape]
+
+	    % --- Main Circuit Components ---
+	    
+	    % Current Source (arrow pointing up)
+	    \draw (0,0) to[I, l=$I$] (0,3);
+	    
+	    % Switch Branch with t=0 label
+	    \draw (2,3) to[spst, *-*] (2,0);
+	    \node[left] at (1.8, 2.7) {$t=0$};
+	    
+	    % Capacitor Branch
+	    \draw (4,3) to[C, *-*] (4,0);
+	    
+	    % Inductor Branch
+	    \draw (6,3) to[L, *-*] (6,0);
+	    
+	    % Resistor Branch
+	    \draw (8,3) to[R, *-*] (8,0);
+	    
+	    % --- Rails and Terminals ---
+	    
+	    % Top and Bottom Rails (connecting source to resistor)
+	    \draw (0,3) -- (8,3);
+	    \draw (0,0) -- (8,0);
+	    
+	    % Extensions to Output Terminals (open nodes)
+	    \draw (8,3) to[short, -o] (10,3);
+	    \draw (8,0) to[short, -o] (10,0);
+	    
+	    % --- Voltage Output Labels ---
+	    \node[font=\large] at (10, 2.5) {$+$};
+	    \node[font=\large] at (10, 0.5) {$-$};
+	    \node[font=\large] at (10, 1.5) {$v$};
+
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		I_{L}+I_{R}+I_{C}=&I\\
+		i_{L}+\frac{V}{R}+C\frac{dv}{dt}=&I\\
+		i_{L}+\frac{L\frac{di_{L}}{dt}}{R}+C\frac{d(\frac{di_{L}}{dt})}{dt}=&I\\
+		i_{L}+\frac{L}{R}\frac{di_{L}}{dt}+C\frac{d^{2}i_{L}}{dt^{2}}=&I\\
+		\frac{d^{2}i_{L}}{dt^{2}}+\frac{1}{RC}\frac{di_{L}}{dt}+\frac{1}{LC}i_{L}=&\frac{I}{LC}
+	\end{align*}
+	Non-homogeneous equations:
+	$$i_{L}=I_{f}+I_{H}$$
+	\subsubsection{Over-damped}
+	$$i_{L}(t)=I_{f}+k_{1}e^{s_{1}t}+k_{2}e^{s_{2}t}$$
+	\begin{center}
+		\includegraphics[scale=0.3]{overdamped.png}
+	\end{center}
+	\subsubsection{Under-damped}
+	$$i_{L}(t)=I_{f}+k_{1}e^{-\alpha t}\cos{(\omega_{d}t)}+k_{2}e^{-\alpha t}\sin{(\omega_{d}t)}$$
+	\begin{center}
+		\includegraphics[scale=0.3]{underdamped.png}
+	\end{center}
+	\subsubsection{Critically-damped}
+	$$i_{L}(t)=I_{f}+k_{1}te^{-\alpha t}+k_{2}e^{-\alpha t}$$
+	\begin{center}
+		\includegraphics[scale=0.3]{criticallydamped.png}
+	\end{center}
+	
+	\section{RLC Circuit - Series}
+	\subsection{Natural Response of RLC Series Circuits:}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % --- Main Series Circuit ---
+	    
+	    % Left wire
+	    \draw (0,0) -- (0,2.5);
+	    
+	    % Top branch: Resistor R and Inductor L
+	    \draw (0,2.5) to[R, l=$R$] (2.5,2.5) to[L, l=$L$] (5,2.5);
+	    
+	    % Right branch: Capacitor C
+	    % l_ places the C label on the inside of the loop (left side)
+	    \draw (5,2.5) to[C, l_=$C$] (5,0);
+	    
+	    % Bottom wire
+	    \draw (0,0) -- (5,0);
+
+	    % --- Annotations ---
+	    
+	    % Loop Current i (Clockwise arc)
+	    \draw[-{Stealth[length=3mm]}, thick] (1.5, 1.0) arc (180:-90:0.4);
+	    \node[left] at (1.5, 1.0) {$i$};
+
+	    % Initial Current I0 for Inductor (Arrow pointing right below L)
+	    \draw[-{Stealth[length=2.5mm]}, thick] (3.2, 1.7) -- (4.2, 1.7);
+	    \node[below] at (3.7, 1.7) {$I_0$};
+
+	    % Voltage v_0 across Capacitor
+	    \node[font=\large] at (5.8, 2.2) {$+$};
+	    \node[font=\large] at (5.8, 1.25) {$v_0$};
+	    \node[font=\large] at (5.8, 0.3) {$-$};
+
+	\end{tikzpicture}
+	\end{center}
+	Energy stored in both capacitor and inductor.
+	\begin{align*}
+		V_{R}+V_{L}+V_{C}=&0\\
+		iR+L\frac{di}{dt}+\frac{1}{C}\int^{t}_{0}v\;d\tau+V_{0}=&0\\
+		\frac{d^{2}i}{dt^{2}}+\frac{R}{L}\frac{di}{dt}+\frac{1}{LC}i=&0
+	\end{align*}
+	\begin{align*}
+		s_{1}=&-\frac{R}{2L}+\sqrt{(\frac{R}{2L})^{2}-\frac{1}{LC}}\\
+		s_{2}=&-\frac{R}{2L}-\sqrt{(\frac{R}{2L})^{2}-\frac{1}{LC}}
+	\end{align*}
+	Neper Frequency Series:
+	$$\alpha=\frac{R}{2L}$$
+	Resonant Radian Frequency:
+	$$\omega_{0}=\frac{1}{\sqrt{LC}}$$
+	\subsubsection{Over-damped}
+	$$i(t)=k_{1}e^{s_{1}t}+k_{2}e^{s_{2}t}$$
+	\subsubsection{Under-damped}
+	$$i(t)=k_{1}e^{-\alpha t}\cos{(\omega_{d}t)}+k_{2}e^{-\alpha t}\sin{(\omega_{d}t)}$$
+	\subsubsection{Critically-damped}
+	$$i(t)=k_{1}te^{-\alpha t}+k_{2}e^{-\alpha t}$$
+	\subsection{Step Response:}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+	    % --- Main Circuit Components ---
+	    % Left Branch: Voltage Source V
+	    \draw (0,0) to[V, invert, l=$V$] (0,3);
+	    
+	    % Top Branch: Resistor R, Switch, and Inductor L
+	    \draw (0,3) to[R, l=$R$] (3,3) 
+		    to[spst, l_={$t=0$}] (5,3) 
+		  to[L, l=$L$] (8,3);
+		  
+	    % Right Branch: Capacitor C
+	    \draw (8,3) to[C, l=$C$] (8,0);
+	    
+	    % Bottom return wire
+	    \draw (0,0) -- (8,0);
+
+	    % --- Annotations ---
+	    
+	    % Loop current i
+	    \draw[-{Stealth[length=3mm]}, thick] (2.5, 1.3) arc (180:-90:0.5);
+	    \node[left] at (2.5, 1.3) {$i$};
+
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		V_{L}+V_{C}+V_{R}=&V\\
+		L\frac{di}{dt}+V_{C}+iR=&V\\
+		\frac{d^{2}V_{C}}{dt^{2}}+\frac{R}{L}\frac{dV_{C}}{dt}+\frac{1}{LC}V_{C}=&\frac{V}{LC}
+	\end{align*}
+	\subsubsection{Over-damped}
+	$$v_{C}(t)=V_{f}+k_{1}e^{s_{1}t}+k_{2}e^{s_{2}t}$$
+	\subsubsection{Under-damped}
+	$$v_{C}(t)=V_{f}+k_{1}e^{-\alpha t}\cos{(\omega_{d}t)}+k_{2}e^{-\alpha t}\sin{(\omega_{d}t)}$$
+	\subsubsection{Critically-damped}
+	$$v_{C}(t)=V_{f}+k_{1}te^{-\alpha t}+k_{2}e^{-\alpha t}$$
+
+	\section{Steady State Sinusodial Analysis - Part I}
+	Most of the theorems within DC steady state will works within AC analysis. For example, Norton and Th\'evenin equivalents, KCL and KVL as well as mesh and nodal calculations.
+	\subsection{Introduction:}
+	Most power sources generate periodic, time varying voltage and current.
+	\begin{center}
+	\begin{tikzpicture}[scale=1, thick]
+
+	    % --- Sinusoidal Wave ---
+	    \begin{scope}[yshift=4cm]
+		\draw (0, -0.8) -- (0, 1.2); % y-axis
+		\draw (-0.2, 0) -- (2.5, 0); % x-axis
+		\draw (0, 0) sin (0.6, 0.8) cos (1.2, 0) sin (1.8, -0.8) cos (2.4, 0);
+		\node[right, font=\Large] at (3, 0) {Sinusoidal};
+	    \end{scope}
+
+	    % --- Square Wave ---
+	    \begin{scope}[yshift=2cm]
+		\draw (0, -1) -- (0, 1.2); % y-axis
+		\draw (-0.2, 0) -- (2.5, 0); % x-axis
+		\draw (0, 0) -- (0, 0.8) -- (0.8, 0.8) -- (0.8, -0.8) -- (2, -0.8) -- (2, 0) -- (2.2, 0);
+		\node[right, font=\Large] at (3, 0) {Square};
+	    \end{scope}
+
+	    % --- Triangular Wave ---
+	    \begin{scope}[yshift=0cm]
+		\draw (0, -1) -- (0, 1.2); % y-axis
+		\draw (-0.2, 0) -- (2.5, 0); % x-axis
+		\draw (0, 0) -- (0.8, 0.8) -- (2, -0.8) -- (2.4, 0);
+		\node[right, font=\Large] at (3, 0) {Triangular};
+	    \end{scope}
+
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Definition:}
+	\begin{itemize}
+		\item Waveform - The path traced by quantity
+		\item Instant value - Magnitude of that time point
+		\item Peak Amplitude - Maximum value measured from average
+		\item Peak Value - Max value measured from 0
+		\item P-P value - Full value difference between Max and Min values
+		\item Periodic waveform - Continually repeats itself after set time
+		\item Period - Time of the period waveform
+		\item Cycle - The portion contained in one period of time
+		\item Frequency - The number of cycles per second
+	\end{itemize}
+	\subsection{Sinusoidal Waveform:}
+	\begin{center}
+	\begin{tikzpicture}[scale=1.2, thick]
+	    % --- Axes ---
+	    \draw[->] (-0.5, 0) -- (6.5, 0) node[right] {$t$};
+	    \draw[->] (0, -1.5) -- (0, 1.5) node[above] {$v$};
+
+	    % --- Axis Tick Marks ---
+	    \draw (-0.1, 1) -- (0.1, 1) node[left=0.2cm] {$V_m$};
+	    \draw (-0.1, -1) -- (0.1, -1) node[left=0.2cm] {$-V_m$};
+
+	    % --- Sine Wave ---
+	    % Period is set to 3, so peaks occur at 0.75, 3.75 and troughs at 2.25, 5.25
+	    \draw[domain=-0.2:6, samples=100, smooth] plot (\x, {sin(\x * 180 / 1.5)}); 
+
+	    % --- Annotations ---
+	    
+	    % Vm amplitude arrow
+	    \draw[<->] (3.75, 0) -- (3.75, 1) node[midway, right] {$V_m$};
+
+	    % Period T indicator (bracket under the wave)
+	    \draw (2.25, -1) -- (2.25, -1.5);
+	    \draw (5.25, -1) -- (5.25, -1.5);
+	    \draw (2.25, -1.4) -- (5.25, -1.4) node[midway, below] {$T$};
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		v(t)&=V_{m}\cos{(\omega t+\phi)}\\
+		    &=V_{m}\sin{(\omega t+\phi)}
+	\end{align*}
+	Where:
+	\begin{itemize}
+		\item $V_{m}$ - Peak amplitude (V)
+		\item $T$ - Period (s)
+		\item $f=\frac{1}{T}$ - Frequency (Hz)
+		\item $\omega$ - $2\pi f$ (rad/s)
+		\item $\phi$ - Phase angle (rad)
+	\end{itemize}
+	The $\phi$ defines the start of $v(t)$ or $i(t)$ at $t=0$. It is important to make sure $\omega$ and $\phi$ are in the same units. A positive value for $\phi$ shifts the waveform left, with a negative $\phi$ value shifting it right. However, $\phi$ is usually given in degrees, rather than rad.\\
+	Angular Velocity:
+	\begin{align*}
+		\omega=&\frac{\text{Dist}(\alpha)}{\text{time}(t)}\\
+		\alpha=&\omega t\\
+		\omega=&2\pi f\\
+		=&\frac{2\pi}{T}
+	\end{align*}
+	\subsection{RMS Value:}
+	It is the root of the mean value of the squared funciont over 1 period.
+	\begin{align*}
+		V_{RMS}=&\sqrt{\frac{1}{T}\int^{t_{0}+T}_{t_{0}}V_{m}^{2}\cos{^{2}(\omega t+\phi)}dt}\\
+		=&\frac{V_{m}}{\sqrt{2}}
+	\end{align*}
+	The short cut method is only applicable to sinusodial waveform.
+	\subsection{AC Analysis:}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % --- Input Wire ---
+	    \draw (0, 1.5) -- (1.5, 1.5);
+	    
+	    % --- Parallel Split ---
+	    \draw (1.5, 1.5) -- (1.5, 2.5);
+	    \draw (1.5, 1.5) -- (1.5, 0.5);
+	    
+	    % --- Top Branch ---
+	    \draw (1.5, 2.5) to[generic, n=topblock] (4.5, 2.5);
+	    \node[above] at (topblock.n) {$i_1$};
+	    % Custom arrow below the top block
+	    \draw[-{Stealth[length=2mm]}, thick] (2.8, 2.1) -- (3.2, 2.1);
+	    
+	    % --- Bottom Branch ---
+	    \draw (1.5, 0.5) to[generic, n=botblock] (4.5, 0.5);
+	    \node[above] at (botblock.n) {$i_2$};
+	    % Custom arrow below the bottom block
+	    \draw[-{Stealth[length=2mm]}, thick] (2.8, 0.1) -- (3.2, 0.1);
+	    
+	    % --- Parallel Merge ---
+	    \draw (4.5, 2.5) -- (4.5, 1.5);
+	    \draw (4.5, 0.5) -- (4.5, 1.5);
+	    
+	    % --- Output Wire ---
+	    \draw (4.5, 1.5) -- (6.5, 1.5);
+	    % Custom arrow and label for total current
+	    \draw[-{Stealth[length=2mm]}, thick] (5.3, 1.2) -- (5.7, 1.2);
+	    \node[below] at (5.5, 1.0) {$i_T$};
+
+	\end{tikzpicture}
+	\end{center}
+	$$i_{1}=5\sin{(\omega t+30^{\circ})}$$
+	$$i_{2}=6\sin{(\omega t+60^{\circ})}$$
+	$$i_{T}=i_{1}+i_{2}$$
+	\subsection{Phasors:}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, thick]
+
+	    % --- Axes ---
+	    \draw[->] (-0.5, 0) -- (4, 0) node[right, font=\large] {$Re(z)$};
+	    \draw[->] (0, -0.6) -- (0, 3) node[left, font=\large] {$Im(z)$};
+
+	    % --- Phasor Vector ---
+	    % Drawing the vector to an arbitrary point (3, 2) in the first quadrant
+	    \draw[->] (0,0) -- (3, 2) node[above right, font=\large] {$\tilde{V}$};
+	    
+	    % Secondary V label along the vector
+	    \node[above left, font=\large] at (1.8, 1.2) {$V$};
+
+	    % --- Angle Theta ---
+	    % 33.7 degrees is the approximate angle for coordinate (3,2)
+	    \draw (0.8, 0) arc (0:33.7:0.8);
+	    \node[font=\large] at (1.0, 0.3) {$\theta$};
+
+	    % --- Angular Velocity Omega ---
+	    % Curved arrow indicating counter-clockwise rotation
+	    \draw[->] (1.5, 1.0) arc (33.7:80:1.0);
+	    \node[font=\large] at (0.9, 1.8) {$\omega$};
+
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Phasors:}
+	Euler's Identity:
+	$$e^{\pm j\theta}=\cos{(\theta)}\pm j\sin{(\theta)}$$
+	$$\cos{(\theta)}=R\{e^{j\theta}\}$$
+	$$\sin{(\theta)}=I\{e^{j\theta}\}$$
+	\begin{align*}
+		V=&V_{m}\cos{(\omega t+\phi)}\\
+		=&V_{m}R\{e^{j(\omega t+\phi)}\}\\
+		=&R\{V_{m}e^{j\theta}e^{j\omega t}\}\\
+		V=&V_{m}e^{j\theta}\\
+		=&V_{m}\cos{(\phi)}+jV_{m}\sin{(\phi)}\\
+		=&P\{V_{m}\cos{(\omega t+\phi)}\}
+	\end{align*}
+	$$V_{m}\cos{(\omega t+\phi)}\Rightarrow V_{m}e^{j\theta}\equiv V_{m}\angle{\phi^{\circ}}$$
+	Inversed:
+	\begin{align*}
+		P^{-1}\{V_{m}\angle{\phi}\}&\equiv P^{-1}\{V_{m}e^{j\theta}\}\\
+					   &=R\{V_{m}e^{j\omega t}e^{j\theta}\}\\
+					   &\Rightarrow V_{m}\cos{(\omega t+\phi)}
+	\end{align*}
+	\subsection{AC Analysis Using Phasors:}
+	\begin{itemize}
+		\item All quantities must be in same frequency.
+		\item Do no care about the transient effects.
+		\item The steady state solution is $R\{Ae^{j\beta}e^{j\omega t}\}$. This only is true in linear circuits.
+	\end{itemize}
+	\subsection{Phasor Analysis:}
+	Find $v_{s}$ when $i=I_{m}\cos{(\omega t+\phi)}$
+	\begin{center}
+	\begin{tikzpicture}[scale=1.2, transform shape]
+
+	    % --- Main Circuit Loop ---
+	    
+	    % Left Branch: Voltage Source Vs
+	    \draw (0,0) to[V, l=$V_s$] (0,3);
+	    
+	    % Top Branch: Switch and Resistor R
+	    \draw (0,3) to[spst, l_={$t=0$}] (2.5,3)
+		  to[R, l=$R$] (5,3);
+		  
+	    % Right Branch: Inductor L
+	    \draw (5,3) to[L, l=$L$] (5,0);
+	    
+	    % Bottom return wire
+	    \draw (5,0) -- (0,0);
+
+	    % --- Annotations ---
+	    
+	    % Current i(t) with curved arrow
+	    \draw[-{Stealth[length=2.5mm]}, thick] (3.8, 1.9) to[out=45, in=90] (4.3, 1.4);
+	    \node[left] at (3.8, 1.5) {$i(t)$};
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		v_{s}=&iR+L\frac{di}{dt}\\
+		R\{V_{m}e^{j\beta}e^{j\omega t}\}=&R\{RI_{m}e^{j\omega t}e^{j\phi}\}+R\{j\omega LI_{m}e^{j\omega t}e^{j\phi}\}\\
+		=&R\{(RI_{m}e^{j\phi}+j\omega LI_{m}e^{j\phi})e^{j\omega t}\}\\
+		V_{m}e^{j\beta}=&RI_{m}e^{j\phi}+j\omega LI_{m}e^{j\phi}
+	\end{align*}
+	\subsection{Phasor Domains:}
+	\subsubsection{Resistor}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    \definecolor{penblue}{RGB}{0, 170, 255}
+
+	    % --- Left Side: Resistor Circuit ---
+	    
+	    % Resistor with solid node dots at ends
+	    \draw (0,1.5) to[R, l=$R$, *-*] (3,1.5);
+	    
+	    % Black voltage polarity annotations
+	    \node[font=\large] at (0, 0.9) {$+$};
+	    \node[font=\large] at (3, 0.9) {$-$};
+	    
+	    % Blue handwritten annotations (voltage and current)
+	    \node[penblue, font=\large] at (1.5, 0.9) {$v$};
+	    \draw[-{Stealth[length=2.5mm]}, penblue, thick] (1.1, 0.4) -- (1.9, 0.4);
+	    \node[penblue, font=\large] at (1.5, 0.0) {$i$};
+
+	    % --- Right Side: Frequency Domain Plot ---
+	    \begin{scope}[shift={(4.5, 0.5)}]
+		% Vertical axis (Resistance)
+		\draw (0, -0.5) -- (0, 2.5) node[above, font=\large] {$\Omega$};
+		
+		% Horizontal axis (Frequency)
+		\draw[->, thick] (0, 0.5) -- (4, 0.5) node[right, font=\large] {$f(Hz)$};
+		
+		% Constant Resistance Line
+		\draw[thick] (0, 1.5) -- (3.5, 1.5);
+	    \end{scope}
+
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		i=&I_{m}\cos{(\omega t+\phi)}\\
+		v=&iR\\
+		=&RI_{m}\cos{(\omega t+\phi)}\\
+		=&RI_{m}e^{j\theta}\\
+		=&RI_{m}\angle{\theta}
+	\end{align*}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    \definecolor{penblue}{RGB}{0, 170, 255}
+
+	    % --- Axes ---
+	    % Vertical axis
+	    \draw[thick] (0, -2.5) -- (0, 2.5);
+	    
+	    % Horizontal axis (time)
+	    \draw[->, thick] (0.2, 0) -- (7.5, 0) node[right, font=\large] {$t$};
+
+	    % --- Waveforms ---
+	    % I used a sine function with a phase shift of 30 degrees to match the 
+	    % starting y-intercept of the hand-drawn sketch. Both waves share the 
+	    % same frequency and phase, crossing zero at exactly the same points.
+
+	    % Voltage waveform (v) - Black, larger amplitude
+	    \draw[thick] plot[domain=0:6.8, samples=150] (\x, {1.7 * sin(60*\x + 30)});
+	    \node[font=\large] at (6.8, 1.8) {$v$};
+
+	    % Current waveform (i) - Blue, smaller amplitude
+	    \draw[thick, penblue] plot[domain=0:6.5, samples=150] (\x, {0.9 * sin(60*\x + 30)});
+	    \node[penblue, font=\large] at (6.6, 0.9) {$i$};
+
+	\end{tikzpicture}
+	\end{center}
+	Voltage and Current in Phase.
+	\subsubsection{Inductor}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % --- Left Side: Inductor Circuit ---
+	    % Inductor with solid node dots at ends
+	    \draw (0,2) to[L, l=$j\omega L$, *-*] (3,2);
+	    
+	    % Voltage polarity and label annotations
+	    \node[font=\large] at (0, 1.4) {$+$};
+	    \node[font=\large] at (3, 1.4) {$-$};
+	    \node[font=\large] at (1.5, 1.4) {$v$};
+	    
+	    % Current arrow and label annotation
+	    \draw[-{Stealth[length=2.5mm]}, thick] (1.1, 0.9) -- (1.9, 0.9);
+	    \node[font=\large] at (1.5, 0.5) {$i$};
+
+	    % --- Right Side: Frequency Domain Plot ---
+	    \begin{scope}[shift={(5, 0.5)}]
+		% Vertical axis (Reactance X_L)
+		\draw[->, thick] (0, 0) -- (0, 3) node[above right, font=\large] {$X_L (\Omega)$};
+		
+		% Horizontal axis (Frequency f)
+		\draw[->, thick] (0, 0) -- (4, 0) node[right, font=\large] {$f(Hz)$};
+		
+		% Linear Reactance Line
+		\draw[->, thick] (0, 0) -- (3, 2.5);
+		
+		% Text conditions below the plot
+		\node[anchor=west, font=\large] at (-0.2, -0.8) {$f = 0Hz \quad L \text{ is } S/C$};
+		\node[anchor=west, font=\large] at (-0.2, -1.6) {$f = \infty Hz \quad L \text{ is } O/C$};
+	    \end{scope}
+
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		i=&I_{m}\cos{(\omega t+\phi)}\\
+		v=&L\frac{di}{dt}\\
+		=&-\omega LI_{m}\sin{(\omega t+\phi)}\\
+		=&-\omega LI_{m}\cos{(\omega t+\phi-90^{\circ})}\\
+		=&-\omega LI_{m}e^{j\omega t}e^{j\theta}e^{j+90^{\circ}}\\
+		=&j\omega LI_{m}e^{j\phi}\\
+		=&j\omega LI_{m}\angle{\phi}
+	\end{align*}
+	\begin{center}
+	\begin{tikzpicture}[scale=0.75, transform shape]
+
+	    \definecolor{penblue}{RGB}{0, 170, 255}
+
+	    % --- Axes ---
+	    % Vertical axis
+	    \draw[thick] (0, -2.5) -- (0, 2.5);
+	    
+	    % Horizontal axis (time)
+	    \draw[->, thick] (0, 0) -- (7.5, 0) node[right, font=\large] {$t$};
+
+	    % --- Waveforms ---
+	    % Voltage waveform (V) - Black, modeled as a cosine wave to start at a peak
+	    \draw[thick] plot[domain=0:6.8, samples=150] (\x, {1.7 * cos(60*\x)});
+	    \node[font=\large] at (7.0, 1.8) {$V$};
+
+	    % Current waveform (i) - Blue, modeled as a sine wave lagging by 90 degrees
+	    \draw[thick, penblue] plot[domain=0:6.5, samples=150] (\x, {1.3 * sin(60*\x)});
+	    \node[penblue, font=\large] at (6.8, 0.7) {$i$};
+
+	\end{tikzpicture}
+	\end{center}
+	Current lags the Voltage by $90^{\circ}$
+	\subsubsection{Capacitor}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % --- Left Side: Capacitor Circuit ---
+	    % Capacitor with solid node dots at ends
+	    \draw (0,2) to[C, l=$\frac{1}{j\omega C}$, *-*] (3,2);
+	    
+	    % Voltage polarity and label annotations
+	    \node[font=\large] at (0, 1.4) {$+$};
+	    \node[font=\large] at (3, 1.4) {$-$};
+	    \node[font=\large] at (1.5, 1.4) {$v$};
+	    
+	    % Current arrow and label annotation
+	    \draw[-{Stealth[length=2.5mm]}, thick] (1.1, 0.9) -- (1.9, 0.9);
+	    \node[font=\large] at (1.5, 0.5) {$i$};
+
+	    % --- Right Side: Frequency Domain Plot ---
+	    \begin{scope}[shift={(5, 0.5)}]
+		% Vertical axis (Reactance/Impedance)
+		\draw[->, thick] (0, 0) -- (0, 3) node[above, font=\large] {$\Omega$};
+		
+		% Horizontal axis (Frequency f)
+		\draw[->, thick] (0, 0) -- (4, 0) node[right, font=\large] {$Hz$};
+		
+		% Inverse Reactance Curve (1/x style)
+		\draw[thick] (0.3, 2.8) to[out=-85, in=175] (3.5, 0.5);
+		
+		% Text conditions below the plot
+		\node[anchor=west, font=\large] at (-1.0, -0.8) {$f = 0Hz \quad \text{Cap is } O/C$};
+		\node[anchor=west, font=\large] at (-1.0, -1.6) {$f = \infty Hz \quad \text{Cap is } S/C$};
+	    \end{scope}
+
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		v=&V_{m}\cos{(\omega t+\phi)}\\
+		i=&C\frac{dv}{dt}\\
+		=&-\omega CV_{m}\sin{(\omega t+\phi)}\\
+		=&-\omega CV_{m}\cos{(\omega t+\phi-90^{\circ})}\\
+		=&j\omega CV_{m}e^{j\phi}\\
+		=&j\omega CV_{m}\angle{\phi}
+	\end{align*}
+	\begin{center}
+	\begin{tikzpicture}[scale=0.75, transform shape]
+
+	    \definecolor{penblue}{RGB}{0, 170, 255}
+
+	    % --- Axes ---
+	    % Vertical axis
+	    \draw[thick] (0, -2.5) -- (0, 2.5);
+	    
+	    % Horizontal axis 
+	    \draw[thick] (-0.2, 0) -- (7.5, 0);
+
+	    % --- Waveforms ---
+	    % Voltage waveform (v) - Black, modeled as a sine wave starting at zero
+	    \draw[thick] plot[domain=0:7.2, samples=150] (\x, {1.7 * sin(60*\x)});
+	    \node[font=\large] at (7.4, 1.0) {$v$};
+
+	    % Current waveform (i) - Blue, modeled as a cosine wave leading by 90 degrees
+	    \draw[thick, penblue] plot[domain=0:6.8, samples=150] (\x, {1.2 * cos(60*\x)});
+	    \node[penblue, font=\large] at (7.0, 1.9) {$i$};
+
+	\end{tikzpicture}
+	\end{center}
+	Current leads Voltage by $90^{\circ}$
+	\subsection{Impedance:}
+	Basically resistance within AC circuits.
+	$$v=Zi$$
+	\begin{itemize}
+		\item Resistor - $Z_{R}=R=R\angle{0^{\circ}}$
+		\item Inductor - $Z_{L}=j\omega L=\omega L\angle{90^{\circ}}=2\pi fL\angle{90^{\circ}}$
+		\item Capacitor - $Z_{C}=\frac{-j}{\omega C}=\frac{1}{\omega C}\angle{-90^{\circ}}=\frac{1}{2\pi fC}\angle{-90^{\circ}}$
+	\end{itemize}
+	Although $Z$ can be a complex number, it is NOT a phasor. Resistance is the real part, whereas reactance is the imaginary part. Admittance is the inverse of impedance:
+	$$Y=\frac{1}{Z}$$
+	\subsection{Equivalent Impedance:}
+	\subsubsection{Series}
+	$$Z_{eq}=\sum^{k}_{n=1}Z_{n}$$
+	\subsubsection{Parallel}
+	$$Z_{eq}=\frac{1}{\sum^{k}_{n=1}\frac{1}{Z_{n}}}$$
+
+	\section{AC Power Factor}
+	\subsection{Instaneous Power:}
+	Where:
+	\begin{align*}
+		p=&vi\\
+		v=&V_{m}\cos{(\omega t+\theta_{v})}\\
+		i=&I_{m}\cos{(\omega t+\theta_{i})}\\\\
+		v=&V_{m}\cos{(\omega t+\theta_{v}-\theta_{i})}\\
+		i=&I_{m}\cos{(\omega t)}\\\\
+		\therefore p=&V_{m}\cos{(\omega t+\theta_{v}-\theta_{i})}\times I_{m}\cos{(\omega t)}\\
+		=&\frac{V_{m}I_{m}}{2}\cos{(\theta_{v}-\theta_{i})}+\frac{V_{m}I_{m}}{2}\cos{(\theta_{v}-\theta_{i})}\cos{(2\omega t)}\\
+		 &-\frac{V_{m}I_{m}}{2}\sin{(\theta_{v}-\theta_{i})}\sin{(2\omega t)}
+	\end{align*}
+	It is important to note that the frequency of power is double that of voltage and current. Also at certain points power is a negative value.
+	\subsection{Average Power:}
+	\begin{align*}
+		p=&\frac{1}{T}\int^{t_{0}+T}_{t_{0}}vi\;dt\\
+		=&\frac{V_{m}I_{m}}{2}\cos{(\theta_{v}-\theta_{i})}
+	\end{align*}
+	This is also called real power and is measured in Watts (W).
+	\subsection{Reactive Power:}
+	\begin{align*}
+		Q=&\frac{V_{m}I_{m}}{2}\sin{(\theta_{v}-\theta_{i})}\\
+		=&\lvert S \rvert\sqrt{1-pf^{2}}
+	\end{align*}
+	Called reactive power and measured in Volt-Amperes-Reactive (VAR).
+	\subsection{Pure Values:}
+	\subsubsection{Resistor}
+	For resistor voltage and current are in the same phase.
+	$$\therefore\;\theta_{v}=\theta_{i}$$
+	$$P=\frac{V_{m}I_{m}}{2},\;\;Q=0$$
+	$$p=P(1+\cos{(2\omega t)}$$
+	Power is always a positive value, this means it always dissapates.
+	\subsubsection{Inductor}
+	Current lags voltage by $90^{\circ}$
+	$$\therefore\;\theta_{v}-\theta_{i}=90^{\circ}$$
+	$$P=0\;\;Q=\frac{V_{m}I_{m}}{2}$$
+	$$p=-Q\sin{(2\omega t)}$$
+	The average power is 0. Thus, in the positive cycle, energy is stored in the inductor, with the negative cycle, energy is released from the indcutor.
+	\subsubsection{Capacitor}
+	Current leads voltage by $90^{\circ}$
+	$$\therefore\;\theta_{v}-\theta_{i}=-90^{\circ}$$
+	$$P=0\;\;Q=-\frac{V_{m}I_{m}}{2}$$
+	$$p=Q\sin{(2\omega t)}$$
+	Same cycle types as the inductor by reversed. Basically, when the capacitor releases the inductor absorbs, and the capacitor absorbs the inductor releases.
+	\subsection{Power Factor:}
+	$$\cos{(\theta_{v}-\theta_{i})}$$
+	Known as the power fator, the angle describes the angle\\
+	Lagging pf: $\theta_{v}-\theta_{i}>0$\\
+	Leading pf: $\theta_{v}-\theta_{i}<0$
+	\subsection{RMS Value:}
+	This is mostly known as the effective value.
+	\begin{align*}
+		P=&V_{RMS}I_{RMS}\cos{(\theta_{v}-\theta_{i})}\\
+		=&V_{eff}I_{eff}\cos{(\theta_{v}-\theta_{i})}\\\\
+		Q=&V_{eff}I_{eff}\sin{(\theta_{v}-\theta_{i})}
+	\end{align*}
+	\subsection{Complex Power:}
+	$$S=P+jQ$$
+	Complext power as units Volt-Amperes (VA) and is dimensionally akin to the average power. The $\lvert s \rvert$ value is the known as apparent power. It has the same units as complext power.
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % --- Coordinates ---
+	    \coordinate (Origin) at (0,0);
+	    \coordinate (Right) at (4,0);
+	    \coordinate (Top) at (4,2.5);
+
+	    % --- Draw Triangle ---
+	    % Adjacent (Real Power, P)
+	    \draw[thick] (Origin) -- (Right) node[midway, below, font=\Large] {$P$};
+	    
+	    % Opposite (Reactive Power, Q)
+	    \draw[thick] (Right) -- (Top) node[midway, right, font=\Large] {$Q$};
+	    
+	    % Hypotenuse (Apparent Power, |S|)
+	    \draw[thick] (Origin) -- (Top) node[midway, above left, font=\Large] {$|S|$};
+
+	    % --- Angle ---
+	    % Draw the angle arc for theta
+	    \draw[thick] (1.0, 0) arc (0:32:1.0);
+	    \node[font=\Large] at (1.4, 0.35) {$\theta$};
+
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		S=&P+jQ\\
+		=&V_{RMS}\overline{I_{RMS}}\\
+		=&\frac{1}{2}V\bar{I}\\\\
+		P=&\lvert I_{RMS} \rvert^{2}R\\
+		=&\frac{1}{2}I_{m}^{2}R\\\\
+		Q=&\lvert I_{RMS} \rvert^{2}X\\
+		=&\frac{1}{2}I_{m}^{2}X
+	\end{align*}
+	\subsection{PF Correction:}
+	Power dissapated in transmission lines depends on current. Hence, current through the lines should be the smallest values possible. $S$ should be as close to 0 as possible.
+	$$P=S\cos{(\theta)}$$
+	$$pF=\cos{(\theta)}=\frac{P}{S}$$
+	$$\theta=\arccos{(\frac{P}{S})}$$
+	\subsection{Maximum Power Transfer:}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % --- Circuit ---
+	    % Terminals and Voltage labels
+	    \node[font=\Large] at (0.2, 1.6) {$+$};
+	    \node[font=\Large] at (0.2, 0.4) {$-$};
+	    \node[font=\Large] at (0.5, 1.0) {$V_{rms}$};
+
+	    % Top wire with current arrow
+	    \draw (0.3, 2) to[short, o-, i={\Large $I_{rms}$}] (3, 2);
+	    
+	    % Impedance Block Z
+	    \draw (3, 2) to[generic, l={\huge $Z$}] (3, 0);
+	    
+	    % Bottom return wire
+	    \draw (3, 0) to[short, -o] (0.3, 0);
+
+	    % --- Equations ---
+	    \node[anchor=west, font=\Large] at (4, 1) {
+		$\begin{aligned}
+		    Z_L &= R_L + jX_L \\
+		    &\quad \& \\
+		    Z_{TH} &= R_{TH} + jX_{TH}
+		\end{aligned}$
+	    };
+
+	\end{tikzpicture}
+	\end{center}
+	$$P=\lvert I_{RMS} \rvert^{2}R_{L}=\frac{\lvert V_{RMS} \rvert^{2}R_{L}}{(R_{L}+R_{TH})^{2}+(X_{L}+X_{TH})^{2}}$$
+	Max power is when:
+	$$\frac{\partial P}{\partial R_{L}}=0\;\;\text{\&}\;\;\frac{\partial P}{\partial X_{L}}=0$$
+	$$Z_{L}=R_{TH}-jX_{TH}=\overline{Z_{TH}}$$
 \end{document}
