@@ -1,0 +1,657 @@
+\documentclass[a5paper]{article}
+
+\usepackage{amsmath, amssymb}
+\usepackage{multicol}
+\setlength{\columnsep}{1cm}
+\usepackage[margin=0.75in]{geometry}
+\usepackage{graphicx}
+\graphicspath{ {../../../Images/ENEX12002/} }
+\usepackage[breaklinks, hidelinks]{hyperref}
+\usepackage{siunitx}
+\usepackage{tikz}
+\usetikzlibrary{positioning, arrows.meta}
+\usepackage[american]{circuitikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{external}
+\usepackage{stix}
+\usepackage{ragged2e}
+\usepackage{enumitem}
+\usepackage{polynom}
+
+\newcommand{\minus}{\scalebox{0.5}[1.0]{$-$}}
+\newcommand{\sech}{\mathrm{sech}}
+\newcommand{\csch}{\mathrm{csch}}
+\setcounter{secnumdepth}{4}
+\renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
+% display heading, like subsubsection
+                                     {-3.25ex\@plus -1ex \@minus -.2ex}%
+                                     {1.5ex \@plus .2ex}%
+                                     {\normalfont\normalsize\bfseries}}
+\sisetup{
+	round-mode = places,
+	round-precision = 2,
+}
+
+\date{2\textsuperscript{nd} of July 2026}
+
+\begin{document}
+	\begin{titlepage}
+		\centering
+		{\Huge \textsc{ENEX12002}\par}
+		\vspace{1cm}
+		{\Large \textsc{Lecture Notes}\par}
+		\vspace{2.5cm}
+		\vfill
+		Authored by\par
+		Lachlan J. W. Wyer
+		\vfill
+		\makeatletter
+		{\large Document Start Date: \@date \par}
+		\makeatother
+		{\large Latest Update: \today\par}
+	\end{titlepage}
+	\tableofcontents
+	\pagebreak
+
+	\section{Analog Circuits}
+	\subsection{Characteristic Curves:}
+	A characteristic curve is a type of linear plot that demonstates a relationship between two variable properties of a device. Most electronic devices CC refers too a plot of current as a function of coltage. Mostly known as an I-V curve.
+	\begin{center}
+	\begin{tikzpicture}
+	    \begin{axis}[
+		scale=0.75,
+		width=\textwidth,
+		height=0.85\textwidth,
+		xmin=0, xmax=1.05,
+		ymin=0, ymax=10.5,
+		xtick={0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0},
+		ytick={1, 2, 3, 4, 5, 6, 7, 8, 9, 10},
+		xlabel={$V \text{ (V)}$},
+		ylabel={$I \text{ (mA)}$},
+		axis lines=left,
+		grid=both,
+		major grid style={line width=0.5pt,draw=gray!50},
+		minor grid style={line width=0.2pt,draw=gray!20},
+		every axis x label/.style={at={(ticklabel* cs:1.02)},anchor=west, font=\normalsize},
+		every axis y label/.style={at={(ticklabel* cs:1.02)},anchor=south, font=\normalsize},
+		tick label style={font=\small},
+		enlargelimits=false,
+		clip=false
+	    ]
+	    
+	    % Diode curve (Approximation of the non-linear I-V characteristic)
+	    \addplot [color=cyan!70!blue, line width=1.5pt, smooth] coordinates {
+		(0,0) (0.2,0) (0.4,0) (0.45, 0.2) (0.5, 0.7) (0.55, 1.4) (0.6, 2.5) (0.65, 4.2) (0.7, 7.0) (0.75, 11)
+	    };
+	    
+	    % Delta V, Delta I filled triangle area
+	    \fill [cyan!20] (0.55, 1.2) -- (0.66, 1.2) -- (0.66, 3.2) -- cycle;
+	    
+	    % Triangle outline and Delta annotations
+	    \draw [color=cyan!70!blue, thick] (0.55, 1.2) -- (0.66, 1.2) node[midway, below, font=\footnotesize, yshift=2pt] {$\Delta V$};
+	    \draw [color=cyan!70!blue, thick] (0.66, 1.2) -- (0.66, 3.2) node[midway, right, font=\footnotesize, xshift=-2pt] {$\Delta I$};
+	    
+	    % R_AC line (Purple Tangent Line representing dynamic resistance)
+	    \draw [color=violet, line width=1.5pt] (0.52, 0.65) -- (0.75, 4.83);
+	    \node [color=violet, font=\Large\bfseries, right] at (0.71, 3.8) {$R_{AC}$};
+	    
+	    % R_DC line (Red Secant Line representing static resistance)
+	    \draw [color=red!90!black, line width=1.5pt] (0, 0.1) -- (0.75, 3.1);
+	    \node [color=red!90!black, font=\Large\bfseries, rotate=22] at (0.25, 1.4) {$R_{DC}$};
+	    
+	    \end{axis}
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Analog vs Digital Signals:}
+	Signalling within a circuit is generally classified as either continuous or discrete. Continuous (Analog signalling) varies after a range of values within limits. Discrete (Digital signals) change between two discreet voltage levels.
+	\begin{center}
+	\begin{tikzpicture}[scale=0.75, transform shape]
+
+	    % --- Top Plot (Analog / Smooth Waveform) ---
+	    % Y and X Axes
+	    \draw[thick] (0, 2.5) -- (0, 5.0);
+	    \draw[thick] (0, 2.8) -- (7.5, 2.8);
+	    
+	    % Smooth curve (Modeled as a cosine wave with a DC offset)
+	    \draw[thick] plot[domain=0:7.2, samples=150] (\x, {4.0 + 0.8 * cos(60*\x)});
+
+	    % --- Bottom Plot (Digital / Square Waveform) ---
+	    % Y and X Axes
+	    \draw[thick] (0, -0.5) -- (0, 2.0);
+	    \draw[thick] (0, 0) -- (7.5, 0); 
+	    
+	    % Square wave path (with DC offset)
+	    \draw[thick] (0, 1.4) -- (1.5, 1.4) 
+			 -- (1.5, 0.4) -- (3.5, 0.4) 
+			 -- (3.5, 1.4) -- (5.5, 1.4) 
+			 -- (5.5, 0.4) -- (7.2, 0.4);
+
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Analog \& Digital Circuits:}
+	Analog circuits are used in situations implementing linear functions, wave shaping and transformation between current and voltage. Digital circuit however ase used to process data rapidly and in calculations. Most systems utilize a mix of both systems (e.g AV systems).
+	\subsection{Sampling:}
+	When converting between signal types sampling must take place. Sampling is the approximation of analog's original waveform into time slices. The disadvantage of sampling is that is loses some precision, however the advantages of a digital system out weight this. The physical process of sampling is called quantizing. This produces numbers that can be processed by digital systems.
+	\begin{center}
+		\includegraphics[scale=0.5]{quantizing-example.png}
+	\end{center}
+	\subsection{Vectors:}
+	A vector is a line that contains both direction and magnitude. An AC circuits sinusodial waveform can be generated by plotting the project of a rotating vector in circular motion.
+	\subsection{Frequency and Period:}
+	The frequency of a periodic wave is the number of cycles that occur every second. The SI unit for this is Hz. The period is how long it takes a waveform to complete one cycle.
+	$$f=\frac{1}{T}$$
+	$$T=\frac{1}{f}$$
+	\subsection{Instantaneous Values:}
+	$$v(t)=V_{p}\sin{(\omega t\pm\phi)}$$
+	The instantaneous values are always against time ($t$).
+	\begin{center}
+	\begin{tikzpicture}[scale=0.75, transform shape]
+
+	    % --- Axes ---
+	    % Y and X Axes (drawn with a slight extension past the origin for standard styling)
+	    \draw[thick] (0.2, 5.0) -- (0.2, 0) -- (8.5, 0);
+
+	    % --- Waveform ---
+	    % Modeled as a smooth sine wave with a DC offset to match the sketch
+	    \draw[thick] plot[domain=0.2:8.2, samples=150] (\x, {2.5 + 2*sin(65*\x - 45)});
+
+	    % --- Annotation ---
+	    % Coordinate placed on the rising edge of the second cycle
+	    \coordinate (VT) at (6.5, {2.5 + 2*sin(65*6.5 - 45)});
+	    
+	    % Draw the marker point
+	    \filldraw[violet] (VT) circle (2pt);
+	    
+	    % Draw the label line and text
+	    \draw[violet, thick] (VT) -- ++(-1.0, 0.3) node[left, font=\Large\bfseries] {$v(t)$};
+
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Waveform Values:}
+	The amplitude is the maximum distance of the values from the line of equilibrium. The average value of a sine wave is the found in $\lvert v(t) \rvert$, then averaging the curve.
+	$$V_{ave}=\frac{2V_{p}}{\pi}\approx 0.637V_{p}$$
+	\subsection{RMS Values:}
+	In order to compare AC and DC currents and voltages, AC is converted into its DC equivalent DC heating value. RMS current and voltage are their peak values.
+	\begin{align*}
+		V_{RMS}=&\frac{V_{p}}{\sqrt{2}}\\
+		\approx & 0.707V_{p}\\\\
+		I_{RMS}=&\frac{I_{p}}{\sqrt{2}}\\
+		\approx & 0.707I_{p}
+	\end{align*}
+	\subsection{Domain Signals:}
+	Time domain is the funcation against time. An example is a oscciliscope which shows values over a period of time. The frequency domain - A sine-wave against time can be represented against its frequency. This representations shows the waveforms amplitude and frequency but not it's phase angle.
+	\begin{center}
+		\includegraphics[scale=0.5]{domain-signals.png}
+	\end{center}
+	\subsection{Transducers:}
+	These are a device that converts a physical quantity (e.g pressure, position or temp) from one form to another. Their outupts are quite small and require amplification. Passice transducers require external power to functions, this is called excitation. Active transducers are self-generating that convert a portion being measured into electrical signal.
+	\subsection{Amplification:}
+	Amps are designde to amplify either voltage or power. Linear amplifiers produce a magnified replica of the inputted signal, producing a useful output.
+	$$A_{v}=\frac{V_{out}}{V_{in}}$$
+	\subsection{Transfer Curves:}
+	All amplifiers, when ideal, produce a linear transfer curves. Beyond this limit they no longer act idealy, this is called saturation.
+	\subsection{Power Gain:}
+	$$A_{p}=\frac{P_{out}}{P_{in}}=\frac{V_{out}I_{out}}{V_{in}I_{in}}$$
+	\subsection{dB Power Ratios:}
+	The decibal of a power ratio is:
+	\begin{align*}
+		A_{p}=&10\log_{10}{(\frac{P_{1}}{P_{2}})}\\
+		=&10\log_{10}{(A_{p})}
+	\end{align*}
+	\subsection{dB Voltage Ratio:}
+	\begin{align*}
+		A_{v}=&20\log_{10}{(\frac{V_{1}}{V_{2}})}\\
+		=&20\log_{10}{(A_{v})}
+	\end{align*}
+
+	\section{Basic Circuit Theory}
+	\subsection{Electrical Charge:}
+	Electrical effects are attributed to the seperation of charges and their movements. Electrical forces are that opposites attract and similar repels. A charge is considered continuous if $q=1.6022E\minus19e^{-}$.
+	\subsection{Voltage and Current:}
+	Rather than working purely in charge, it is easier to work with it in voltage and current.
+	$$V=\frac{dw}{dq}$$
+	$$I=\frac{dq}{dt}$$
+	\subsection{Ideal Basic Circuits:}
+	These are made up of 5 main points:
+	\begin{enumerate}
+		\item Two Terminals
+		\item Can be described mathmatically in terms of voltage and current
+		\item Cannot be subdivided into further elements
+		\item Utilizes the passive sign convention
+	\end{enumerate}
+	\begin{center}
+	\begin{tikzpicture}[scale=1, transform shape]
+
+	    % --- Wires ---
+	    % Wires extending from the left into the network box
+	    \draw[thick] (0, 1.5) -- (4.2, 1.5);
+	    \draw[thick] (0, 0.5) -- (4.2, 0.5);
+
+	    % --- Network Box ---
+	    % Drawn as a simple rectangle encompassing the terminals
+	    \draw[thick, rounded corners=3pt] (3.5, 0) rectangle (6, 2);
+
+	    % --- Terminals ---
+	    % Top terminal (Node 1)
+	    \filldraw (4.2, 1.5) circle (2pt);
+	    \node[font=\Large] at (4.8, 1.5) {1};
+	    
+	    % Bottom terminal (Node 2)
+	    \filldraw (4.2, 0.5) circle (2pt);
+	    \node[font=\Large] at (4.8, 0.5) {2};
+
+	    % --- Voltage Annotations (Blue) ---
+	    \node[cyan!90!blue, font=\Large\bfseries] at (-0.3, 1.6) {$+$};
+	    \node[cyan!90!blue, font=\Large\bfseries] at (-0.3, 1.0) {$v$};
+	    \node[cyan!90!blue, font=\Large\bfseries] at (-0.3, 0.4) {$-$};
+
+	    % --- Current Annotation (Blue) ---
+	    % Arrow indicating current flow direction on the top wire
+	    \draw[cyan!90!blue, thick, ->] (1.5, 1.8) -- (2.5, 1.8) node[midway, above, font=\Large\bfseries] {$i$};
+
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Power and Energy:}
+	The useful output of a system is often non-electrical. Practical applications also have limitations in the amount of power it can handle.
+	$$p=\frac{dw}{dt}=(\frac{dw}{dq})(\frac{dq}{dt})=VI$$
+	The polarity describes where current flows in the relationship to voltage. If $p>0$, power is being delivered to the circuit inside the box. For instance a motor.
+	\begin{center}
+	\begin{tikzpicture}[scale=0.75, transform shape]
+
+	    % Define color for annotations to match sketch
+	    \colorlet{anncolor}{cyan!90!blue}
+
+	    % ==========================================
+	    % LEFT DIAGRAM 
+	    % ==========================================
+	    
+	    % Wires
+	    \draw[thick] (0, 1.5) -- (2.5, 1.5);
+	    \draw[thick] (0, 0.5) -- (2.5, 0.5);
+
+	    % Network Box
+	    \draw[thick, rounded corners=2pt] (2.5, 0) rectangle (4.5, 2);
+
+	    % Terminals
+	    \filldraw (2.5, 1.5) circle (2pt);
+	    \filldraw (2.5, 0.5) circle (2pt);
+
+	    % Voltage Annotations
+	    \node[anncolor, font=\Large\bfseries] at (-0.3, 1.5) {$+$};
+	    \node[anncolor, font=\Large\bfseries] at (-0.3, 1.0) {$v$};
+	    \node[anncolor, font=\Large\bfseries] at (-0.3, 0.5) {$-$};
+
+	    % Current Annotation (Arrow pointing Right)
+	    \draw[anncolor, thick, ->] (0.5, 1.9) -- (1.8, 1.9) node[midway, above, font=\Large\bfseries] {$i$};
+
+	    % ==========================================
+	    % RIGHT DIAGRAM 
+	    % ==========================================
+	    
+	    % Shift entire right diagram by 6 units to place it side-by-side
+	    \begin{scope}[xshift=6cm]
+		% Wires
+		\draw[thick] (0, 1.5) -- (2.5, 1.5);
+		\draw[thick] (0, 0.5) -- (2.5, 0.5);
+
+		% Network Box 
+		\draw[thick, rounded corners=2pt] (2.5, -0.2) rectangle (4.8, 2.2);
+
+		% Terminals and Labels
+		\filldraw (2.5, 1.5) circle (2pt);
+		\node[font=\Large] at (3.2, 1.5) {1};
+		
+		\filldraw (2.5, 0.5) circle (2pt);
+		\node[font=\Large] at (3.2, 0.5) {2};
+
+		% Voltage Annotations (Reversed polarity from left diagram)
+		\node[anncolor, font=\Large\bfseries] at (-0.3, 1.5) {$-$};
+		\node[anncolor, font=\Large\bfseries] at (-0.3, 1.0) {$v$};
+		\node[anncolor, font=\Large\bfseries] at (-0.3, 0.5) {$+$};
+
+		% Current Annotation (Arrow pointing Left)
+		\draw[anncolor, thick, <-] (0.5, 1.9) -- (2.2, 1.9) node[midway, above, font=\Large\bfseries] {$i$};
+	    \end{scope}
+	\end{tikzpicture}
+	\end{center}
+	Else if $p<0$, power is being extracted from a circuit. For example a battery.
+	\begin{center}
+	\begin{tikzpicture}[scale=0.75, transform shape]
+
+	    % Define color for annotations to match sketch
+	    \colorlet{anncolor}{cyan!90!blue}
+
+	    % ==========================================
+	    % LEFT DIAGRAM 
+	    % ==========================================
+	    
+	    % Wires
+	    \draw[thick] (0, 1.5) -- (2.5, 1.5);
+	    \draw[thick] (0, 0.5) -- (2.5, 0.5);
+
+	    % Network Box
+	    \draw[thick, rounded corners=2pt] (2.5, -0.2) rectangle (4.5, 2.2);
+
+	    % Terminals and Labels
+	    \filldraw (2.5, 1.5) circle (2pt);
+	    \node[font=\Large] at (3.2, 1.5) {1};
+	    
+	    \filldraw (2.5, 0.5) circle (2pt);
+	    \node[font=\Large] at (3.2, 0.5) {2};
+
+	    % Voltage Annotations (- on top, + on bottom)
+	    \node[anncolor, font=\Large\bfseries] at (-0.3, 1.5) {$-$};
+	    \node[anncolor, font=\Large\bfseries] at (-0.3, 1.0) {$v$};
+	    \node[anncolor, font=\Large\bfseries] at (-0.3, 0.5) {$+$};
+
+	    % Current Annotation (Arrow pointing Right)
+	    \draw[anncolor, thick, ->] (0.5, 1.9) -- (1.8, 1.9) node[midway, above, font=\Large\bfseries] {$i$};
+
+	    % ==========================================
+	    % RIGHT DIAGRAM 
+	    % ==========================================
+	    
+	    % Shift entire right diagram by 6 units to place it side-by-side
+	    \begin{scope}[xshift=6cm]
+		% Wires
+		\draw[thick] (0, 1.5) -- (2.5, 1.5);
+		\draw[thick] (0, 0.5) -- (2.5, 0.5);
+
+		% Network Box 
+		\draw[thick, rounded corners=2pt] (2.5, -0.5) rectangle (4.5, 2.5);
+
+		% Terminals and Labels
+		\filldraw (2.5, 1.5) circle (2pt);
+		\node[font=\Large] at (3.2, 1.5) {1};
+		
+		\filldraw (2.5, 0.5) circle (2pt);
+		\node[font=\Large] at (3.2, 0.5) {2};
+
+		% Voltage Annotations (+ on top, - on bottom)
+		\node[anncolor, font=\Large\bfseries] at (-0.3, 1.5) {$+$};
+		\node[anncolor, font=\Large\bfseries] at (-0.3, 1.0) {$v$};
+		\node[anncolor, font=\Large\bfseries] at (-0.3, 0.5) {$-$};
+
+		% Current Annotation (Arrow pointing Left)
+		\draw[anncolor, thick, <-] (0.5, 1.9) -- (1.8, 1.9) node[midway, above, font=\Large\bfseries] {$i$};
+	    \end{scope}
+
+	\end{tikzpicture}
+	\end{center}
+	Elements that make up a basic circui include:
+	\begin{itemize}
+		\item Voltage source/s
+		\item Current source/s
+		\item Passive Circuit elements, As they do not produce electricity
+			\begin{itemize}
+				\item Resistors
+				\item Inductors
+				\item Capacitors
+			\end{itemize}
+	\end{itemize}
+	\subsection{Voltage and Current Sources:}
+	An electrical source that can convert between electrical and non-electrical energy. An ideal voltage source provides a consistant voltage regardless of current. This is similar for current sources. In real-world applications, ideal power sources do not exist.
+	\subsubsection{Source Types}
+	\begin{center}
+	\begin{circuitikz}[scale=1.3, transform shape, line width=0.8pt]
+
+	    % Define a custom purple color to match the handwritten annotations
+	    \definecolor{annpurple}{RGB}{95, 40, 130}
+
+	    % ==========================================
+	    % TOP ROW: INDEPENDENT SOURCES
+	    % ==========================================
+	    
+	    % Independent Voltage Source (+ on top, - on bottom)
+	    % Drawing from bottom to top puts the '+' at the top coordinate.
+	    % 'l=' places the label on the left side of the path.
+	    \draw (0, 0) to[V, invert, l=$V_s$] (0, 2.5);
+	    
+	    % Independent Current Source (arrow pointing up)
+	    \draw (3, 0) to[I, l=$i_s$] (3, 2.5);
+	    
+	    % Text Annotation
+	    \node[annpurple, font=\Large\bfseries, align=left, right] at (4.5, 1.25) {Independent\\Sources};
+
+	    % ==========================================
+	    % BOTTOM ROW: DEPENDENT SOURCES
+	    % ==========================================
+	    
+	    % Dependent Voltage Source (+ on top, - on bottom)
+	    % 'cV' denotes a controlled (dependent) voltage source.
+	    \draw (0, -3.5) to[cV, invert, l=$V_s$] (0, -1);
+	    
+	    % Dependent Current Source (arrow pointing up)
+	    % 'cI' denotes a controlled (dependent) current source.
+	    \draw (3, -3.5) to[cI, l=$i_s$] (3, -1);
+	    
+	    % Text Annotation
+	    \node[annpurple, font=\Large\bfseries, align=left, right] at (4.5, -2.25) {Dependent\\Sources};
+	\end{circuitikz}
+	\end{center}
+	\subsection{Kirchoffs Laws:}
+	A circuit is said to be solved once a voltage and current is found across every circuit element.
+	$$\text{KCL}\;\Rightarrow\;\sum I_{out}=\sum I_{in}$$
+	$$\text{KVL}\;\Rightarrow\;\sum V_{loop}=0$$
+	To apply these laws, polarity must be applied throughout the circuit.
+	\subsection{Resistance:}
+	Resistors resist the flow of current within a circuit. Conductance is also the inverse of resistance, $G=\frac{1}{R}$.
+	\begin{center}
+	\begin{tikzpicture}[scale=0.8]
+		
+		% Draw the resistor with 10 ohm label and filled nodes at ends
+		\draw (0,0) to[R, l=\SI{10}{\ohm}, *-*] (4,0);
+		
+		% Add the V = IR equation below the resistor
+		\node at (2, -1.5) {\Large $V = IR$};
+		
+	\end{tikzpicture}
+	\end{center}
+	\subsubsection{Series}
+	$$R_{eq}=\sum^{k}_{n=1}\;R_{n}$$
+	\begin{center}
+	\begin{tikzpicture}
+		\draw (0,3) to[short, *-] (1.5,3) 
+			    to[R, l_=$R_1$, -*] (5,3)
+			    to[R, l=$R_2$, -*] (5,0)
+			    to[R, l=$R_3$, -] (1.5,0)
+			    to[short, -*] (0,0);
+	\end{tikzpicture}
+	\end{center}
+	\subsubsection{Parllel}
+	$$R_{eq}=\frac{1}{\sum^{k}{n=1}\frac{1}{R_{n}}}$$
+	\begin{center}
+	\begin{tikzpicture}
+		% Top and bottom terminals connecting to the first branch
+		\draw (0,3) to[short, *-*] (2,3);
+		\draw (0,0) to[short, *-*] (2,0);
+		
+		% First resistor branch (R1)
+		\draw (2,3) to[R, l_=$R_1$] (2,0);
+		
+		% Connecting to second branch
+		\draw (2,3) to[short, -*] (4,3);
+		\draw (2,0) to[short, -*] (4,0);
+		
+		% Second resistor branch (R2)
+		\draw (4,3) to[R, l_=$R_2$] (4,0);
+		
+		% Connecting to third branch
+		\draw (4,3) to[short, -*] (6,3);
+		\draw (4,0) to[short, -*] (6,0);
+		
+		% Third resistor branch (R3)
+		\draw (6,3) to[R, l_=$R_3$] (6,0);
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Voltage Division:}
+	$$V_{j}=iR_{j}=\frac{R_{j}}{R_{eq}}V$$
+	\begin{center}
+	\begin{tikzpicture}
+		% Main circuit branches
+		\draw (0,3) to[R, l=$R_1$, o-] (3,3)
+			    to[R, l=$R_2$] (6,3)
+			    to[R, l_=$R_j$] (6,0)
+			    to[R, l=$R_{n-1}$] (3,0)
+			    to[R, l=$R_n$, -o] (0,0);
+		
+		% Input voltage v (cyan to match the sketch's blue ink)
+		\draw[cyan] (0,3) to[open, v=$v$] (0,0);
+		
+		% Voltage v_j across R_j
+		\draw[cyan] (6.5,3) to[open, v^=$v_j$] (6.5,0);
+		
+		% Curved current arrow i
+		\draw[-{Stealth}, cyan, thick] (4.8, 2.5) to[out=-45, in=90] node[midway, left] {$i$} (5.2, 1.2);
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Current Division:}
+	$$i_{j}=\frac{V}{R_{j}}=\frac{R_{eq}}{R_{j}}i$$
+	\begin{center}
+	\begin{tikzpicture}
+		% Terminals and top/bottom rails to first resistor
+		\draw (0,3) to[short, o-*] (1.5,3);
+		\draw (0,0) to[short, o-*] (1.5,0);
+		
+		% Input voltage v
+		\draw[cyan] (0,3) to[open, v=$v$] (0,0);
+		
+		% Input current i
+		\draw[-{Stealth}, cyan, thick] (0.4, 3.4) to[out=20, in=160] node[midway, above] {$i$} (1.1, 3.4);
+		
+		% First parallel branch (R1)
+		\draw (1.5,3) to[R, l=$R_1$] (1.5,0);
+		
+		% Second parallel branch (R2)
+		\draw (1.5,3) to[short, -*] (3,3);
+		\draw (1.5,0) to[short, -*] (3,0);
+		\draw (3,3) to[R, l=$R_2$] (3,0);
+		
+		% Third parallel branch (R3)
+		\draw (3,3) to[short, -*] (4.5,3);
+		\draw (3,0) to[short, -*] (4.5,0);
+		\draw (4.5,3) to[R, l=$R_3$] (4.5,0);
+		
+		% Ellipses for continuation
+		\draw (4.5,3) -- (5,3);
+		\draw (4.5,0) -- (5,0);
+		\node at (5.5, 3) {$\dots$};
+		\node at (5.5, 0) {$\dots$};
+		\draw (6,3) to[short, -*] (7,3);
+		\draw (6,0) to[short, -*] (7,0);
+		
+		% Branch j (R_j)
+		\draw (7,3) to[R, l_=$R_j$] (7,0);
+		
+		% Current i_j across R_j
+		\draw[-{Stealth}, cyan, thick] (7.7, 2.3) -- node[right] {$i_j$} (7.7, 0.7);
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Source Transformations:}
+	Current and voltage sources can be interchanged. This is because equivalent sources produce the same electrical effects, regardless of load.
+	\subsubsection{Th\'evenin Equivalent}
+	A way to simplify a circuit that focuses on the behaviour at the terminals.
+	$$V_{TH}=V_{O/C}=V_{ab}$$
+	$$R_{TH}=\frac{V_{TH}}{I_{SC}}$$
+	\begin{center}
+	\begin{tikzpicture}
+		% Top Circuit
+		\draw (0,0) to[V, l=$V_{TH}$] (0,2)
+				to[R, l_=$R_{TH}$] (3,2)
+				to[short, -o] (4,2) node[right] {$a$};
+		\draw (0,0) to[short, -o] (4,0) node[right] {$b$};
+	\end{tikzpicture}
+	\end{center}
+	\subsubsection{Norton Equivalent}
+	$$I_{N}=I_{S/C}$$
+	$$R_{N}=R_{TH}$$
+	\begin{center}
+	\begin{tikzpicture}
+		% Bottom Circuit
+		\draw (0,-4) to[I, l=$I_N$] (0,-2)
+			     to[short, -*] (2,-2)
+			     to[short, -o] (4,-2) node[right] {$b$};
+			     
+		\draw (2,-2) to[R, l_=$R_{N}$] (2,-4);
+		
+		\draw (0,-4) to[short, -*] (2,-4)
+			     to[short, -o] (4,-4) node[right] {$a$};
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Maximum Power:}
+	To find a circuits maximum power, replace its resistive network within its Th\'ev\-enin equivalent.
+	\begin{center}
+	\begin{tikzpicture}[scale=1]
+		% Left Circuit
+		\draw (0,2) node[left] {$a$} to[short, o-] (2,2)
+			    to[R, l=$R_L$] (2,0)
+			    to[short, -o] (0,0) node[left] {$b$};
+		
+		% Right Circuit - Thevenin Equivalent
+		\draw (4,0) to[V, invert, l=$V_{Th}$] (4,2)
+			    to[R, l=$R_{Th}$, -o] (7,2) node[above] {$a$};
+		
+		\draw (4,0) to[short, -o] (7,0) node[below] {$b$};
+		
+		% Right Circuit - Load attached to terminals
+		\draw (7,2) to[short] (9,2)
+			    to[R, l=$R_L$] (9,0)
+			    to[short] (7,0);
+	\end{tikzpicture}
+	\end{center}
+	Power delivery to $R_{L}$:
+	$$p=I^{2}R_{L}=(\frac{V_{TH}}{R_{TH}+R_{L}})^{2}R_{L}$$
+	Max power is when $R_{L}=R_{TH}$:
+	$$p_{max}=\frac{V_{TH}^{2}R_{L}}{(2R_{L})^{2}}=\frac{V_{TH}^{2}}{4R_{L}}$$
+	\subsection{Superposition Principle:}
+	A linear system obeys this principle. Which is when two or more independent energy sources are connected in a circuit, the total response is the sum of each individual.
+	\subsection{Inductors:}
+	The behaviour of inductors are based around the properties of electro-\\-magnetism. The SI unit for an inductor is Henry.
+	$$V=L\frac{di}{dt}$$
+	$$W=\frac{1}{2}LI^{2}$$
+	\begin{center}
+	\begin{tikzpicture}
+		% Draw the inductor with L label and filled nodes at ends
+		\draw (0,0) to[L, l=$L$, *-*] (4,0);
+		
+		% Blue ink annotations for voltage v
+		\node[cyan] at (0.3, -0.7) {\Large $+$};
+		\node[cyan] at (3.7, -0.7) {\Large $-$};
+		\node[cyan] at (2, -0.7) {\Large $v$};
+		
+		% Blue ink annotation for current i with an arrow
+		\draw[-{Stealth}, cyan, thick] (1.2, -1.3) -- node[above] {\Large $i$} (2.8, -1.3);
+	\end{tikzpicture}
+	\end{center}
+	$$i(t)=\frac{1}{L}\int^{t}_{t_{0}}v\;d\tau+i(t_{0})$$
+	$$p=Li\frac{di}{dt}=\frac{dw}{dt}=vi(t)$$
+	\subsubsection{Series}
+	$$L_{eq}=\sum^{k}_{n=1}L_{n}$$
+	\subsubsection{Parallel}
+	$$L_{eq}=\frac{1}{\sum^{k}_{n=1}\frac{1}{L_{n}}}$$
+	\subsection{Capacitor:}
+	Made-up of two conductors seperated by an insulator. It acts as an O/C to DC current and S/C to AC. An important note to remember that electrical charge is not directly transported through the capacitor.
+	\begin{center}
+	\begin{tikzpicture}
+		% Resistor with 10 Ohm label
+		\draw (0,0) to[R, l=$10\,\Omega$, *-*] (4,0);
+		
+		% V = IR equation below
+		\node at (2, -1.5) {\LARGE $V = IR$};
+	\end{tikzpicture}
+	\end{center}
+	$$i=C\frac{dv}{dt}$$
+	$$v(t)=\frac{1}{C}\int^{t}_{t_{0}}i\;d\tau+v(t_{0})$$
+	$$p=vi=Cv\frac{dv}{dt}$$
+	$$w=\frac{1}{2}Cv^{2}$$
+	\subsubsection{Series}
+	$$C_{eq}=\frac{1}{\sum^{k}_{n=1}\frac{1}{C_{n}}}$$
+	\subsubsection{Parallel}
+	$$C_{eq}=\sum^{k}_{n=1}C_{n}$$
+	\subsection{Mutual Inductance:}
+	The magnetic fields between the two circuits create a mutual and self-\\-inductance voltages. Polarity of M depends on the way the coils are wound. $L_{1}$ and $L_{2}$ must be wound is opposing directions.
+	\begin{center}
+		\includegraphics[scale=0.5]{mutual-inductance.png}
+	\end{center}
+\end{document}
