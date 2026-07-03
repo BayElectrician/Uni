@@ -654,4 +654,286 @@
 	\begin{center}
 		\includegraphics[scale=0.5]{mutual-inductance.png}
 	\end{center}
+
+	\section{Diodes}
+	\subsection{Chemistry Revision:}
+	Electrons form themselves into shells, with the outer shell containing the most energy due to their great mobility. These electrons in the outer shell are called valence electrons. Ions are formed through either an element donating or recieving electrons (e.g. Cations and Anions)
+	\subsection{Energy Gaps:}
+	Valence bonds within inter-elemental bonds are in the valence band. A conduction band is the energy band beyond the valence band.
+	\begin{center}
+		\includegraphics[scale=0.5]{energy-gaps.png}\\[1\baselineskip]
+		\begin{tabular}{ | c | c |}
+			\hline
+			Material & $\rho(\Omega\cdot cm)$\\
+			\hline
+			Insulator & $\rho\;>\;10^{5}$\\
+			Semiconductor & $10^{-5}\;<\rho\;<\;10^{5}$\\
+			Conductor & $\rho\;<\;10^{-5}$\\
+			\hline
+		\end{tabular}
+	\end{center}
+	\subsection{Electrons and Holes:}
+	\begin{center}
+		\includegraphics[scale=0.25]{electron-holes.png}
+	\end{center}
+	In instrinsic silicon it's current is produced by the movement of free electrons toward the end. The effective movement of the hole is opposite direction of electron movement.
+	\subsection{Silicon:}
+	\subsubsection{Doping Silicon}
+	\paragraph{Donor Atoms}
+	These atoms are pentavalent imparity, with 5 electrons in the valence shell. They are doped into the silicon crystal structure that donates the extra electron. This then becomes a conduction electron. 
+	\paragraph{Acceptor Atoms}
+	Place a trivalent imparity into the silicon crystal structure. Creating a hole within the silicon molecule.
+	\subsubsection{PN Junction}
+	In the image below, the acceptor is the \textit{p}-region and donor is \textit{n}-region. Within the PN-junction, the \textit{p}-region is negatively charged, and the \textit{n}-region is slightly positively charge.
+	\begin{center}
+		\includegraphics[scale=0.35]{pn-junction.png}
+	\end{center}
+	The PN-junction forms a basic diode. This is something that only allows current flow in one direction. A voltage drop is formed across the reigon as depletion of \textit{n}-type silicon and equillibrium occurs when it repel electron migration.
+	\subsection{Diodes:}
+	\subsubsection{Forward Bias}
+	An external voltage assist electrons in moving through the PN-junction, allowing higher current flow. This reduces the width of the PN-junction.
+	\begin{center}
+		\includegraphics[scale=0.25]{diode-forward-bias.png}
+	\end{center}
+	\subsubsection{Reverse Bias}
+	An extremely small reverse current pushes electrons back towards the PN-\\-junction.
+	\begin{center}
+		\includegraphics[scale=0.25]{diode-reverse-bais.png}
+	\end{center}
+	\subsection{Ideal Diode Models:}
+	\subsubsection{Forward Bias}
+	\begin{center}
+	\begin{tikzpicture}
+		% --- Left Circuit ---
+		% Left branch with Resistor
+		\draw (0,0) to[R, l_=$R$] (0,2.5);
+		
+		% Bottom branch with Battery
+		\draw (0,0) -- (1,0) to[battery1] (2,0) -- (3.5,0);
+		\node[cyan] at (1.2, 0.5) {\Large $+$};
+		\node[cyan] at (2.3, 0.5) {\Large $-$};
+		
+		% Top branch with Diode (Filled)
+		\draw (0,2.5) -- (1,2.5) to[D*] (2.5,2.5) -- (3.5,2.5);
+		\node[cyan] at (1.2, 3) {\Large $+$};
+		\node[cyan] at (2.3, 3) {\Large $-$};
+		
+		% Right branch
+		\draw (3.5,2.5) to[short] (3.5,0);
+		
+		% Blue Loop for Current I_F
+		\draw[-{Stealth}, cyan, thick, rounded corners=5pt] 
+		    (2.8, 0.8) -- (2.8, 1.8) -- node[below] {\Large $I_F$} (0.7, 1.8) -- (0.7, 0.5);
+		    
+		    
+		% --- Equivalence Symbol ---
+		\draw[thick] (4.2, 1.4) -- (5.2, 1.4);
+		\draw[thick] (4.2, 1.25) -- (5.2, 1.25);
+		\draw[thick] (4.2, 1.1) -- (5.2, 1.1);
+
+
+		% --- Right Circuit (Equivalent) ---
+		\begin{scope}[shift={(6,0)}]
+		    % Left branch with Resistor
+		    \draw (0,0) to[R, l_=$R$] (0,2.5);
+		    
+		    % Bottom branch with Battery
+		    \draw (0,0) -- (1,0) to[battery1] (2,0) -- (3.5,0);
+		    \node[cyan] at (1.2, 0.5) {\Large $+$};
+		    \node[cyan] at (2.3, 0.5) {\Large $-$};
+		    
+		    % Top branch with Closed Switch representation
+		    \draw (0,2.5) -- (1,2.5) to[short, o-o] (2.5,2.5) -- (3.5,2.5);
+		    % Arrow representing closed path current direction
+		    \draw[-{Stealth}, thick] (1.3, 2.8) -- (2.2, 2.8);
+		    
+		    % Right branch
+		    \draw (3.5,2.5) to[short] (3.5,0);
+		    
+		    % Blue Loop for Current I_F
+		    \draw[-{Stealth}, cyan, thick, rounded corners=5pt] 
+			(2.8, 0.8) -- (2.8, 1.8) -- node[below] {\Large $I_F$} (0.7, 1.8) -- (0.7, 0.5);
+		\end{scope}
+	\end{tikzpicture}
+	\end{center}
+	$$I_{F}=\frac{V_{BIAS}}{R_{LIMIT}}$$
+	$$V_{F}=0V\text{, acts as S/C}$$
+	\subsubsection{Reverse Bias}
+	\begin{center}
+	\begin{tikzpicture}
+		% --- Left Circuit (Reverse Bias) ---
+		% Left branch with Resistor
+		\draw (0,0) to[R] (0,2.5);
+		
+		% Bottom branch with Battery
+		% Drawing right-to-left so the short (negative) terminal is on the left
+		\draw (0,0) -- (1,0);
+		\draw (2,0) to[battery1] (1,0);
+		\draw (2,0) -- (3.5,0);
+		
+		\node[cyan] at (1.2, 0.5) {\Large $-$};
+		\node[cyan] at (2.3, 0.5) {\Large $+$};
+		
+		% Top branch with Diode
+		\draw (0,2.5) -- (1,2.5) to[D*] (2.5,2.5) -- (3.5,2.5);
+		\node[cyan] at (1.2, 3) {\Large $-$};
+		\node[cyan] at (2.3, 3) {\Large $+$};
+		
+		% Right branch
+		\draw (3.5,2.5) to[short] (3.5,0);
+		
+		% Center text I=0
+		\node[cyan] at (1.75, 1) {\large $I=0$};
+		    
+		% --- Equivalence Symbol ---
+		\draw[thick] (4.2, 1.4) -- (5.2, 1.4);
+		\draw[thick] (4.2, 1.25) -- (5.2, 1.25);
+		\draw[thick] (4.2, 1.1) -- (5.2, 1.1);
+
+		% --- Right Circuit (Equivalent Open Circuit) ---
+		\begin{scope}[shift={(6,0)}]
+		    % Left branch with Resistor
+		    \draw (0,0) to[R] (0,2.5);
+		    
+		    % Bottom branch with Battery (short terminal left)
+		    \draw (0,0) -- (1,0);
+		    \draw (2,0) to[battery1] (1,0);
+		    \draw (2,0) -- (3.5,0);
+		    
+		    \node[cyan] at (1.2, 0.5) {\Large $-$};
+		    \node[cyan] at (2.3, 0.5) {\Large $+$};
+		    
+		    % Top branch with Open Switch
+		    \draw (0,2.5) -- (1.5,2.5) node[ocirc] {};
+		    \draw[thick] (1.5,2.5) -- (2.2, 2.9);
+		    \draw[-{Stealth}, thick] (1.85, 2.7) -- (2.35, 2.98);
+		    \draw (2.5,2.5) node[ocirc] {} -- (3.5,2.5);
+		    
+		    % Right branch
+		    \draw (3.5,2.5) to[short] (3.5,0);
+		\end{scope}
+	\end{tikzpicture}
+	\end{center}
+	$$I_{R}=0$$
+	$$V_{R}=V_{BIAS}\text{, acts as O/C}$$
+	\subsection{Practical Diode Models:}
+	\subsubsection{Forward Bias}
+	\begin{center}
+	\begin{tikzpicture}
+		% Nodes A and K (Green)
+		\node[green, font=\Large] at (0, 3.5) {$A$};
+		\node[green, font=\Large] at (6, 3.5) {$K$};
+		
+		% Left branch: R_limit
+		\draw (0,0) to[R, l=$R_{limit}$] (0,3);
+		% Blue signs for R_limit
+		\node[cyan, font=\Large] at (0.4, 0.4) {$+$};
+		\node[cyan, font=\Large] at (0.4, 2.6) {$-$};
+		
+		% Top branch: V_F, r_D (green), switch
+		\draw (0,3) -- (1.5,3) to[battery1] (2.5,3);
+		\node at (2, 2.2) {\Large $V_F$};
+		\node[cyan, font=\Large] at (1.2, 2.6) {$+$};
+		\node[cyan, font=\Large] at (2.8, 2.6) {$-$};
+		
+		% Dynamic resistance (Green)
+		\draw[green, thick] (2.5,3) to[R, l=$r_D$] (4,3);
+		
+		% Closed Switch
+		\draw (4,3) to[short, o-o] (5.5,3) -- (6,3);
+		\draw[-{Stealth}, thick] (4.2, 3.4) -- (5.3, 3.4);
+		
+		% Right branch
+		\draw (6,3) to[short] (6,0);
+		
+		% Bottom branch: V_Bias
+		\draw (0,0) -- (2.5,0) to[battery1] (3.5,0) -- (6,0);
+		\node at (3, 0.7) {\Large $V_{Bias}$};
+		\node[cyan, font=\Large] at (1.8, 0.6) {$+$};
+		
+		% Blue Loop for I_F
+		\draw[-{Stealth}, cyan, thick, rounded corners=15pt] 
+		    (4.8, 2.5) -- (5.5, 2.5) -- (5.5, 1) -- (3.5, 1);
+		\node[cyan, font=\Large] at (4.5, 1.5) {$I_F$};
+		
+	\end{tikzpicture}
+	\end{center}
+	$$V_{F}=0.7+I_{F}r'_{d}$$
+	$$I_{F}=\frac{V_{BIAS}-0.7}{R_{LIMIT}+r'_{d}}$$
+	\subsubsection{Reverse Bias}
+	\begin{center}
+	\begin{tikzpicture}
+		% Nodes A and K (Green)
+		\node[green, font=\Large] at (0, 3.5) {$A$};
+		\node[green, font=\Large] at (6, 3.5) {$K$};
+		
+		% Left branch: R_limit
+		\draw (0,0) to[R, l=$R_{limit}$] (0,3);
+		
+		% Top branch: Open Switch
+		\draw (0,3) -- (1.5,3) node[ocirc] {};
+		\draw[thick] (1.5,3) -- (2.3, 3.5);
+		\draw[-{Stealth}, thick] (1.9, 3.3) -- (2.4, 3.55);
+		\draw (2.5,3) node[ocirc] {} -- (6,3);
+		
+		% Reverse resistance r'_R across the switch (Green)
+		\draw[green, thick] (1.5, 3) -- (1.5, 4) to[R, l=$r'_R$] (2.5, 4) -- (2.5, 3);
+		
+		% Voltage across switch markers
+		\node[cyan, font=\Large] at (1.2, 2.5) {$-$};
+		\node[cyan, font=\Large] at (2.8, 2.5) {$+$};
+		
+		% Center text
+		\node[cyan, font=\Large] at (2.6, 1.8) {$V_{Bias}$};
+		\node[cyan, font=\Large] at (2.6, 1.1) {$I=0$};
+		
+		% Right branch
+		\draw (6,3) to[short] (6,0);
+		
+		% Bottom branch: V_Bias Battery
+		\draw (0,0) -- (2.5,0) to[battery1] (3.5,0) -- (6,0);
+		\node[cyan, font=\Large] at (1.5, 0.5) {$-$};
+		\node[cyan, font=\Large] at (4.5, 0.5) {$+$};
+	\end{tikzpicture}
+	\end{center}
+	The cathode side of the diode is connected to positive end of the power supply. Whereas, the anode is connected to the negative side.
+	
+	\section{Diode Applications}
+	\subsection{Wave Rectifiers:}
+	A rectifieris a type of circuit configurations that converts AC to its pulsating DC equivalent. A half-wave rectifier only converts half of the AC sine wave (e.g. positive or negative). A full wave rectifier converts the entirety of the sine wave.
+	\begin{center}
+	\begin{tikzpicture}
+		% AC Voltage Source
+		\draw (0,0) node[ground] {} 
+			    to[sV, l=$V_{in}$] (0,3);
+		
+		% Top branch with Diode and test point
+		\draw (0,3) -- (1,3) 
+			    to[D*] (3.5,3) 
+			    to[short, -o] (4,3) -- (5,3);
+		
+		% Load Resistor and Ground
+		\draw (5,3) to[R, l=$R_L$] (5,0) 
+			    node[ground] {};
+		
+		% Output Voltage Annotations
+		\node[cyan, font=\Large] at (4.5, 2.3) {$+$};
+		\node[cyan, font=\Large] at (4.5, 0.7) {$-$};
+		\node[cyan, font=\Large] at (3.5, 1.5) {$V_{out}$};
+	\end{tikzpicture}
+	\end{center}
+	For the circuit above, if $V_{in}$ is negative or smaller than the voltage barries in the diode, the diode should be reversed bias.
+	\subsubsection{Half-wave operation}
+	\begin{center}
+		\includegraphics[scale=0.35]{half-wave-operation.png}
+	\end{center}
+	\subsubsection{Full-wave Rectifier}
+	This circuit controls the direction of the load currents so that only the positive or negative outputs are recieved.
+	\begin{center}
+		\includegraphics[scale=0.35]{full-wave-operation.png}
+	\end{center}
+	\subsubsection{Bridge Rectifier}
+	\begin{center}
+		\includegraphics[scale=0.35]{bridge-rectifier.png}
+	\end{center}
 \end{document}
