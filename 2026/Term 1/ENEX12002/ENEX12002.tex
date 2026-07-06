@@ -9,7 +9,7 @@
 \usepackage[breaklinks, hidelinks]{hyperref}
 \usepackage{siunitx}
 \usepackage{tikz}
-\usetikzlibrary{positioning, arrows.meta}
+\usetikzlibrary{patterns, positioning, arrows.meta}
 \usepackage[american]{circuitikz}
 \usepackage{pgfplots}
 \pgfplotsset{compat=newest}
@@ -935,5 +935,373 @@
 	\subsubsection{Bridge Rectifier}
 	\begin{center}
 		\includegraphics[scale=0.35]{bridge-rectifier.png}
+	\end{center}
+	\subsubsection{Smoothing Rectified Signal}
+	The ripple within the output signal can put strain on connected DC comp\-onents. A capcitor is used to smooth the signal when the voltage no longer charges the capacitor. The larger the capacitor the small the ripple, and smoother the output voltage will be.
+	\begin{center}
+		\includegraphics[scale=0.35]{rectification-smoothing.png}
+	\end{center}
+	\subsection{IC Regulators:}
+	An intergrated circuit (IC) is a complete circuit on a small chip of silicon. The IC regulator is an IC connected to the output of a rectifier maintaining a consistent output voltage. The most common ones are 3-pin. The pins are for input, output, and reference adjustment.
+	\subsection{Diode Limiters:}
+	Limits the voltage to a certain value within the diode itself. The voltage is only limited to the circuit parallel to the diode. A common example of this is the Zener diode.
+	\begin{center}
+		\begin{tikzpicture}[scale=0.75]
+		% --- Top Left: Input Waveform (Vin) ---
+		\begin{scope}[shift={(0, 6)}]
+		    % Axes
+		    \draw (0, -1.5) -- (0, 1.5);
+		    \draw[-{Stealth}] (0, 0) -- (4, 0);
+		    \node[font=\Large] at (1.5, 1.5) {$V_{in}$};
+		    
+		    % Sine wave
+		    \draw[thick] (0,0) sin (1,1) cos (2,0) sin (3,-1) cos (4,0);
+		    
+		    % Cyan Shading for Positive Half-Cycle
+		    \path[pattern=north east lines, pattern color=cyan] (0,0) sin (1,1) cos (2,0) -- cycle;
+		    \draw[cyan, thick] (0,0) sin (1,1) cos (2,0);
+		\end{scope}
+
+		% --- Top Right: Output Waveform (Vout) ---
+		\begin{scope}[shift={(5, 6)}]
+		    % Axes
+		    \draw (0, -1.5) -- (0, 1.5);
+		    \draw[-{Stealth}] (0, 0) -- (4, 0);
+		    \node[font=\Large] at (3.5, 1.5) {$V_{out}$};
+		    
+		    % Clipped wave
+		    \draw[thick] (0,0) -- (2,0) sin (3,-1) cos (4,0);
+		    
+		    % Cyan Shading for Clipped Positive Half-Cycle
+		    \path[pattern=north east lines, pattern color=cyan] (0,0) rectangle (2, 0.2);
+		    \draw[cyan, thick] (0, 0.2) -- (2, 0.2);
+		    \draw[cyan, thick] (2,0) sin (3,-1) cos (4,0);
+		\end{scope}
+
+		% --- Bottom: Circuit Diagram ---
+		\begin{scope}[shift={(1, 0)}]
+		    % AC Voltage Source
+		    \draw (0,0) to[sV] (0,4);
+		    \node[font=\Large] at (0.8, 3) {$+$};
+		    \node[font=\Large] at (0.8, 1) {$-$};
+		    
+		    % Top branch with Series Resistor
+		    \draw (0,4) -- (1,4) to[R] (4,4) to[short, -*] (5,4) -- (7,4);
+		    
+		    % Parallel Diode (Pointing Up)
+		    \draw (5,0) to[D*, *-*] (5,4);
+		    
+		    % Load Resistor
+		    \draw (7,4) to[R] (7,0);
+		    
+		    % Bottom Return Path
+		    \draw (7,0) -- (0,0);
+		\end{scope}
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Bias Limiters:}
+	Similar to a diode limiter, but maintains a stable minimum voltage.
+	\begin{center}
+	\begin{tikzpicture}[scale=0.75]
+		% --- Top Left: Input Waveform ---
+		\begin{scope}[shift={(0, 6)}]
+		    % Axes
+		    \draw (0, -1.5) -- (0, 1.5);
+		    \draw[-{Stealth}] (0, 0) -- (4, 0);
+		    
+		    % Sine wave
+		    \draw[thick] (0,0) sin (1,1.2) cos (2,0) sin (3,-1.2) cos (4,0);
+		    
+		    % Cyan Shading for Positive Half-Cycle
+		    \path[pattern=north east lines, pattern color=cyan] (0,0) sin (1,1.2) cos (2,0) -- cycle;
+		    \draw[cyan, thick] (0,0) sin (1,1.2) cos (2,0);
+		\end{scope}
+
+		% --- Top Right: Output Waveform ---
+		\begin{scope}[shift={(5, 6)}]
+		    % Axes
+		    \draw (0, -1.5) -- (0, 1.5);
+		    \draw[-{Stealth}] (0, 0) -- (4, 0);
+		    
+		    % Original unclipped wave (for reference)
+		    \draw[thick] (0,0) sin (1,1.2) cos (2,0) sin (3,-1.2) cos (4,0);
+		    
+		    % Black shading representing the clipped portion
+		    \path[pattern=north east lines, pattern color=black] (0,-1.2) rectangle (4, 0.4);
+		    
+		    % Cyan trace representing the clamped/minimum output voltage
+		    \draw[cyan, thick] (0,0.4) -- (0.6,0.4) sin (1,1.2) cos (1.4,0.4) -- (4,0.4);
+		\end{scope}
+
+		% --- Bottom: Circuit Diagram ---
+		\begin{scope}[shift={(1, 0)}]
+		    % AC Voltage Source
+		    \draw (0,0) to[sV] (0,4);
+		    \node[font=\Large] at (0.8, 3) {$+$};
+		    \node[font=\Large] at (0.8, 1) {$-$};
+		    
+		    % Top branch with Series Resistor
+		    \draw (0,4) -- (1,4) 
+				to[R] (4,4) 
+				to[short, -*] (5,4) -- (7,4);
+		    
+		    % Parallel Branch: Diode and Bias Battery
+		    \draw (5,4) to[D] (5,2);
+		    \draw (5,2) to[battery1, l_=$V_{bias}$] (5,0);
+		    \node[font=\large] at (5.5, 1.5) {$+$};
+		    \node[font=\large] at (5.5, 0.5) {$-$};
+		    
+		    % Load Resistor
+		    \draw (7,4) to[R] (7,0);
+		    
+		    % Bottom Return Path
+		    \draw (7,0) -- (0,0);
+		    \draw (5,0) to[short, *-] (5,0); % Connection dot
+		\end{scope}
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Bias Variation:}
+	\begin{center}
+		\includegraphics[scale=0.25]{bias-variation.png}
+	\end{center}
+	\subsection{Diode Clampers:}
+	Adds a DC offset to an AC waveform. These can also be known as DC restorers.
+	\begin{center}
+		\includegraphics[scale=0.25]{diode-clampers.png}
+	\end{center}
+	\subsection{Extras:}
+	PIV of a diode is just the complete negative of the input voltage. As the diode acts like a S/C. All diodes in series drop ~0.7V per diode.\\
+	$V_{RMS}$ of half wave rectifier is:
+	$$V_{RMS}=\frac{1}{\sqrt{2}}\cdot\frac{V_{out}}{2}$$
+	$$V_{avg}=\frac{4V_{out}}{\pi}$$
+
+	\section{Special Diodes}
+	\subsection{Zener Diode:}
+	A Zener diode is one which mainly operates in its reverse break-down region.
+	\begin{center}
+		\includegraphics[scale=0.75]{zener-diode-CC.png}
+	\begin{tikzpicture}[font=\Large]
+		% --- Left side: Terminals and Input Voltage ---
+		\draw (0,5) node[ocirc] {} -- (2,5);
+		\draw (0,0) node[ocirc] {} -- (5,0);
+		\draw[cyan, very thick, <->] (0, 0.5) -- (0, 4.5) node[midway, left=5pt] {$V_{in}$};
+
+		% --- Top Branch: Series Resistor and Source Current ---
+		% Source Current (Is) Arrow
+		\draw[-{Stealth}, cyan, very thick] (0.5, 5.5) -- (1.5, 5.5) node[midway, above] {$I_S$};
+		% Series Resistor (Rs)
+		\draw (2,5) to[R, l=$R_S$] (2,3);
+
+		% --- Middle Branch: Zener Diode ---
+		% Filled Zener Diode (cathode up) using zD*
+		\draw (2,3) to[zD*, invert] (2,0); 
+		
+		% Zener Current (Iz) Arrow and Voltage Polarity
+		\draw[-{Stealth}, cyan, very thick] (2.8, 2.3) -- (2.8, 1.2) node[midway, right] {$I_Z$};
+		\node[cyan, font=\LARGE] at (1.4, 2.5) {$+$};
+		\node[cyan, font=\LARGE] at (1.4, 0.5) {$-$};
+
+		% --- Right side: Output Branch and Load Current ---
+		% Load Current (Il) Arrow
+		\draw[-{Stealth}, cyan, very thick] (3, 3.5) -- (4, 3.5) node[midway, above] {$I_L$};
+		% Terminals
+		\draw (2,3) -- (5,3) node[ocirc] {};
+		\draw (5,0) node[ocirc] {};
+		
+		% Output Voltage (Vout) Arrow
+		\draw[cyan, very thick, <->] (5, 0.5) -- (5, 2.5) node[midway, right=5pt] {$V_{out}$};
+		
+		% --- Connection Dots ---
+		\filldraw (2,3) circle (2.5pt);
+		\filldraw (2,0) circle (2.5pt);
+	\end{tikzpicture}
+	\end{center}
+	$$R_{S}=\frac{V_{in}-V_{out}}{I_{Z}}$$
+	$$I_{Z(load)}=I_{Z(no load)}-I_{L}$$
+	The breakdown voltage, is the ideal values for voltage items. After the maximum current through the diode. If more current is applied to the diode, permenant damage occurs. The knee current is the minimum current required for the voltage regulation to work properly.
+	\subsection{Varactor Diode:}
+	This diode is a reversed-biased PN-junction that utilizeds the inherent capacitence of the depletion region.
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Varactor Symbol ---
+	    \node[above] at (0, 1) {Symbol};
+	    \draw (0, 1) to[VC*] (0, -2.5);
+	    
+	    % --- Equivalent Circuit ---
+	    \node[above, align=center] at (4, 1) {Equivalent\\[-0.3em]Circuit};
+	    \draw (4, 1) to[american resistor, l=$R_S$] (4, -0.75)
+			 to[variable capacitor, l=$C_v$] (4, -2.5);
+	\end{tikzpicture}
+	\end{center}
+	\subsection{LightEmtting Diodes:}
+	LEDsemit light when exposed to power. As such they are very useful as indicator throughoug a circuit. These diode types are designed to work only in forward bias conditions.
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- LED Symbol ---
+	    \node[above] at (0, 1) {Symbol};
+	    \draw (0, 1) to [leD*] (0, -2.5);
+	\end{tikzpicture}
+	\end{center}
+	\subsubsection{Organic LED:}
+	The way OLED works is identical to the normal LEDS. The make-up of an OLED display is 2-3 layers, composed of organic polymers that emit light on certain voltage levels.
+	\subsection{Photodiode:}
+	A ligh absorbing device that conducts current based on light levels. This works in reverse bias configuration.
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Photodiode Symbol ---
+	    \node[above] at (0, 1) {Symbol};
+	    \draw (0, 1) to [pD*] (0, -2.5);
+	\end{tikzpicture}
+	\end{center}
+
+	\section{Bipolar Junction Transistor}
+	The following symbols are used to denote between the two types present. In where the types of silicon are placed within the silicon.
+	\begin{center}
+	\begin{tikzpicture}[
+	    thick,
+	    font=\sffamily\Large,
+	    term/.style={text=black, font=\sffamily\Large}
+	]
+			% --- NPN Transistor ---
+	    % Using the standard npn node
+	    \node[npn] (Q_npn) at (0, 0) {};
+	    
+	    % Terminal Labels
+	    \node[term, left]  at (Q_npn.B) {B};
+	    \node[term, above] at (Q_npn.C) {C};
+	    \node[term, below] at (Q_npn.E) {E};
+	    
+	    % Type Label
+	    \node[text=red] at (0, -2) {npn};
+
+	    % --- PNP Transistor ---
+	    % Using the standard pnp node, spaced 5 units to the right
+	    \node[pnp] (Q_pnp) at (5, 0) {};
+	    
+	    % Terminal Labels
+	    \node[term, left]  at (Q_pnp.B) {B};
+	    \node[term, below] at (Q_pnp.C) {C};
+	    \node[term, above] at (Q_pnp.E) {E};
+	    
+	    % Type Label
+	    \node[text=red] at (5, -2) {pnp};
+
+	\end{tikzpicture}
+	\end{center}
+	\subsection{BJT Biasing:}
+	For a BJT to operate properly, it must be biased. The collector must be in reverse bias and emitter forward. The current direction opposes the direction the arrow is pointing.
+	\begin{center}
+		\includegraphics[scale=0.25]{bjt-biasing.png}
+	\end{center}
+	$$I_{E}=I_{B}+I_{C}$$
+	Since base current is much lower than emittor or collector current the can equation equates to roughly $I_{E}\approx I_{C}$.
+	\subsection{Beta DC:}
+	$\beta_{DC}$ is the current gain of a transistor. On a datashett $\beta_{DC}$ is usually $h_{FE}$. This is only valid if the transistor operates within the manufacters specified range.
+	$$\beta_{DC}=\frac{I_{C}}{I_{B}}$$
+	$\beta_{DC}$ is not always a consistent value, as shown in the image below.
+	\begin{center}
+		\includegraphics[scale=0.25]{beta-dc.png}
+	\end{center}
+	\subsection{Alpha DC:}
+	$\alpha_{DC}$ is the ratio of the DC collector to DC emittor currents. Typical value ranges for $\alpha_{DC}$ is $0.95\rightarrow 0.99$. It is less common for $\alpha_{DC}$ to be found in the components datasheets than $\beta_{DC}$.
+	\subsection{Equivalent Circuits:}
+	\begin{center}
+	\begin{tikzpicture}[
+	    thick,
+	    font=\sffamily\Large,
+	    cyan_label/.style={text=cyan, font=\LARGE},
+	    purple_label/.style={text=violet!80!black},
+	    red_label/.style={text=red}
+	]
+
+	    % --- Top Title ---
+	    \node[purple_label, above right] at (0, 4) {npn Transistor};
+
+	    % --- Left Side (Input) ---
+	    % Base Terminal
+	    \draw (0, 3) node[ocirc] {} node[purple_label, left] {Base}
+		  -- (2, 3);
+	    
+	    % Input Voltage (V_BE)
+	    \node[cyan_label] at (0.5, 1.5) {$V_{BE}$};
+	    \node[cyan_label] at (0, 2.5) {$+$};
+	    \node[cyan_label] at (0, 0.5) {$-$};
+
+	    % Base Current (I_B)
+	    \draw[->, cyan, very thick] (0.8, 3.4) -- (1.5, 3.4) node[midway, above] {$I_B$};
+
+	    % Forward Biased Diode (Base to Emitter)
+	    \draw (2, 3) to[D*] (2, 0);
+	    \node[red_label] at (2.8, 2.6) {FB};
+	    \draw[->, red, thick] (2.7, 2.4) -- (2.2, 1.9);
+
+	    % Lower Input Terminal
+	    \draw (0, 0) node[ocirc] {} -- (2, 0);
+
+	    % --- Right Side (Output) ---
+	    % Collector Terminal
+	    \draw (7, 3) node[ocirc] {} node[purple_label, right] {Collector}
+		  -- (4, 3);
+		  
+	    % Output Voltage (V_CE)
+	    \node[cyan_label] at (6.5, 1.5) {$V_{CE}$};
+	    \node[cyan_label] at (7, 2.5) {$+$};
+	    \node[cyan_label] at (7, 0.5) {$-$};
+
+	    % Collector Current (I_C)
+	    % Corrected to point INWARDS (left) for an NPN model
+	    \draw[->, cyan, very thick] (6.2, 3.4) -- (5.2, 3.4) node[midway, above] {$I_C$};
+
+	    % Dependent Current Source
+	    % Corrected to point DOWN (Collector to Emitter) for an NPN model
+	    \draw (4, 3) to[cI] (4, 0);
+	    \node[cyan_label, right] at (4.6, 1.5) {$\beta_{DC}I_B$};
+
+	    % Lower Output Terminal
+	    \draw (7, 0) node[ocirc] {} -- (4, 0);
+
+	    % --- Common Emitter Line ---
+	    \draw (2, 0) -- (4, 0);
+	    \draw (3, 0) node[circ] {};
+	    \node[purple_label, below=0.2cm] at (3, 0) {Emitter};
+
+	    % --- Braces ---
+	    \draw[decorate, decoration={brace, mirror, amplitude=10pt}, red, very thick] 
+		(0, -0.8) -- (2.5, -0.8) node[midway, below=12pt, text=black] {Input};
+		
+	    \draw[decorate, decoration={brace, mirror, amplitude=10pt}, red, very thick] 
+		(4, -0.8) -- (7, -0.8) node[midway, below=12pt, text=black] {Output};
+
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Voltage and Current:}
+	\begin{center}
+		\includegraphics[scale=0.5]{bjt-current.png}
+	\end{center}
+	$$V_{BE}=0.7V$$
+	$$I_{B}=\frac{V_{BB}-V_{BE}}{R_{B}}$$
+	$$V_{CE}=V_{CC}-I_{C}R_{C}$$
+	$$V_{CB}=V_{CE}-V_{BE}$$
+	\subsection{Collector Characteristic Curves:}
+	\begin{center}
+		\includegraphics[scale=0.25]{bjt-cc.png}
+	\end{center}
+	\subsection{Cut-off:}
+	When $I_{B}\approx 0$, the BJT is cut off and there is no collector current. In cut-off both base-emitter and base-collector are in reverse bias.
+	\subsection{Saturation:}
+	When base current is large, the $V_{CC}$ drop across $R_{C}$ is sufficient, leaving no voltage between the collector and emitter.
+	$$I_{C(sat)}=\frac{V_{CC}}{R_{C}}$$
+	$$I_{C(sat)}=\frac{V_{CC}-V_{CE(sat)}}{R_{C}}$$
+	\subsection{Maximum Rating:}
+	Transistors have limitations specified on the datasheet. As such the $V_{CE}$ and $I_{C}$ of the component must not exceed the $P_{D(max)}$. At higher temps the $P_{D(max)}$ is less.
+	\subsection{BJT as an Amplifier:}
+	$$V_{out}=\frac{R_{C}}{r'_{e}}\times V_{b}$$
+	\begin{center}
+		\includegraphics[scale=0.25]{bjt-amplifier.png}
+	\end{center}
+	\subsection{BJT as a Switch:}
+	By switching a BJT in either cut-off or saturation, a basic switch can be formed. This is either through letting current not flow or flow through the transistor.
+	\begin{center}
+		\includegraphics[scale=0.25]{bjt-switch.png}
 	\end{center}
 \end{document}
