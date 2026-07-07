@@ -1437,4 +1437,54 @@
 	\begin{center}
 		\includegraphics[scale=0.25]{cc-amplifier.png}
 	\end{center}
+	This type of amplifier is not great at voltage gain ($A_{v}\approx1$), but allows high current gain.
+	$$V_{out}=I_{e}R_{e}$$
+	$$V_{in}=I_{e}(r'_{e}+R_{e})$$
+	$$A_{v}=\frac{R_{e}}{r'_{e}+R_{e}}$$
+	When $V_{in}\approx V_{out}$, it has the same amplitude and phase-angle as the source.
+	\begin{center}
+		\includegraphics[scale=0.25]{ef-transistor-equivalent.png}
+	\end{center}
+	\begin{align*}
+		A_{in(base)}&=\frac{V_{b}}{I_{b}}\\
+			    &=\frac{I_{e}(r'_{e}+R_{e})}{I_{b}}\\
+			    &=\beta_{ac}(r'_{e}+R_{eq})\\\\
+		R_{in(tot)}&=R_{1}||R_{2}||R_{in(base)}\\
+		R_{out}&\approx\frac{R_{s}}{\beta_{ac}}||R_{E}\\\\
+		A_{i}&=\frac{I_{e}}{I_{in}}\\
+		     &=\frac{I_{e}R_{in(tot)}}{V_{in}}\\
+		A_{p}&=A_{v}A_{i}\\
+		     &\approx A_{i},\text{ as $A_{v}\approx1$}
+	\end{align*}
+	\subsection{The Darlington Pair:}
+	This is simply 2 cascading BJTs, with the emitter connected to the base of the other. The main advantage of using this is that it generates high input resistance and high current gain.
+	\begin{center}
+		\includegraphics[scale=0.5]{darlington-pair.png}
+	\end{center}
+	$$\beta_{ac}=\beta_{ac1}\beta_{ac2}$$
+	\subsection{Szikali Pair:}
+	Use both npn and pnp BJTs. Its main advantage is low turn on voltage. With the most common application being used in conjuction with the Darlington pair.
+	\begin{center}
+		\includegraphics[scale=0.35]{szikali-pair.png}
+	\end{center}
+	\subsection{Collector-Base Amplifier:}
+	\begin{center}
+		\includegraphics[scale=0.35]{cb-amplifier.png}
+	\end{center}
+	\begin{align*}
+		A_{v}=&\frac{V_{c}}{V_{e}}\\
+		=&\frac{I_{c}R_{c}}{I_{e}(r'_{e}||R_{e})}\\
+		\approx&\frac{R_{c}||R_{L}}{r'_{e}}
+	\end{align*}
+	\begin{center}
+		\includegraphics[scale=0.35]{cb-amplifier-ac.png}
+	\end{center}
+	\begin{align*}
+		R_{in(emit)}=&\frac{V_{e}}{I_{e}}\\
+		=&r'_{e}||R_{e}\\
+		R_{out}\approx&R_{e}\\\\
+		A_{v}=&\frac{r_{in}}{R_{L}}\\
+		A_{i}=&1\\
+		A_{p}\approx&A_{v}
+	\end{align*}
 \end{document}
