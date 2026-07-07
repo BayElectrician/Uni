@@ -1304,4 +1304,137 @@
 	\begin{center}
 		\includegraphics[scale=0.25]{bjt-switch.png}
 	\end{center}
+
+	\section{Transistor Bias Circuits}
+	\subsection{Q Point - DC Operating Point:}
+	The way a BJT amplifies a signal depends on it's biasing of itself.
+	\subsection{Voltage Divider Biasing:}
+	\begin{center}
+		\includegraphics[scale=0.5]{bjt-voltage-divider-biasing.png}
+	\end{center}
+	\begin{align*}
+		V_{B}&\approx\frac{R_{2}}{R_{1}+R_{2}}\times V_{CC}\\
+		V_{BE}&=V_{B}-V_{E}\\
+		      &\approx 0.7V\\
+		I_{C}&\approx I_{E}\\
+		     &=\frac{V_{E}}{R_{E}}\\
+		V_{C}&=V_{CC}-I_{C}R_{C}\\
+		V_{CE}&=V_{C}-V_{E}
+	\end{align*}
+	\subsection{DC Input Resistance:}
+	Important as it is the resistance presented to an input signal coming into the base.
+	\begin{align*}
+		R_{in(Base)}&=\frac{V_{B}}{I_{B}}\\
+			    &=\frac{\beta_{DC}V_{B}}{I_{E}}
+	\end{align*}
+	As it is the reliant upon $\beta_{DC}$, it will vary for different transistors at different temperatures.
+	\subsection{Voltage Division with Thev\'evenin Equivalent Circuits:}
+	\begin{center}
+		\includegraphics[scale=0.25]{voltage-divider-thevenin-equivalent.png}
+	\end{center}
+	$$V_{TH}=\frac{R_{2}}{R_{1}+R_{2}}V_{CC}$$
+	$$R_{TH}=\frac{R_{1}R_{2}}{R_{1}+R_{2}}$$
+	$$V_{TH}-V_{R_{TH}}-V_{BE}-V_{R_{E}}=0$$
+	$$V_{TH}=F_{E}(R_{E}+\frac{R_{TH}}{\beta_{DC}})+V_{BE}$$
+	$$F_{E}=\frac{V_{TH}-V_{BE}}{R_{E}+\frac{R_{TH}}{\beta_{DC}}}$$
+	\subsection{Emitter Biasing:}
+	\begin{center}
+		\includegraphics[scale=0.25]{emitter-biasing.png}
+	\end{center}
+	$$V_{EE}+V_{R_{B}}+V_{BE}+V_{R_{E}}=0$$
+	\begin{align*}
+		-V_{EE}&=\frac{I_{E}}{\beta_{DC}}R_{B}+I_{E}R_{E}+V_{BE}\\
+		I_{E}&=\frac{-V_{EE}-V_{BE}}{R_{E}+\frac{R_{B}}{\beta_{DC}}}\\
+		V_{E}&=V_{EE}+I_{E}R_{E}\\
+		V_{B}&=V_{E}+V_{BE}\\
+		V_{C}&=V_{CC}-I_{C}R_{C}
+	\end{align*}
+	\subsection{Base Biasing:}
+	\begin{center}
+		\includegraphics[scale=0.35]{base-biasing.png}
+	\end{center}
+	\begin{align*}
+		V_{CC}-V_{R_{B}}-V_{BE}&=0\\
+		V_{CC}-I_{B}R_{B}-V_{BE}&=0\\
+		I_{B}&=\frac{V_{CC}-V_{BE}}{R_{B}}\\
+		V_{CC}-I_{C}R_{C}-V_{CE}&=0\\
+		V_{CE}&=V_{CC}-I_{C}R_{C}\\
+		I_{C}&=\beta_{DC}(\frac{V_{CC}-V_{BE}}{R_{B}})
+	\end{align*}
+	\subsection{Emitter Feedback Biasing:}
+	\begin{center}
+		\includegraphics[scale=0.25]{emitter-feedback-biasing.png}
+	\end{center}
+	$$-V_{CC}+I_{B}R_{B}+V_{BE}+I_{E}R_{E}=0$$
+	$$I_{E}=\frac{V_{CC}-V_{BE}}{R_{E}+\frac{R_{B}}{\beta_{DC}}}$$
+	\subsection{Collector Feedback Biasing:}
+	\begin{center}
+		\includegraphics[scale=0.25]{collector-feedback-biasing.png}
+	\end{center}
+	\begin{align*}
+		I_{B}&=\frac{V_{C}-V_{BE}}{R_{B}}\\
+		     &=\frac{I_{C}}{\beta_{DC}}\\
+		V_{C}&\approx V_{CC}-I_{C}R_{C}\\
+		I_{C}&=\frac{V_{CC}-V_{BE}}{R_{C}+\frac{R_{B}}{\beta_{DC}}}\\
+		V_{CE}&=V_{CC}-I_{C}R_{C}
+	\end{align*}
+	
+	\section{Bipolar Junction Transistors as Amplifiers}
+	\subsection{Tansistor AC Model:}
+	\begin{center}
+		\includegraphics[scale=0.25]{bjt-ac.png}
+		\begin{tabular}{ c | c }
+			\hline
+			Parameter & Description\\
+			\hline
+			$\alpha_{AC}$ & Alpha AC ($\frac{I_{C}}{I_{E}}$)\\
+			$\beta_{AC}$ & Beta AC ($\frac{I_{C}}{I_{0}}$)\\
+			$r'_{e}$ & AC Emitter Resistor\\
+			$r'_{b}$ & AC Base Resistor\\
+			$r'_{c}$ & AC Collector Resistor
+		\end{tabular}
+	\end{center}
+	$$r'_{e}\approx\frac{25\text{mV}}{I_{E}}$$
+	\subsection{Collector-Emitter Amplifier:}
+	\begin{center}
+		\includegraphics[scale=0.25]{ce-amplifier.png}
+	\end{center}
+	Useful for very high voltage and current gains. To calculate the CE amplifier, complete a DC analysis to find Q-point and $V_{CE}$. After, do the AC analysis.
+	\begin{center}
+		\includegraphics[scale=0.35]{ce-amplifier-base-resistance.png}
+	\end{center}
+	$$R_{in(tot)}=R_{1}||R_{2}||R_{in(base)}$$
+	$$V_{b}=(\frac{R_{in(tot)}}{R_{s}+R_{in(tot)}})V_{s}$$
+	\begin{center}
+		\includegraphics[scale=0.35]{ce-amplifier-ac-analysis.png}
+	\end{center}
+	\begin{align*}
+		R_{in(base)}&=\frac{V_{in}}{I_{in}}\\
+			    &=\frac{V_{b}}{I_{b}}\\
+			    &=\frac{I_{e}r'_{e}}{I_{E}\/\beta_{ac}}\\
+			    &=\beta_{ac}r'_{e}\\\\
+		R_{out}&=R_{c}||r'_{e}\\
+		       &=R_{C}||R_{L}
+	\end{align*}
+	\begin{center}
+		\includegraphics[scale=0.35]{ce-amplifier-amplification.png}
+	\end{center}
+	\begin{align*}
+		V_{c}&=-\alpha_{ac}I_{E}R_{c}\\
+		     &\approx-I_{E}R_{C}\\
+		V_{b}&=I_{e}r'_{e}\\
+		A_{V}=\frac{V_{c}}{V_{b}}\\
+		     &=-\frac{R_{c}}{r'_{e}}
+	\end{align*}
+	The negative sign is used to indicate that the voltage is $180^{\circ}$ out of phase.
+	\begin{align*}
+		A_{i}&=\frac{I_{c}}{I_{s}}\\
+		I_{s}&=\frac{V_{s}}{R_{s}+R_{in(tot)}}\\
+		A_{P}&=A'_{v}A_{i}\\
+		A'_{v}&=\frac{V_{c}}{V_{s}}
+	\end{align*}
+	\subsection{Emitter-follower Amplifier:}
+	\begin{center}
+		\includegraphics[scale=0.25]{cc-amplifier.png}
+	\end{center}
 \end{document}
