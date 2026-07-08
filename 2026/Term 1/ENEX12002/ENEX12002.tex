@@ -1487,4 +1487,206 @@
 		A_{i}=&1\\
 		A_{p}\approx&A_{v}
 	\end{align*}
+	
+	\section{Operational Amplifiers}
+	\subsection{What is it?:}
+	An OpAmp is name operational amplifier because they were initially used for mathematical operations. An OpAmp physically is a high DC amplifier, with extremely high voltage gain, high input impedance and low output impedance.
+	\begin{center}
+	\begin{tikzpicture}[thick]
+	    % --- Op-Amp Component ---
+	    % By default, circuitikz places the inverting (-) input on top 
+	    % and the non-inverting (+) input on the bottom, matching your sketch.
+	    \node[op amp] (opamp) at (0,0) {};
+
+	    % --- Input Terminals ---
+	    % Inverting Input (-)
+	    \draw (opamp.-) to[short, -o] +(-1.5, 0) 
+		  node[left, text=black, font=\sffamily\Large] {Inverting};
+
+	    % Non-inverting Input (+)
+	    \draw (opamp.+) to[short, -o] +(-1.5, 0) 
+		  node[left, text=black, font=\sffamily\Large] {Non-inverting};
+
+	    % --- Output Terminal ---
+	    \draw (opamp.out) to[short, -o] +(1.5, 0) 
+		  node[right, text=black, font=\sffamily\Large] {Output};
+
+	    % --- Power Supply Connections ---
+	    % Positive Supply (V+)
+	    \draw (opamp.up) to[short, -o] +(0, 1) 
+		  node[right, text=violet!80!black, font=\sffamily\Large] {$V^+$};
+
+	    % Negative Supply (V-)
+	    \draw (opamp.down) to[short, -o] +(0, -1) 
+		  node[right, text=violet!80!black, font=\sffamily\Large] {$V^-$};
+
+	    % --- Annotations ---
+	    \node[text=violet!80!black, font=\sffamily\Large, align=center] 
+		  at (3, -1.8) {Optional\\DC supply\\connections};
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Ideal Op-Amp Characteristics:}
+	\begin{enumerate}
+		\item Infinite Voltage Gain
+		\item Infinite Input Impedence
+		\item Zero Output Impedence
+	\end{enumerate}
+	\subsection{Practical Characteristic:}
+	\begin{itemize}
+		\item P-P output voltage is limited to slightly less then the difference between two supply voltages.
+		\item Output current is limited by internal restrictions.
+		\item High amount of noise.
+	\end{itemize}
+	\subsection{Op-Amp Design:}
+	A typical op-amp is constructed of three parts:
+	\begin{itemize}
+		\item Differential Amp
+		\item Voltage Amp
+		\item Push-pull Amp
+	\end{itemize}
+	\subsection{Differential Input Mode:}
+	\begin{center}
+		\includegraphics[scale=0.25]{op-amp-diff-input.png}
+	\end{center}
+	\subsection{Open-Loop:}
+	\begin{itemize}
+		\item Ratio of output to input voltage with no external components.
+		\item Set by interal design.
+		\item Usually a large value, 200,000 (106dB).
+		\item Not a well controlled parameter.
+	\end{itemize}
+	\subsection{Common-Input Mode:}
+	\begin{center}
+		\includegraphics[scale=0.25]{common-mode-rejection.png}
+	\end{center}
+	$$CMMR=\frac{A_{ol}}{A_{cm}}$$
+	$$CMMR(dB)=20\log_10{(CMMR)}$$
+	It is generally considered that a higher CMMR the better.
+	\subsection{Maximum Output Voltage:}
+	With no input signal the output should ideally be $0V$, and ideal limit of P-P of $\pm V_{CC}$. In practice $V_{out(P-P)}<\pm V_{CC}$ varying with the load connected and increasing directly with load resistance.
+	\subsection{Input Offset Voltage:}
+	The ideal Op-Amp produces $0V_{out}$ for $0V_{in}$. However, practically a small DC voltage, $V_{out(error)}$ is created. On the datasheet, the input offset voltage ($V_{os}$), is the voltage required to force an output. Typically $V_{os}<2mV$. A key note is that $V_{os}$ drifts with temperature.
+	\subsection{Input Bias Current:}
+	The input terminals of a bipolar differential amplifier are transistor bases. The $I_{BIAS}$ is the DC current required to properly operate the first stage.
+	$$I_{BIAS}=\frac{I_{1}+I_{2}}{2}$$
+	\subsection{Input Impedence:}
+	\begin{center}
+		\includegraphics[scale=0.25]{op-amp-input-impedance.png}
+	\end{center}
+	Differential impedance is measured by determining the change in $I_{BIAS}$, for a gain change in $V_{in}$. THe total resistance between the inverting and non-inverting inputs. Common-mode is deremined through the change in bias for common-mode voltage input resistance between each input and ground.
+	\subsection{Input Current:}
+	\begin{center}
+		\includegraphics[scale=0.25]{op-amp-input-current-os.png}
+	\end{center}
+	$$I_{OS}=\lvert I_{1}-I_{2} \rvert$$
+	$$V_{OS}=I_{os}R_{in}$$
+	$$V_{out(error)}=A_{v}I_{os}R_{in}$$
+	\subsection{Output Impedance:}
+	Just the resistance viewed from the output terminal of the Op-Amp.
+	\subsection{Slew Rate:}
+	\begin{center}
+		\includegraphics[scale=0.2]{op-amp-slew-rate.png}
+	\end{center}
+	The max PoC of $V_{out}$ is response the a step input voltage. The following equation gives the worst case senario.
+	$$\text{Slew Rate}=\frac{\Delta V_{out}}{\Delta t}$$
+	\subsection{Noise Specification:}
+	Noise in a circuit is an unwanted signal that affect a desired outcome. It is important for low-level signals and high accuracy operations. At low frequencies, noise ($\frac{1}{f}$) is often called pink noise. Above the critical noise frequency it becomes flat, called white noise.
+	$$\text{Noise}=\frac{V}{\sqrt{\text{Hz}}}$$
+	
+	\section{Operational Amplifier Feedback}
+	\subsection{Negative Feedback:}
+	\begin{center}
+		\includegraphics[scale=0.25]{op-amp-negative-feedback.png}
+	\end{center}
+	Useful in OpAmp circuits as they have very high internal voltage gain with small input signal. Driving the OpAmp toward saturation. Lowering is maximum amplification value.
+	\subsection{Closed-loog Voltage Gain:}
+	The $A_{cl}$ si the $A_{v}$ with external feedback, usually negative. The $A_{cl}$ is determined by external component values and can be precisely controlled by them.
+	\subsection{Non-Inverting Amplifier:}
+	In this circuit the input and output signals are still in the same phase. It is made up of an OpAmp with an input signal applied to its non-inverting input. With some of the output place in the inverting side.
+	\begin{center}
+		\includegraphics[scale=0.25]{non-inverting-op-amp.png}
+	\end{center}
+	$$V_{f}=\frac{R_{i}}{R_{i}+R_{f}}\times V_{out}$$
+	$$B=\frac{R_{i}}{R_{i}+R_{f}}$$
+	$$A_{cl(NI)}=\frac{V_{out}}{V_{in}}\approx\frac{1}{B}$$
+	\subsection{Inverting Amplifier:}
+	\begin{center}
+		\includegraphics[scale=0.25]{inverting-op-amp.png}
+	\end{center}
+	$V_{in}$ will appear O/C as such current through the OpAmp is 0. 
+	$$I_{i}=I_{f}$$
+	\begin{center}
+		\includegraphics[scale=0.25]{inverting-op-amp-current-flow.png}
+	\end{center}
+	$$I_{in}=\frac{V_{in}}{R_{i}}$$
+	$$I_{f}=\frac{-V_{out}}{R_{L}}$$
+	$$A_{v}=\frac{V_{out}}{V_{in}}=\frac{-R_{f}}{R_{in}}$$
+	\subsection{Non-inverting Input Impedance:}
+	\begin{center}
+		\includegraphics[scale=0.25]{non-inverting-input-impedance.png}
+	\end{center}
+	\begin{align*}
+		V_{in}=&V_{ol}+V_{f}\\
+		=&V_{d}+A_{ol}BV_{d}\\
+		\frac{V_{in}}{I_{in}}=&(1+A_{ol}B)Z_{in}\\
+		Z_{in(NI)}=&(1+A_{ol}B)Z_{in}
+	\end{align*}
+	\subsection{Non-inverting Output Impedance:}
+	\begin{center}
+		\includegraphics[scale=0.25]{non-inverting-output-impedance.png}
+	\end{center}
+	\begin{align*}
+		V_{out}\approx&A_{ol}(V_{in}-V_{f})\\
+		\approx&A_{ol}(V_{in}-BV_{out})\\
+		Z_{out}=&(1+A_{ol}B)Z_{out(NI)}\\
+		Z_{out(NI)}=&\frac{Z_{out}}{1+A_{ol}B}
+	\end{align*}
+	\subsection{Voltage Follower Impedance:}
+	Using $B=1$:
+	$$Z_{in(VF)}=(1+A_{ol})Z_{in}$$
+	$$Z_{out(VF)}=(\frac{Z_{out}}{1+A_{ol}}$$
+	As such the input impedance of a voltage follower is greater than a non-inverting OpAmp voltage divider feedback network. Output is same as above but smaller than the other.
+	\subsection{Inverting Impedances:}
+	$$Z_{in(I)}\approx R_{i}$$
+	$$Z_{out(I)}=\frac{Z_{out}}{1+A_{ol}B}$$
+	\subsection{Bandwidth Limitations:}
+	\begin{center}
+		\includegraphics[scale=0.25]{op-amp-bandwidth-limitations.png}
+	\end{center}
+	The bandwidth of the OpAmp is the frequency range between critical frequencies, where gaiin is 3dB lower then mid-range gain.
+	$$BW=f_{cu}-f_{cl}$$
+	\subsection{Open-loop Gain vs Frequency:}
+	THe RC lag (low-pass) circuits with an OpAmp are responsible for the roll-off in gain.
+	\begin{center}
+		\includegraphics[scale=0.25]{op-amp-open-loop-gain.png}
+	\end{center}
+	\begin{align*}
+		\frac{V_{out}}{V_{in}}&=\frac{X_{C}}{\sqrt{R^{2}+X_{C}^{2}}}\\
+				     &=\frac{1}{\sqrt{1+\frac{f^{2}}{f_{c}^{2}}}}\\\\
+		f_{c}&=\frac{1}{2\pi RC}\\
+		A_{ol}&=\frac{A_{ol(mid)}}{\sqrt{1+\frac{f^{2}}{f_{c}^{2}}}}
+	\end{align*}
+	The RC circuit causes a propagation delay from input to ouput. This causes some phase-shift between two signals.
+	\begin{align*}
+		\theta&=-\arctan{(\frac{R}{X_{C}})}\\
+		      &=-\arctan{(\frac{f}{f_{C}})}
+	\end{align*}
+	\subsection{Overall Response:}
+	When multiple amplifiers are cascaded in stages, the total response is a composite of individual responses. The roll-off state are additive.
+	\begin{center}
+		\includegraphics[scale=0.25]{op-amp-cascaded-response.png}
+	\end{center}
+	\subsection{Close-loop Gain:}
+	\begin{center}
+		\includegraphics[scale=0.25]{op-amp-closed-loop-gain.png}
+	\end{center}
+	\begin{align*}
+		A_{cl(NI)}&=\frac{A_{ol}}{1+A_{ol}B}\\
+			  &\approx\frac{1}{B}\\
+			  &=1+\frac{R_{f}}{R_{i}}\\
+		A_{cl(I)}&\approx-\frac{R_{f}}{R_{i}}\\
+		f_{c(cl)}&=f_{c(ol)}(1+BA_{ol(mid)})\\
+		BW_{cl}&=BW_{ol}(1+BA_{ol(mid)})\\
+		A_{cl}f_{c(cl)}&=A_{ol}f_{c(ol)}
+	\end{align*}
 \end{document}
