@@ -1689,4 +1689,132 @@
 		BW_{cl}&=BW_{ol}(1+BA_{ol(mid)})\\
 		A_{cl}f_{c(cl)}&=A_{ol}f_{c(ol)}
 	\end{align*}
+
+	\section{Basic Operational Amplifier Circuits}
+	\subsection{Comparator:}
+	This is a circuit which detects if an input exceeds a certain level. By changing the reference point, the out max will also be change to different values.
+	\begin{center}
+		\includegraphics[scale=0.25]{basic-comparator.png}\\
+		\includegraphics[scale=0.25]{comparator-values.png}
+	\end{center}
+	\subsubsection{Comparator Noise Response:}
+	If the input contains too much noise, the output signal is also changed accordingly.
+	\begin{center}
+		\includegraphics[scale=0.25]{comparator-noise.png}
+	\end{center}
+	Noise reduction can be done through a process called hysteresis. It basically moves the switching point above of below the noise sections.
+	\begin{center}
+		\includegraphics[scale=0.25]{comparator-noise-reduction.png}
+	\end{center}
+	It inverts the expected output signal towards hystersis.
+	$$V_{hys}=V_{UTP}-V_{LTP}$$
+	\subsubsection{Output Bounding:}
+	Uses a zener doide to bound the output value.
+	\begin{center}
+		\includegraphics[scale=0.25]{output-bounding.png}
+	\end{center}
+	This can be double bounded by having both forward and reverse zener diodes in a series config.
+	\subsubsection{Window Comparator:}
+	Uses 2 comparators to find the upper and lower boundaries.
+	\begin{center}
+		\includegraphics[scale=0.17]{window-comparator.png}
+	\end{center}
+	
+	\subsection{Amplifier with n Number Inputs:}
+	\begin{center}
+		\includegraphics[scale=0.25]{amplifier-with-n-inputs.png}
+	\end{center}
+	$$V_{out}=-(\frac{R_{f}}{R_{1}}V_{in1}+\frac{R_{2}}{R_{2}}V_{in2}+\ldots+\frac{R_{f}}{R_{n}}V_{inn})$$
+	This is also known as a summing amplifier.
+
+	\subsection{Digital to Analog Conversion:}
+	Takes the binary numbered analog signal and converts that into a continuous stream of digital signal.
+	\begin{center}
+		\includegraphics[scale=0.25]{digital-analog-amplifier.png}
+	\end{center}
+
+	\section{Special OpAmp Circuits}
+	\subsection{Instrumentation Amplifiers:}
+	Used in systems where a high amount of noise is present. Key characteristics include:
+	\begin{itemize}
+		\item High Input Impedance
+		\item High Internal Resistance
+		\item High CMMR
+		\item Low output offset
+		\item Low ouput Impedance
+	\end{itemize}
+	They are used to amplify the differential mode signal.
+
+	\subsection{Noise in Industrial Automation Applications:}
+	When the common mode signal can become out of phase due to stray capacitences in cable shielding. This degrades the IA ability0 to reject CM signals. To cnacel out the phase shift, another amplifier (voltage follower) is used to variate the resistor.
+
+	\subsection{Isolation Amplifier:}
+	\begin{center}
+		\includegraphics[scale=0.25]{isolation-amplifier.png}
+	\end{center}
+	This stops DC voltage from exiting the amplifier. For example, is used in medical instrumentation to prevent random transient spikes. The different sections have their own seperate grounds and input voltages so there is no overlap.
+	\begin{center}
+		\includegraphics[scale=0.25]{pwm-isolation.png}
+	\end{center}
+
+	\subsection{Current Amplification:}
+	Operational transconductance Amps
+	\begin{align*}
+		\text{Transconductance: }g_{m}&=\frac{I_{out}}{V_{in}}\\
+		\text{In OTA:}\;g_{m}&=KI_{BIAS}\\
+		\text{Current Output}&=I_{out}=g_{m}V_{in}\\
+		g_{m}\text{ is S}&=KI_{BIAS}V_{in}\\
+		\text{K}&=\approx\frac{g_{m}}{I_{BIAS}}
+	\end{align*}
+	\begin{align*}
+		V_{out}&=I_{out}R_{L}\\
+		A_{v}&=\frac{V_{out}}{V_{in}}\\
+		&=\frac{I_{out}}{V_{in}}R_{L}\\
+		&=g_{m}R_{L}
+	\end{align*}
+
+	\subsection{Schmitt Trigger:}
+	\begin{center}
+		\includegraphics[scale=0.25]{schmitt-trigger.png}
+	\end{center}
+	
+	\subsection{Log Amplifiers:}
+	Log and anti-Log amps are utilized in areas requiring compression of analog data, linearization of transducers that have exponential outputs as well as analog multiplication and division.
+	$$V_{out}=-K\ln{(V_{in})}$$
+
+	\subsection{Voltage vs. Current:}
+	A PV junction contains a non-linear relationship up to the 0.7V.
+	\begin{center}
+		\includegraphics[scale=0.35]{pv-junction.png}
+	\end{center}
+	\begin{align*}
+		I_{F}&\approx I_{R}e^{\frac{qV_{F}}{kT}}\\
+		\ln{(\frac{I_{F}}{I_{R}})}&=\frac{qV_{F}}{kT}\\
+		V_{F}&=\frac{kT}{q}\ln{(\frac{I_{F}}{I_{R}})}
+	\end{align*}
+	
+	\subsection{Signal Compression:}
+	Log amps are used because large values are compressed more than small values.
+
+	\subsection{Constant Current Source:}
+	CCS delivers a load current that remains constant when load resistance changes.
+	\begin{center}
+		\includegraphics[scale=0.25]{constant-current-source.png}
+	\end{center}
+	$$I_{i}=\frac{V_{in}}{R_{i}}$$
+	$$I_{L}=\frac{V_{in}}{R_{i}}$$
+	This is true as long as $V_{in}$ and $R_{i}$ are constant.
+
+	\subsection{Current-Voltage Converter:}
+	C-V converter converts a variable current input into its proportional output voltage.
+	\begin{center}
+		\includegraphics[scale=0.2]{cv-converter.png}
+	\end{center}
+	$$V_{out}=I_{i}R_{f}$$
+	\subsection{Voltage-Current Converter:}
+	\begin{center}
+		\includegraphics[scale=0.25]{vc-converter.png}
+	\end{center}
+	$$I_{L}=\frac{V_{in}}{R_{1}}$$
+	Used in circuit applications where its necessary to have a load current dictated by an input voltage.
 \end{document}
