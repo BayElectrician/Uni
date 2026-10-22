@@ -1817,4 +1817,246 @@
 	\end{center}
 	$$I_{L}=\frac{V_{in}}{R_{1}}$$
 	Used in circuit applications where its necessary to have a load current dictated by an input voltage.
+
+	\section{Number Systems}
+	\subsection{Decimal Number System:}
+	Used everywhere within the modern world. It is also known as the arabic number system or Base 10. For example:
+	$$128.55=1\times10^{2}+2\times10^{1}+8\times10^{0}+5\times10^{-1}+6\times10^{-2}$$
+	\subsection{Binary Number System:}
+	Represents numbers in a similar way to Base10 but only with the numbers of 1 and 0. For example:
+	$$1001.01=1\times2^{3}+0\times2^{2}+0\times2^{1}+1\times2^{0}+0\times2^{-1}+1\times2^{-2}$$
+	\subsection{Binary to Decimal Conversion:}
+	Use expansion method (shown above), which will just give then Base10 value. This method is also known as a weighted sum.
+	\subsection{Decimal to Binary Conversion:}
+	Just succesively divide it by the highest two and keep remainder.
+	\begin{enumerate}
+		\item Divide the Base10 number into its whole and fraction parts
+		\item For the whole successively divide by 2 until 0r0 or 0r1 is found
+		\item Fractions multiply by 2 until it is 1r0
+	\end{enumerate}
+
+	\subsection{Arithmetic Operations:}
+	\subsubsection{Addition and Subtraction}
+	The same principles used within the Base10 system are in the Base2.
+	\subsubsection{Multiplication}
+	Start multiplying with respect to the start position.
+	\subsubsection{Division}
+	In Base2, division is just a bunch of subtractions until a set remainder remains.
+
+	\subsection{Signed Numbers:}
+	It is useful to have a signed number to know the positive and negative numbers. Since Base2 has no default way of designating positive and negative values, an extra bit is used to denote this. Since there is no standard implementation of this extra bit, the exact position has to be agreed on before hand.
+
+	\subsection{Complements:}
+	\subsubsection{1's Complement}
+	Flip the bits. E.g 1001 turns to 0110.
+	\subsubsection{2's Complement}
+	The 1's complement and +1. 1001 turns to 0110 + 1 = 0111. Always equal to $2^{n}$ the number of bits.\\
+	Positive Range: $000\ldots00\rightarrow011\ldots11$\\
+	Negative Range: $111\ldots11\rightarrow100\ldots00$
+	\subsubsection{Subtraction}
+	Addition, but the subtracted value has a changed signed bit.
+	\subsubsection{Multiplication and Division}
+	Multiply and divide normally in true form and find out the sign of the product.
+
+	\subsection{Hexadecimal:}
+	Uses a Base16 system (0-9, and A-F). Converting B-Hex, group the bits into 4's and calculate the hex equivalent. Dec-Hex is just divide and multiply by 16.
+	\subsection{Octal:}
+	Base8 system that uses 0-7.
+	\subsection{Binary Coded Decimal:}
+	This is an interface between binary and decimal values. Each 10's column is a 4-bit binary value. Values 10-15 are invalid, where once 10 is reached, it goes to the next 4-bit grouping.
+	\begin{center}
+	\begin{tabular}{ c c c c }
+		$10^{3}$ & $10^{2}$ & $10^{1}$ & $10^{0}$\\
+		$0000$ & $0000$ & $0000$ & $0000$
+	\end{tabular}
+	\end{center}
+
+	\subsection{Gray Code:}
+	Gray code is not used in arthmetic operations. As it has no positional weighting and is just a sequence of codes (e.g. 2-bit is 00, 01, 11, 10). Transitions from one code to another changing only 1-bit at a time. This is because changing multiple bit an introduce glitches if they are not synchronised.
+	\begin{center}
+		\includegraphics[scale=0.25]{4-bit-gray-code.png}
+	\end{center}
+
+	\section{Logic}
+	\subsection{Gates:}
+	NOT:
+	\begin{center}
+	\begin{tikzpicture}
+	    % Standard NOT gate (Inverter)
+	    \node[not port] (notgate) at (1,0) {};
+	    
+	    % Input wire and label
+	    \draw (0,0) node[left] {$A$} -- (notgate.in);
+	    
+	    % Output label
+	    \node[right] at (notgate.out) {$X = \overline{A}$};
+	\end{tikzpicture}\\[1\baselineskip]
+	\begin{tabular}{ c c }
+		$A$ & $X=\overline{A}$\\
+		0 & 1 \\
+		1 & 0
+	\end{tabular}
+	\end{center}
+	AND:
+	\begin{center}
+	\begin{tikzpicture}
+	    % 2-input AND gate
+	    \node[and port] (andgate) at (2,0) {};
+	    
+	    % Input wires and labels
+	    \draw (andgate.in 1) -- ++(-1,0) node[left] {$A$};
+	    \draw (andgate.in 2) -- ++(-1,0) node[left] {$B$};
+	    
+	    % Output wire and label
+	    \node[right] at (andgate.out) {$X = AB$};
+	\end{tikzpicture}\\[1\baselineskip]
+	\begin{tabular}{ c c c }
+		$A$ & $B$ $X=AB$\\
+		0 & 0 & 0\\
+		0 & 1 & 0\\
+		1 & 0 & 0\\
+		1 & 1 & 1
+	\end{tabular}
+	\end{center}
+	OR:
+	\begin{center}
+	\begin{tikzpicture}
+	    % 2-input OR gate
+	    \node[or port] (orgate) at (2,0) {};
+	    
+	    % Input wires and labels
+	    \draw (orgate.in 1) -- ++(-1,0) node[left] {$A$};
+	    \draw (orgate.in 2) -- ++(-1,0) node[left] {$B$};
+	    
+	    % Output wire and label
+	    \node[right] at (orgate.out) {$X = A + B$};
+	\end{tikzpicture}\\[1\baselineskip]
+	\begin{tabular}{ c c c }
+		$A$ & $B$ & $X=A+B$\\
+		0 & 0 & 0\\
+		0 & 1 & 1\\
+		1 & 1 & 1\\
+		1 & 0 & 1
+	\end{tabular}
+	\end{center}
+	NAND:
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Top Circuit: AND Gate followed by NOT Gate ---
+	    \node[and port] (and1) at (2, 2) {};
+	    \node[not port] (not1) at (4.5, 2) {};
+	    
+	    \draw (and1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (and1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \draw (and1.out) -- (not1.in);
+	    \node[right] at (not1.out) {$X$};
+	    
+	    % --- Bottom Circuit: Single Equivalent Gate ---
+	    \node[nand port] (nand1) at (2, -1) {};
+	    
+	    \draw (nand1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (nand1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \node[right] at (nand1.out) {$X$};
+	\end{tikzpicture}\\[1\baselineskip]
+	\begin{tabular}{ c c c }
+		$A$ & $B$ & $X=\overline{AB}$\\
+		0 & 0 & 1\\
+		0 & 1 & 1\\
+		1 & 0 & 1\\
+		1 & 1 & 0
+	\end{tabular}
+	\end{center}
+	NOR:
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Top Circuit: OR Gate followed by NOT Gate ---
+	    \node[or port] (or1) at (2, 2) {};
+	    \node[not port] (not1) at (4.5, 2) {};
+	    
+	    \draw (or1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (or1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \draw (or1.out) -- (not1.in);
+	    \node[right] at (not1.out) {$X$};
+	    
+	    % --- Bottom Circuit: Equivalent Single NOR Gate ---
+	    \node[nor port] (nor1) at (2, -1) {};
+	    
+	    \draw (nor1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (nor1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \node[right] at (nor1.out) {$X$};
+	\end{tikzpicture}\\[1\baselineskip]
+	\begin{tabular}{ c c c }
+		$A$ & $B$ & $X=\overline{A+B}$\\
+		0 & 0 & 1\\
+		0 & 1 & 0\\
+		1 & 0 & 0\\
+		1 & 1 & 1
+	\end{tabular}
+	\end{center}
+	XOR:
+	\begin{center}
+	\begin{tikzpicture}
+	    % 2-input XOR gate
+	    \node[xor port] (xorgate) at (2,0) {};
+	    
+	    % Input wires and labels
+	    \draw (xorgate.in 1) -- ++(-1,0) node[left] {$A$};
+	    \draw (xorgate.in 2) -- ++(-1,0) node[left] {$B$};
+	    
+	    % Output wire and label
+	    \node[right] at (xorgate.out) {$X = A \oplus B$};
+	\end{tikzpicture}\\[1\baselineskip]
+	\begin{tabular}{ c c c }
+		$A$ & $B$ & $X=A\oplus B$\\
+		0 & 0 & 0\\
+		0 & 1 & 1\\
+		1 & 0 & 1\\
+		1 & 1 & 0
+	\end{tabular}
+	\end{center}
+	XNOR:
+	\begin{center}
+	\begin{tikzpicture}
+	    % 2-input XNOR gate
+	    \node[xnor port] (xnorgate) at (2,0) {};
+	    
+	    % Input wires and labels
+	    \draw (xnorgate.in 1) -- ++(-1,0) node[left] {$A$};
+	    \draw (xnorgate.in 2) -- ++(-1,0) node[left] {$B$};
+	    
+	    % Output wire and label
+	    \node[right] at (xnorgate.out) {$X = \overline{A \oplus B}$};
+	\end{tikzpicture}\\[1\baselineskip]
+	\begin{tabular}{ c c c }
+		$A$ & $B$ & $X=\overline{A\oplus B}$\\
+		0 & 0 & 1\\
+		0 & 1 & 0\\
+		1 & 0 & 0\\
+		1 & 1 & 1
+	\end{tabular}
+	\end{center}
+
+	\subsection{Real-world Physics:}
+	\subsubsection{Time Delays}
+	\begin{itemize}
+		\item Propogation Delay: Tiem taken for input to appear as an output.
+		\item Depends on the technology used within the circuit.
+	\end{itemize}
+	\begin{center}
+		\includegraphics[scale=0.5]{logic-time-delay.png}
+	\end{center}
+	\subsubsection{DC Supply}
+	Need a proper supply to operate and produce the high signal when required.
+	\subsubsection{Power Dissapation}
+	Consumes some power within ciruit (voltage drop and current split).
+	$$P_{D}=V_{CC}\times\frac{I_{CCL}+I_{CCH}}{2}$$
+	\subsubsection{I/O Voltage Levels}
+	There are set voltage levels within the circuit design required for the voltage to function logic.
+	\subsubsection{Speed Power Product}
+	$$SPP=t_{p}(s)\times P_{d}(J)$$
+	\subsubsection{Fan-out and Loading}
+	\begin{itemize}
+		\item Current inputted to subsequent gates depend on the number of gates immediately after the gate.
+		\item Fan-out/loading is the number of gates an output can drive of the same IC. However, must consider resistance and capacitence loading times.
+	\end{itemize}
 \end{document}
