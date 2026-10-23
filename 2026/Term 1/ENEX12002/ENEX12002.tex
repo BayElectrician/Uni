@@ -2059,4 +2059,417 @@
 		\item Current inputted to subsequent gates depend on the number of gates immediately after the gate.
 		\item Fan-out/loading is the number of gates an output can drive of the same IC. However, must consider resistance and capacitence loading times.
 	\end{itemize}
+
+	\section{Boolean Algebra and Logic Simplification}
+	\subsection{Boolean Expression:}
+	A logic state, that once evaluated is either TRUE or FALSE. Simple expressions are easy to figure out (e.g. Today is (Wet AND Cold), Today is (Sat or Sun)). As the expressions become more complex, by combining multiple simple expressions, outcomes can become hard to track (e.g. Today is (Wet AND Cold) or (Sat OR Sun)).
+
+	\subsection{Laws of Boolean Algebra:}
+	\subsubsection{Commutative Law}
+	The order of inputs is not important. Only the specific logic expressions in each section.
+	\begin{center}
+	\begin{tikzpicture}
+	    % Left AND gate (inputs A, B -> AB)
+	    \node[and port] (and1) at (0,0) {};
+	    \draw (and1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (and1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \node[right] at (and1.out) {$AB$};
+
+	    % Right AND gate (inputs B, A -> BA)
+	    \node[and port] (and2) at (4.2,0) {};
+	    \draw (and2.in 1) -- ++(-0.5,0) node[left] {$B$};
+	    \draw (and2.in 2) -- ++(-0.5,0) node[left] {$A$};
+	    \node[right] at (and2.out) {$BA$};
+	\end{tikzpicture}
+	\end{center}
+	\subsubsection{Associative Law}
+	Order of grouping is not important.
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Top Circuit: A(BC) ---
+	    \node[and port] (and1) at (2, 2.5) {};
+	    \draw (and1.in 1) -- ++(-0.5,0) node[left] {$B$};
+	    \draw (and1.in 2) -- ++(-0.5,0) node[left] {$C$};
+
+	    \node[and port] (and2) at (5, 3) {};
+	    \draw (and1.out) -- (and2.in 2) node[midway, above] {$BC$};
+	    \draw (and2.in 1) -- ++(-3.5,0) node[left] {$A$};
+	    \node[right] at (and2.out) {$A(BC)$};
+
+	    % --- Equivalence Symbol ---
+	    \node at (3, 1) {\Large $\equiv$};
+
+	    % --- Bottom Circuit: (AB)C ---
+	    \node[and port] (and3) at (2, -0.5) {};
+	    \draw (and3.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (and3.in 2) -- ++(-0.5,0) node[left] {$B$};
+
+	    \node[and port] (and4) at (5, -1) {};
+	    \draw (and3.out) -- (and4.in 1) node[midway, above] {$AB$};
+	    \draw (and4.in 2) -- ++(-3.5,0) node[left] {$C$};
+	    \node[right] at (and4.out) {$(AB)C$};
+	\end{tikzpicture}
+	\end{center}
+	\subsubsection{Distributive Law}
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Top Circuit: A(B + C) ---
+	    % OR gate receiving B and C
+	    \node[or port] (or1) at (2, 2.5) {};
+	    \draw (or1.in 1) -- ++(-0.5,0) node[left] {$B$};
+	    \draw (or1.in 2) -- ++(-0.5,0) node[left] {$C$};
+
+	    % AND gate receiving A and (B + C)
+	    \node[and port] (and1) at (5, 3) {};
+	    \draw (or1.out) -- (and1.in 2) node[midway, above] {$B+C$};
+	    \draw (and1.in 1) -- ++(-3.5,0) node[left] {$A$};
+	    \node[right] at (and1.out) {$A(B+C)$};
+
+	    % --- Bottom Circuit: AB + AC ---
+	    % First AND gate (inputs A, B)
+	    \node[and port] (and2) at (2, -0.5) {};
+	    \draw (and2.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (and2.in 2) -- ++(-0.5,0) node[left] {$B$};
+
+	    % Second AND gate (inputs A, C)
+	    \node[and port] (and3) at (2, -2.5) {};
+	    \draw (and3.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (and3.in 2) -- ++(-0.5,0) node[left] {$C$};
+
+	    % Output OR gate (combines AB and AC)
+	    \node[or port] (or2) at (5, -1.5) {};
+	    \draw (and2.out) -- (or2.in 1) node[midway, above] {$AB$};
+	    \draw (and3.out) -- (or2.in 2) node[midway, above] {$AC$};
+	    \node[right] at (or2.out) {$AB+AC$};
+	\end{tikzpicture}
+	\end{center}
+	
+	\pagebreak
+
+	\subsection{12 Rules of Boolean Algebra:}
+	\begin{enumerate}
+		\item $A+0=A$
+		\item $A+1=1$
+		\item $A\cdot0=0$
+		\item $A\cdot1=A$
+		\item $A+A=A$
+		\item $A+\overline{A}=1$
+		\item $A\cdot A=A$
+		\item $A\cdot\overline{A}=0$
+		\item $\overline{\overline{A}}=A$
+		\item $A+AB=A$
+		\item $A+\overline{A}B=A+B$
+		\item $(A+B)(A+C)=A+BC$
+	\end{enumerate}
+
+	\subsection{Equivalent Expressions:}
+	Two boolean expressions are considered equivalent when, based on same inputs the same outputs occur. A simple way to verify the equivalentness is using a truth table.
+
+	\subsection{DeMorgan's Theorems:}
+	Allows the switching between AND and OR gates (Product and Sum).
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Top Equivalence: NAND = Negative-OR ---
+	    % NAND Gate
+	    \node[nand port] (nand1) at (0, 2.5) {};
+	    \draw (nand1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (nand1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \node[right] at (nand1.out) {$\overline{AB}$};
+	    \node[below=0.2cm of nand1, text=purple] {\textbf{NAND}};
+
+	    % Equivalence Symbol
+	    \node at (2.5, 2.5) {\Large $\equiv$};
+
+	    % Negative-OR Gate (OR gate with inverted inputs)
+	    \node[or port] (or1) at (5, 2.5) {};
+	    \draw (or1.in 1) node[draw, circle, inner sep=1.2pt, fill=white, left] {} -- ++(-0.5,0) node[left] {$A$};
+	    \draw (or1.in 2) node[draw, circle, inner sep=1.2pt, fill=white, left] {} -- ++(-0.5,0) node[left] {$B$};
+	    \node[right] at (or1.out) {$\overline{A} + \overline{B}$};
+	    \node[below=0.2cm of or1, text=purple] {\textbf{Negative-OR}};
+
+	    % --- Middle "OR" Text ---
+	    \node at (2.5, 0.5) {\Large \textbf{OR}};
+
+	    % --- Bottom Equivalence: NOR = Negative-AND ---
+	    % NOR Gate
+	    \node[nor port] (nor1) at (0, -1.5) {};
+	    \draw (nor1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (nor1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \node[right] at (nor1.out) {$\overline{A+B}$};
+	    \node[below=0.2cm of nor1, text=purple] {\textbf{NOR}};
+
+	    % Equivalence Symbol
+	    \node at (2.5, -1.5) {\Large $\equiv$};
+
+	    % Negative-AND Gate (AND gate with inverted inputs)
+	    \node[and port] (and1) at (5, -1.5) {};
+	    \draw (and1.in 1) node[draw, circle, inner sep=1.2pt, fill=white, left] {} -- ++(-0.5,0) node[left] {$A$};
+	    \draw (and1.in 2) node[draw, circle, inner sep=1.2pt, fill=white, left] {} -- ++(-0.5,0) node[left] {$B$};
+	    \node[right] at (and1.out) {$\overline{A}\,\overline{B}$};
+	    \node[below=0.2cm of and1, text=purple] {\textbf{Negative-AND}};
+	\end{tikzpicture}
+	\end{center}
+	Used to unpack inverted sums. Change of Product of Sum (POS) to Sum of Product (SOP). This enables further manipulations and simplifications of the expression.
+
+	\subsection{Logic Simplification:}
+	When the logic is simple it is both more efficient and convient to implement. Methods to do this are:
+	\begin{itemize}
+		\item Boolean Algebra, 12 Laws and DeMorgan's Theorem
+		\item Karnaugh Map
+		\item Quine-McCluskey
+		\item Espresso Algorithm
+	\end{itemize}
+	Repeat until it just loops through same types. This means the expression is in its simpliest form. For example:
+	\begin{align*}
+		E&=(AB'(C+BD)+A'B')C\\
+		&=(AB'C+AB'BD+A'B')C\\
+		&=(AB'C+A'B')C\\
+		&=AB'CC+A'B'C\\
+		&=AB'C+A'B'C\\
+		&=(A+A')B'C\\
+		&=B'C
+	\end{align*}
+
+	\subsection{Standard Forms:}
+	\subsubsection{Sum of Product}
+	Each product term of sum include all variables, using $A+A'=1$.
+	\begin{align*}
+		&AB+AB'C\\
+		=&AB(C+C')+AB'C\\
+		=&ABC+ABC'+AB'C
+	\end{align*}
+	\subsubsection{Product of Sum}
+	Each sum term of the product includes all variables, using $A=(A+B)(A+B')$.
+	\begin{align*}
+		&(A+B)(A+B'+C)\\
+		=&(A+B+C)(A+B+C')(A+B'+C)
+	\end{align*}\\[1\baselineskip]
+	The SOP and POS forms are directly linked to the truth tables outputs.
+	\begin{center}
+		\includegraphics[scale=0.25]{pos-sop.png}
+	\end{center}
+
+	\pagebreak
+
+	\subsection{Karnaugh Map:}
+	A systematic method to minimise SOP and POS expressions. Similar to a truth table:
+	\begin{itemize}
+		\item Each cell is a unique output
+		\item Variables: Rows and Columns
+		\item Adjacent Cells: Only change by 1-bit
+		\item Ability to wrap around
+		\item Practical to 4 or 5 bits
+	\end{itemize}
+	\begin{center}
+		\includegraphics[scale=0.25]{karnaugh-map.png}
+	\end{center}
+
+	\section{Combinational Logic Analysis}
+	\subsection{Combinational Logic:}
+	Combinational logic ciruits consist on several logic expressions to make an output. This output can only depend on the inputs and has no memory of previous inputs/outputs. There are 4 main types:
+	\begin{enumerate}
+		\item AND-OR (SOP)
+		\item AND-OR-NOT (POS)
+		\item XOR
+		\item XNOR
+	\end{enumerate}
+
+	\subsection{AND-OR Circuit:}
+	Consists of AND logic followed by OR. This is a direct implementation of the SOP. It also assumes compliments of variables are available.
+	\begin{center}
+	\begin{tikzpicture}
+	    % Upper AND gate (inputs A, B)
+	    \node[and port] (and1) at (2, 1.5) {};
+	    \draw (and1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (and1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \node[above] at (and1.out) {$AB$};
+
+	    % Lower AND gate (inputs C, D)
+	    \node[and port] (and2) at (2, -1.5) {};
+	    \draw (and2.in 1) -- ++(-0.5,0) node[left] {$C$};
+	    \draw (and2.in 2) -- ++(-0.5,0) node[left] {$D$};
+	    \node[below] at (and2.out) {$CD$};
+
+	    % Output OR gate
+	    \node[or port] (or1) at (5, 0) {};
+	    \draw (and1.out) |- (or1.in 1);
+	    \draw (and2.out) |- (or1.in 2);
+	    \node[right] at (or1.out) {$AB + CD$};
+	\end{tikzpicture}
+	\end{center}
+
+	\subsection{AND-OR-NOT Circuit:}
+	Just inverts the output to the AND-OR Circuit.
+	\begin{center}
+	\begin{tikzpicture}
+	    % NOT gate (Inverter)
+	    \node[not port] (not1) at (2,0) {};
+	    
+	    % Input wire and label
+	    \draw (0,0) node[left] {$AB + CD$} -- (not1.in);
+	    
+	    % Output wire and label
+	    \node[right] at (not1.out) {$\overline{AB + CD} = (\overline{A} + \overline{B})(\overline{C} + \overline{D})$};
+	\end{tikzpicture}
+	\end{center}
+
+	\pagebreak
+
+	\subsection{XOR Circuit:}
+	$$X=A\oplus B=AB'+A'B$$
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Top Circuit: XOR Gate ---
+	    \node[xor port] (xor1) at (2, 4) {};
+	    \draw (xor1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (xor1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \node[right] at (xor1.out) {$X$};
+
+	    % --- Bottom Circuit: XOR Gate Implementation ---
+	    % Upper AND gate & Lower AND gate
+	    \node[and port] (and1) at (4, 1.8) {};
+	    \node[and port] (and2) at (4, -1.2) {};
+	    
+	    % Inverters (NOT gates)
+	    \node[not port, scale=0.7] (not1) at (2, 1.5) {}; % Produces B'
+	    \node[not port, scale=0.7] (not2) at (2, -0.9) {}; % Produces A'
+	    
+	    % Output OR gate
+	    \node[or port] (or1) at (7, 0.3) {};
+
+	    % Main Input Lines
+	    \draw (0, 2.1) node[left] {$A$} coordinate (A_in);
+	    \draw (0, -1.5) node[left] {$B$} coordinate (B_in);
+
+	    % Routing for Input A
+	    \draw (A_in) -- (and1.in 1);
+	    \draw (0.8, 2.1) to[short, *-] (0.8, -0.9) -- (not2.in);
+
+	    % Routing for Input B
+	    \draw (B_in) -- (and2.in 2);
+	    \draw (0.5, -1.5) to[short, *-] (0.5, 1.5) -- (not1.in);
+
+	    % Outputs from NOT gates to AND gates
+	    \draw (not1.out) -- (and1.in 2) node[midway, above=-2pt] {\tiny $B'$};
+	    \draw (not2.out) -- (and2.in 1) node[midway, above=-2pt] {\tiny $A'$};
+
+	    % Connections to OR gate with intermediate labels
+	    \draw (and1.out) -- ++(0.5,0) |- (or1.in 1) node[pos=0.2, above] {$AB'$};
+	    \draw (and2.out) -- ++(0.5,0) |- (or1.in 2) node[pos=0.2, above] {$A'B$};
+
+	    % Final Output
+	    \node[right] at (or1.out) {$AB' + A'B$};
+	\end{tikzpicture}
+	\end{center}
+
+	\pagebreak
+
+	\subsection{XNOR Circuit:}
+	$$X=\overline{A\oplus B}=AB+A'B'$$
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Top Circuit: XNOR Gate ---
+	    \node[xnor port] (xnor1) at (2, 4) {};
+	    \draw (xnor1.in 1) -- ++(-0.5,0) node[left] {$A$};
+	    \draw (xnor1.in 2) -- ++(-0.5,0) node[left] {$B$};
+	    \node[right] at (xnor1.out) {$AB + A'B'$};
+
+	    % --- Bottom Circuit: XNOR Gate Implementation ---
+	    % Inverters (NOT gates)
+	    \node[not port, scale=0.7] (notA) at (2, 1.5) {};
+	    \node[not port, scale=0.7] (notB) at (2, 0.3) {};
+
+	    % Upper AND gate (for A'B')
+	    \node[and port] (and1) at (4.5, 0.9) {};
+
+	    % Lower AND gate (for AB)
+	    \node[and port] (and2) at (4.5, -1.5) {};
+
+	    % Final OR gate
+	    \node[or port] (or1) at (7.5, -0.3) {};
+
+	    % Main Input Connections
+	    \draw (0, 1.5) node[left] {$A$} coordinate (A_in);
+	    \draw (0, 0.3) node[left] {$B$} coordinate (B_in);
+
+	    % Routing for Input A
+	    \draw (A_in) -- (notA.in);
+	    \draw (0.5, 1.5) to[short, *-] (0.5, -1.3) -- (and2.in 1);
+
+	    % Routing for Input B
+	    \draw (B_in) -- (notB.in);
+	    \draw (1.0, 0.3) to[short, *-] (1.0, -1.7) -- (and2.in 2);
+
+	    % Output connections from NOT gates to top AND gate
+	    \draw (notA.out) -- (and1.in 1) node[midway, above=-2pt] {\tiny $A'$};
+	    \draw (notB.out) -- (and1.in 2) node[midway, above=-2pt] {\tiny $B'$};
+
+	    % Output connections from AND gates to final OR gate
+	    \draw (and1.out) -- ++(0.5,0) |- (or1.in 1) node[pos=0.2, above] {$A'B'$};
+	    \draw (and2.out) -- ++(0.5,0) |- (or1.in 2) node[pos=0.2, above] {$AB$};
+
+	    % Final Output Label
+	    \node[right] at (or1.out) {$AB + A'B'$};
+	\end{tikzpicture}
+	\end{center}
+
+	\subsection{Implementation of Logic Circuits:}
+	\begin{itemize}
+		\item Replace operaters with circuit symbols
+		\item Connects symbols as an expression
+	\end{itemize}
+	\begin{center}
+		\includegraphics[scale=0.25]{circuit-implementation.png}
+	\end{center}
+
+	\pagebreak
+
+	\subsection{Circuit from Truth Table:}
+	\begin{enumerate}
+		\item Convert Truth Table to Expression
+		\begin{itemize}
+			\item Write standard expressions for 1 terms of the output
+			\item Sum all 1 terms (SOP)
+		\end{itemize}
+		\item Convert standard expression into circuit directly
+		\item Minimise then implement
+	\end{enumerate}
+
+	\subsection{Universal Logic Gate - NAND:}
+	All logic operators can be expressed using a NAND gate.
+	\begin{center}
+		\includegraphics[scale=0.25]{universal-nand-gate.png}
+	\end{center}
+	\pagebreak
+	\subsection{Universal Log Gate - NOR:}
+	Similarly all operators can be expressed using NOR gates.
+	\begin{center}
+		\includegraphics[scale=0.25]{universal-nor-gate.png}
+	\end{center}
+
+	\subsection{NAND Logic Circuits:}
+	\begin{itemize}
+		\item A logic circuit consisting of only NAND gates
+		\item Takes advantage of NANDs dual symbols (NAND and Negative-OR)
+		\item Arrange to cancel negative-negatives to positive
+		\item In NAND diagrams always bubble-bubble, no bubble-no bubble
+	\end{itemize}
+	\subsection{NOR Logic Circuits:}
+	\begin{itemize}
+		\item Uses NOR's dual symbols (NOR and Negative-AND)
+		\item Same arrangement to cancel
+	\end{itemize}
+
+	\pagebreak
+
+	\subsection{Waveform Operation:}
+	Assumed so far was a constant input (Static DC Waveform). In time varying functions, a timing diagram is utilized.
+	$$X=(A(B+C))'$$
+	\begin{center}
+		\includegraphics[scale=0.25]{timing-diagram.png}
+	\end{center}
+	Output waveform is derived from a point in time of the input waveform. This can be done from a truthtable at that point.
+
+	\subsection{Pulse Waveform:}
+	Gates have a slight delay between change of input for this to be reflected on the output. This delay must then be taken into account when creating circuits. Equivalent circuits are not equal to due to acculmulated time delay with each operator. The delay can be large enough that it makes impact on expression.
 \end{document}
