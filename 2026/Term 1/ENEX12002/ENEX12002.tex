@@ -2472,4 +2472,347 @@
 
 	\subsection{Pulse Waveform:}
 	Gates have a slight delay between change of input for this to be reflected on the output. This delay must then be taken into account when creating circuits. Equivalent circuits are not equal to due to acculmulated time delay with each operator. The delay can be large enough that it makes impact on expression.
+
+	\section{Functions of Combinational Logic}
+	\subsection{Half-Adder:}
+	Adding is the most basic arithemetic operation. It produces two outputs, a sum ($\Sigma$) and Carry ($C$). The logic expressions that make it up are:
+	$$\Sigma=A\oplus B$$
+	$$C=AB$$
+	\begin{center}
+	\begin{tabular}{ c | c c }
+		Addition & $\Sigma$ & $C$\\
+		\hline\\
+		$0+0=0$ & $0$ & $0$\\
+		$0+1=1$ & $1$ & $0$\\
+		$1+0=1$ & $1$ & $0$\\
+		$1+1=10$ & $0$ & $1$
+	\end{tabular}\\[1\baselineskip]
+	\begin{tikzpicture}
+	    % --- Top Circuit: Half Adder Gate Logic ---
+	    \node[xor port] (xor1) at (3, 3) {};
+	    \node[and port] (and1) at (3, 1) {};
+
+	    % Inputs A and B
+	    \draw (0, 2) node[left] {$A$} coordinate (A_in);
+	    \draw (0, 0.5) node[left] {$B$} coordinate (B_in);
+
+	    % Route Input A
+	    \draw (A_in) -- (and1.in 1);
+	    \draw (1, 2) to[short, *-] (1, 3.28) -- (xor1.in 1);
+
+	    % Route Input B
+	    \draw (B_in) -- (and1.in 2);
+	    \draw (1.8, 0.5) to[short, *-] (1.8, 2.72) -- (xor1.in 2);
+
+	    % Outputs
+	    \node[right] at (xor1.out) {$A \oplus B$};
+	    \node[right] at (and1.out) {$AB$};
+
+	    % --- Bottom Block Diagram ---
+	    \draw[thick] (1.5, -3) rectangle (3, -1);
+
+	    % Labels inside the block
+	    \node at (1.8, -1.5) {$A$};
+	    \node at (1.8, -2.5) {$B$};
+	    \node at (2.7, -1.5) {$S$};
+	    \node at (2.7, -2.5) {$C$};
+
+	    % External Wires
+	    \draw (0.5, -1.5) -- (1.5, -1.5);
+	    \draw (0.5, -2.5) -- (1.5, -2.5);
+	    \draw (3, -1.5) -- (4, -1.5);
+	    \draw (3, -2.5) -- (4, -2.5);
+
+	    % Purple Braces and Labels
+	    \draw[purple, thick, decorate, decoration={brace, mirror, amplitude=5pt}] (0.2, -2.7) -- (0.2, -1.3)
+		node[midway, left=5pt] {\textbf{Input}};
+	    \draw[purple, thick, decorate, decoration={brace, amplitude=5pt}] (4.3, -2.7) -- (4.3, -1.3)
+		node[midway, right=5pt] {\textbf{Output}};
+	\end{tikzpicture}
+	\end{center}
+
+	\subsection{Full-Adder}
+	This allows cascading of adders with the C-bit from the Half-Adder.
+	\begin{center}
+	\begin{tabular}{ c c c | c c }
+	$A$ & $B$ & $C_{in}$ & $\Sigma$ & $C_{out}$\\
+	\hline\\
+	0 & 0 & 0 & 0 & 0\\
+	0 & 0 & 1 & 1 & 0\\
+	0 & 1 & 0 & 1 & 0\\
+	0 & 1 & 1 & 0 & 1\\
+	1 & 0 & 0 & 1 & 0\\
+	1 & 0 & 1 & 0 & 1\\
+	1 & 1 & 0 & 0 & 1\\
+	1 & 1 & 1 & 1 & 1
+	\end{tabular}
+	\end{center}
+	Joining multiple full-adders together create a way to binary addition to take place.
+
+	\subsection{Cascading Adders:}
+	When cascading multiple adders together it is important to understand delay that is created within the circuit.
+	\subsection{Look Ahead Carry:}
+	It is the carry bit which takes time. This carry can be calculated simultaneously with everything else.
+	\begin{center}
+		\includegraphics[scale=0.25]{carry-bit-calculations.png}
+	\end{center}
+	Carry Generation: $C_{g}=AB$\\
+	Carry Propogation: $C_{p}=A+B$
+	$$C_{out}=C_{g}+C_{p}C_{in}$$
+	Now the total delay in the circuit approximately the amount in the logic gates.
+
+	\subsection{Comparators:}
+	Compares two binary values for:
+	\begin{itemize}
+		\item Equality
+		\item Less than
+		\item Greater than
+	\end{itemize}
+	This can be done bit by bit or bit wise comparision (MSB - LSB).
+	\begin{center}
+		\includegraphics[scale=0.25]{equality-search.png}
+	\end{center}
+	\subsection{Binary Decoders and Encoders:}
+	Setup an AND and NOT gates to detect a binary bit pattern.
+
+	\subsection{Code Converters:}
+	Convert from one code to another. This can be done with 2 methods:
+	\begin{enumerate}
+		\item Brute force
+		\item An algorithm
+	\end{enumerate}
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Top Circuit: Binary to Gray Code ---
+	    \node at (0, 6.5) {\Large $B$};
+	    \node at (4.5, 6.5) {\Large $G$};
+
+	    \node[xor port] (xor1) at (2.5, 5) {};
+	    \node[xor port] (xor2) at (2.5, 3) {};
+	    \node[xor port] (xor3) at (2.5, 1) {};
+
+	    % Line 1 (Top)
+	    \draw (0, 5.28) node[left] {$1$} -- (xor1.in 1);
+	    \node[right] at (xor1.out) {$1$};
+
+	    % Line 2
+	    \draw (0, 3.28) node[left] {$0$} -- (xor2.in 1);
+	    \draw (0.8, 3.28) |- (xor1.in 2);
+	    \node[right] at (xor2.out) {$1$};
+
+	    % Line 3
+	    \draw (0, 1.28) node[left] {$1$} -- (xor3.in 1);
+	    \draw (1.2, 1.28) |- (xor2.in 2);
+	    \node[right] at (xor3.out) {$1$};
+
+	    % Line 4 (Bottom)
+	    \draw (0, -0.8) node[left] {$0$} -- (4, -0.8) node[right] {$0$};
+	    \draw (1.6, -0.8) |- (xor3.in 2);
+
+	    % --- Bottom Circuit: Gray Code to Binary ---
+	    \node at (0, -2) {\Large $G$};
+	    \node at (4.5, -2) {\Large $B$};
+
+	    \node[xor port] (xor4) at (2.5, -3.5) {};
+	    \node[xor port] (xor5) at (2.5, -5.5) {};
+	    \node[xor port] (xor6) at (2.5, -7.5) {};
+
+	    % Line 1 (Top)
+	    \draw (0, -3.22) node[left] {$1$} -- (xor4.in 1);
+	    \node[right] at (xor4.out) {$1$};
+
+	    % Line 2
+	    \draw (0, -5.22) node[left] {$1$} -- (xor5.in 1);
+	    \draw (0.8, -5.22) |- (xor4.in 2);
+	    \node[right] at (xor5.out) {$0$};
+
+	    % Line 3
+	    \draw (0, -7.22) node[left] {$0$} -- (xor6.in 1);
+	    \draw (1.2, -7.22) |- (xor5.in 2);
+	    \node[right] at (xor6.out) {$1$};
+
+	    % Line 4 (Bottom)
+	    \draw (0, -9.3) node[left] {$1$} -- (4, -9.3) node[right] {$1$};
+	    \draw (1.6, -9.3) |- (xor6.in 2);
+	\end{tikzpicture}
+	\end{center}
+
+	\subsection{Multiplexer:}
+	Muxs combine multiple inputs into one output. Use in:
+	\begin{itemize}
+		\item Parallel to serial conversion
+		\item Data selector
+		\item Function generators
+	\end{itemize}
+	This is compared to a demultiplexer, where using the data in and selection, converts to multiple outputs.
+
+	\section{Latches and Flip-flops}
+	\subsection{Sequential Logic Circuits:}
+	In sequential logic circuits output depends on current inputs and previous outputs (A.K.A Memory). They sequent through a finite number of states.
+	\subsection{Latch}
+	A latch is the most basic sequential circuit. It has two inputs and 4 states (Set, Reset, No change, invalid).
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- NOR Gates ---
+	    \node[nor port] (nor1) at (3, 2) {};
+	    \node[nor port] (nor2) at (3, -1) {};
+
+	    % --- Input Connections ---
+	    \draw (0, 2.28) node[left] {$R$} -- (nor1.in 1);
+	    \draw (0, -1.28) node[left] {$S$} -- (nor2.in 2);
+
+	    % --- Output Connections ---
+	    \draw (nor1.out) -- (4.5, 2) node[right] {$Q$};
+	    \draw (nor2.out) -- (4.5, -1) node[right] {$\overline{Q}$};
+
+	    % --- Cross-Coupled Feedback (Unfilled Wire Connections) ---
+	    % Q output feedback to bottom NOR gate
+	    \draw (3.7, 2) -- (3.7, 1.2) -- (1.0, 0.2) -- (1.0, -0.72) -- (nor2.in 1);
+
+	    % Q-bar output feedback to top NOR gate
+	    \draw (3.7, -1) -- (3.7, -0.2) -- (1.0, -0.2) -- (1.0, 1.72) -- (nor1.in 2);
+
+	    % --- Caption ---
+	    \node at (2.2, -2.5) {\Large Active High input SR Latch};
+	\end{tikzpicture}\\[1\baselineskip]
+	\begin{tabular}{ c c | c c | c }
+		S & R & Q & Q' & Comment\\
+		\hline\\
+		0 & 0 & NC & NC & No Change\\
+		1 & 0 & 1 & 0 & Latch Set\\
+		0 & 1 & 0 & 1 & Latch Reset\\
+		1 & 1 & 0 & 0 & Invalid State
+	\end{tabular}
+	\end{center}
+
+	\subsection{Gated S-R Latch:}
+	It is useful to specify when inputs are valid. To do this an input enable, for the latch is only active when EN is high.
+	\begin{center}
+	\begin{tikzpicture}
+	    % --- Stage 1: Input NAND Gates ---
+	    \node[nand port] (nand1) at (2, 2) {};
+	    \node[nand port] (nand2) at (2, -1) {};
+
+	    % --- Stage 2: Negative-OR Gates (OR gates with inverted inputs) ---
+	    \node[or port] (or1) at (5.5, 2) {};
+	    \node[or port] (or2) at (5.5, -1) {};
+
+	    % --- Inverted Input Bubbles for Negative-OR Gates ---
+	    \draw (or1.in 1) node[draw, circle, inner sep=1.2pt, fill=white, left] {};
+	    \draw (or1.in 2) node[draw, circle, inner sep=1.2pt, fill=white, left] {};
+	    \draw (or2.in 1) node[draw, circle, inner sep=1.2pt, fill=white, left] {};
+	    \draw (or2.in 2) node[draw, circle, inner sep=1.2pt, fill=white, left] {};
+
+	    % --- Input Connections ---
+	    \draw (0, 2.28) node[left] {$S$} -- (nand1.in 1);
+	    \draw (0, -1.28) node[left] {$R$} -- (nand2.in 2);
+
+	    % EN (Enable) Input Wire Routing
+	    \draw (0, 0.5) node[left] {$EN$} -- (0.8, 0.5);
+	    \draw (0.8, 0.5) |- (nand1.in 2);
+	    \draw (0.8, 0.5) |- (nand2.in 1);
+
+	    % Stage 1 to Stage 2 Interconnections
+	    \draw (nand1.out) -- (or1.in 1);
+	    \draw (nand2.out) -- (or2.in 2);
+
+	    % --- Output Connections ---
+	    \draw (or1.out) -- (7, 2) node[right] {$Q$};
+	    \draw (or2.out) -- (7, -1) node[right] {$\overline{Q}$};
+
+	    % --- Cross-Coupled Feedback Wires ---
+	    % Upper Q output feedback to lower gate input
+	    \draw (6.2, 2) -- (6.2, 1.1) -- (4.2, -0.2) -- (4.2, -0.72) -- (or2.in 1);
+
+	    % Lower Q-bar output feedback to upper gate input
+	    \draw (6.2, -1) -- (6.2, -0.1) -- (4.2, 1.2) -- (4.2, 1.72) -- (or1.in 2);
+	\end{tikzpicture}
+	\end{center}
+
+	\subsection{Flip-Flop:}
+	The only difference between a latch is flip-flop is that it is synchronous. That is, it waits for a clock time to change state. This trigger can be positive or negative edge triggering.
+	\subsubsection{D-FF}
+	\begin{center}
+		\includegraphics[scale=0.2]{d-ff.png}
+	\end{center}
+	\subsubsection{JK-FF}
+	\begin{center}
+		\includegraphics[scale=0.15]{jk-ff.png}
+	\end{center}
+	\subsubsection{Async Preset and Clear Inputs}
+	So far, JK FFs outputs update in sync with the clock. This is useful to set and resent FFs at will. Actual FFs are not ideal:
+	\begin{itemize}
+		\item Propogation delay
+		\item Set up time
+		\item Hold time
+		\item Max Clock freq
+		\item Pulse width requirements (Minimum width of pulses)
+		\item Power dissapation
+	\end{itemize}
+
+	\section{Timers}
+	\subsection{One Shot:}
+	\begin{itemize}
+		\item Useful to generate timing events
+		\item Has two states (Stable and Unstable)
+	\end{itemize}
+	On trigger moves to an unstable state, where is remains for a predetermined amount of time, before reture to a stable state.
+
+	\subsection{Non-retriggable One Shot:}
+	Based upon a Schmitt Trigger circuit. It has two operations, no timing components (30ns fixed pulse) and external timing (20-28ns pulse width).
+	$$t_{w}=0.7RC_{EXT}$$
+	\subsection{Retriggable One Shot:}
+	With no timing components is has a fixed pulse of 45ns. Compared to timing components,
+	$$t_{w}=0.32RC_{EXT}(1+\frac{0.7}{R})$$
+
+	\subsection{555 Timer:}
+	This is one of the most common timer types.
+	\begin{center}
+		\includegraphics[scale=0.25]{555-timer.png}
+	\end{center}
+	\subsubsection{Mono-stable}
+	$$t_{w}=1.1R_{1}C_{1}$$
+	\begin{center}
+		\includegraphics[scale=0.25]{555-mono.png}
+	\end{center}
+	\subsubsection{Astable}
+	Oscillates between charging and discharging of $C_{1}$.
+	\begin{itemize}
+		\item $C_{1}$ charges through $R_{1}$ and $R_{2}$
+		$$t_{H}=0.7(R_{1}+R_{2})C_{1}$$
+		\item $C_{1}$ discharges through only $R_{2}$
+		$$t_{L}=0.7R_{2}C_{1}$$
+		\item Period is the sum of both
+		$$T=t_{H}+t_{L}$$
+		\item Duty Cycle:
+		$$DC=frac{R_{1}+R_{2}}{R_{1}+2R_{2}}$$
+	\end{itemize}
+
+	\section{Counters}
+	\subsection{Finite State Machine:}
+	This is type of sequential circuit. One that has feeback, memory as well as progession in time with the clock. It has a finite number of states.
+	\subsection{Counters:}
+	Sunchronous counters have the change happen at the same time. Whereas a synchronous counters cascade the clock. Creating large delay by end sequence. The synchronous counter is the most widely used version. For it to cound like a synchronous, all clock inputs must be connected to the same clock. This is due to in a non-ideal FF there is no progration delay. In a synchronous, all counters will be delayed by the same amount, rather than the sum of all.
+
+	\subsection{Partial Decoding:}
+	Partial decoding is it only decodes a given bit pattern. Once the pattern is reached, a signal is place on RESET. It is important to note that a glitch will be present as the pattern must be met bofer the RESET signal is sent.
+
+	\subsection{Process of Counter Design:}
+	\begin{enumerate}
+		\item State diagram showing sequence of all wanted states
+		\item Next state table, current vs next states
+		\item FF transition table. The FF input requirements for state transition
+		\item K-maps for FF inputs combinational logic
+		\item Logic expression for inputs and minimise the logic required to its minimum
+		\item Counter implementation
+	\end{enumerate}
+
+	\subsection{Cascading Counters:}
+	Several conuters can be cascaded to have a higher modulus. The higher order only cycles onece when the lower counter completes a full cycle.
+
+	\subsection{Counter Decoding and Glitches:}
+	Counter decoding is used to determine a certain counter state. Spikes in decoder outupt, A.K.A glitches, are generated due to none sync transitions of counter outputs. These must be carefully considered in practical solutions.
+
+	\subsection{Strobing:}
+	Eliminates the effects of glitches. It does this through waiting until a glitch occurs within a system. Strobe signal indicates when the inputs can be reliably read. For active high CLK, a low-level can be used as strobe indicator.
 \end{document}
