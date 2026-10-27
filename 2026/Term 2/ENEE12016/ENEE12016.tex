@@ -846,4 +846,397 @@
 	\end{align*}
 	Transient Response: $0.5e^{-t}$\\
 	Steady-state Response: $0.5\sqrt{2}\cos{(t-45^{\circ})}$
+
+	\section{Stability of LTI Systems:}
+	\subsection{Region of Convergence of Laplace:}
+	\begin{itemize}
+		\item Some integrals only converge (exist) for a certain range
+		\item The region where the Laplace transform converges is RoC
+		\item This is expressed in a range of s-values and should be stated with the Laplace. Outside this range Laplace $\to\;\infty$
+	\end{itemize}
+	\begin{align*}
+		x(t)&=e^{-at}u(t)\\
+		X(s)&=\Lap\{x(t)\}\\
+		&=\int^{\infty}_{0}e^{-at}e^{-st}dt\\
+		&=\frac{1}{s+a}\\
+		&=\frac{1}{\sigma+j\omega+a}\\
+		s+a&=0\\
+		\therefore s&=-a
+	\end{align*}
+	RoC only considers $Re\{s\}=\sigma$.
+	\subsection{Region of Convergence:}
+	This only depends on $Re\{s\}=\sigma$, and ignore the $j\omega$ axis. When looking at RoC on a plane it is the strig parallel to $Im\{s\}$.
+	\subsection{System Stability:}
+	In a stable system, an input will not lead to an unbounded output. As such when $t\to\infty$, $y(t)\to0$ or a value. An example is an RC circuit, when the capacitor is connected for long time, the capacitor reaches steady state $V_{s}$.
+	\subsection{Bounded Input Bounded Output Stability:}
+	A system is BIBO stable if every bounded input produces a bounded output.
+	\begin{center}
+	\begin{tikzpicture}[>=Stealth]
+	    % --- TOP WAVEFORM: Input x(t) ---
+	    \begin{scope}[shift={(0,3.5)}]
+		% Upper and lower dashed boundary lines
+		\draw[dashed, gray, thick] (-3.5, 0.9) -- (3.5, 0.9);
+		\draw[dashed, gray, thick] (-3.5, -0.9) -- (3.5, -0.9);
+		
+		% Input wave signal
+		\draw[thick, blue!80!black, samples=200, domain=-3.2:3.2, smooth]
+		    plot (\x, {0.35*sin(200*\x) + 0.3*cos(450*\x) + 0.15*sin(800*\x)});
+		    
+		\node[left=4pt] at (-3.5, 0) {$x(t)$};
+	    \end{scope}
+
+	    % --- DOWNWARD ARROW 1 ---
+	    \draw[->, thick] (0, 2.4) -- (0, 1.3);
+
+	    % --- SYSTEM BLOCK ---
+	    \node[draw, rectangle, rounded corners=2pt, minimum width=3cm, minimum height=1.6cm, align=center, fill=white, thick] (system) at (0, 0) {
+		{\Large $h(t)$}\\[4pt]
+		{\Large $H(s)$}
+	    };
+
+	    % --- DOWNWARD ARROW 2 ---
+	    \draw[->, thick] (0, -1.3) -- (0, -2.4);
+
+	    % --- BOTTOM WAVEFORM: Output y(t) ---
+	    \begin{scope}[shift={(0,-4.2)}]
+		% Upper and lower dashed boundary lines
+		\draw[dashed, gray, thick] (-3.5, 1.6) -- (3.5, 1.6);
+		\draw[dashed, gray, thick] (-3.5, -1.6) -- (3.5, -1.6);
+		
+		% Amplified output wave signal
+		\draw[thick, red!70!black, samples=200, domain=-3.2:3.2, smooth]
+		    plot (\x, {0.8*sin(180*\x) + 0.65*cos(350*\x)});
+		    
+		\node[left=4pt] at (-3.5, 0) {$y(t)$};
+	    \end{scope}
+
+	\end{tikzpicture}
+	\end{center}
+
+	\pagebreak
+
+	\subsection{Discrete Signal Stability:}
+	\begin{itemize}
+		\item Consider a time signal where $|x[n]|<B_{i}$ for all $n$
+		\item Output would become:
+	\end{itemize}
+	\begin{align*}
+		|y[n]|&=|\sum^{\infty}_{k=-\infty}h[k]x[n-k]|\\
+		&\leq\sum^{\infty}_{k=-\infty}|h[k]x[n-k]|
+	\end{align*}
+	Assuming maximum value for input for all $n$
+	$$|y[n]|\leq B_{i}\sum^{\infty}_{k=-\infty}|h[k]|$$
+	If input is bounded:
+	$$\sum^{\infty}_{k=-\infty}|h[k]|<\infty$$
+	\subsection{System Stability - s-Domain:}
+	\begin{itemize}
+		\item Recall that the transfer function, $H(s)$, generates the transient response and input generates the steady state.
+		\item For a system to be considered stable, all components must also be stable (bounded)
+		\item Transfer function of LTI system are always rational
+		\item Complex poles are always in conjugate pairs
+		\item For stability, all poles of the transfer function must be on left plane
+	\end{itemize}
+	\subsection{Location of Poles:}
+	\begin{center}
+		\includegraphics[scale=0.35]{location-of-pole.png}
+	\end{center}
+	\subsection{Block Diagrams:}
+	Linear constant coefficient can be represented by block diagrams. This is useful for simulation or implementation of the system.
+	\begin{center}
+	\begin{tikzpicture}[>=Stealth, node distance=2cm]
+	    % Forward path nodes
+	    \node (input) {$x(t)$};
+	    \node[draw, circle, minimum size=0.6cm, right=2.2cm of input] (sum) {};
+	    \node[circle, fill, inner sep=1.2pt, right=2.5cm of sum] (branch) {};
+	    \node[right=1.5cm of branch] (output) {$y(t)$};
+
+	    % Position coordinates for feedback loop
+	    \coordinate (bottom_sum) at ($(sum) + (0,-2)$);
+	    \coordinate (bottom_branch) at ($(branch) + (0,-2)$);
+
+	    % Differentiator block D
+	    \node[draw, rectangle, minimum width=0.8cm, minimum height=0.8cm] (diff) at ($(bottom_sum)!0.4!(bottom_branch)$) {$D$};
+
+	    % Forward path arrows and labels
+	    \draw[->, thick] (input) -- node[above=2pt] {$\frac{b}{a}$} (sum);
+	    \draw[thick] (sum) -- (branch);
+	    \draw[->, thick] (branch) -- (output);
+
+	    % Summing junction '+' signs
+	    \node[above left=1pt, font=\scriptsize] at (sum.west) {$+$};
+	    \node[below left=1pt, font=\scriptsize] at (sum.south) {$+$};
+
+	    % Feedback path arrows and labels
+	    \draw[thick] (branch) -- (bottom_branch) -- (diff.east);
+	    \draw[->, thick] (diff.west) -- node[above=2pt] {$-\frac{1}{a}$} (bottom_sum) -- (sum.south);
+
+	    % Label under differentiator block
+	    \node[below=3pt of diff, font=\small] {$\frac{dy(t)}{dt}$};
+
+	\end{tikzpicture}
+	\end{center}
+	$$y(t)=\frac{b}{a}x(t)+(-\frac{1}{a})\frac{dy(t)}{dt}$$
+	$$\frac{dy(t)}{dt}+ay(t)=bx(t)$$
+	\subsection{Using Integrators:}
+	Differenntiators are often hard to implement and sensitive to errors. On the other hand integrators are easy to implement using OpAmps.
+	$$\frac{dy(t)}{dt}+ay(t)=bx(t)$$
+	$$y(t)=\int^{t}_{-\infty}bx(\tau)-ay(\tau)d\tau$$
+	\subsection{Feedback System:}
+	\begin{center}
+	\begin{tikzpicture}[>=Stealth, node distance=2.2cm]
+	    % Nodes on forward path
+	    \node (input) {$x(t)$};
+	    \node[draw, circle, minimum size=0.6cm, right=1.5cm of input] (sum) {};
+	    \node[draw, rectangle, minimum width=1.6cm, minimum height=1.2cm, align=center, right=1.5cm of sum] (h1) {
+		$h_1(t)$\\[2pt]
+		$H_1(s)$
+	    };
+	    \node[circle, fill, inner sep=1.2pt, right=1.8cm of h1] (branch) {};
+	    \node[right=1.2cm of branch] (output) {$y(t)$};
+
+	    % Position coordinates for feedback loop
+	    \coordinate (bottom_sum) at ($(sum) + (0,-2.2)$);
+	    \coordinate (bottom_branch) at ($(branch) + (0,-2.2)$);
+
+	    % Feedback block h2
+	    \node[draw, rectangle, minimum width=1.6cm, minimum height=1.2cm, align=center] (h2) at ($(bottom_sum)!0.5!(bottom_branch)$) {
+		$h_2(t)$\\[2pt]
+		$H_2(s)$
+	    };
+
+	    % Forward path
+	    \draw[->, thick] (input) -- (sum);
+	    \draw[->, thick] (sum) -- node[above=2pt, font=\small] {$e(t)$} (h1);
+	    \draw[thick] (h1) -- (branch);
+	    \draw[->, thick] (branch) -- (output);
+
+	    % Summing junction +/- labels
+	    \node[above left=1pt, font=\scriptsize] at (sum.west) {$+$};
+	    \node[below left=1pt, font=\scriptsize] at (sum.south) {$-$};
+
+	    % Feedback path
+	    \draw[thick] (branch) -- (bottom_branch) -- (h2.east);
+	    \draw[->, thick] (h2.west) -- node[above=2pt, font=\small] {$z(t)$} (bottom_sum) -- (sum.south);
+
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		Y(s)&=E(s)H(s)\\
+		E(s)&=X(s)-Z(s)\\
+		Z(s)&=H_{2}(s)Y(s)\\
+		Y(s)&=[X(s)-Z(s)]H_{1}(s)\\
+		&=[X(s)-H_{2}(s)Y(s)]H_{1}(s)\\
+		&=\frac{H_{1}(s)}{1+H_{1}(s)H_{2}(s)}X(s)
+	\end{align*}
+	\subsection{z-Transform:}
+	Similar to Laplace but for discrete time systems.
+	$$X[z]=\sum^{\infty}_{n=0}x[n]z^{-n}$$
+	z is a complex frequency variable $re^{j\omega}$. Example, Find the z-transform of $x[n]=a^{n}u[n]$
+	\begin{align*}
+		X[z]&=\sum^{\infty}_{n=0}a^{n}z^{-n}\\
+		&=\sum^{\infty}_{n=0}(az^{-1})^{n}\\
+		&=\lim_{n\to\infty}\frac{1-az^{-1(n)}}{1-az^{-1}}\\
+		&=\frac{z}{z-a}
+	\end{align*}
+
+	\section{Fourier Series}
+	\subsection{Signals as Other Signals:}
+	Any discrete time signal can be thought of as a sum of shifted and scaled impulse signals. The same can be true for continuous time signals. A periodic signal can be represented as a sum of $\sin$ and $\cos$ functions.
+	\subsection{Periodic Waveforms:}
+	These waveforms are defined by:
+	$$x(t)=x(t+T),\;\text{where}\;t\in\mathbb{R}$$
+	Most natural waveforms are like sinusodial but not halfwave, AC Power, or square wave.
+	\subsection{Fourier Series:}
+	Any periodic series can be represented by an infinite sum of harmonically related series. The harmonis are integer multiplied by the fundamental frequency.
+	$$f(t)=a_{v}+\sum^{\infty}_{k=1}a_{k}\cos{(k\omega_{0}t)}+b_{k}\sin{(k\omega_{0}t)}$$
+	\pagebreak\\
+	Where:
+	\begin{itemize}
+		\item $\omega=\frac{2\pi}{T}$
+		\item $a_{v}=\frac{1}{T}\int^{t_{0}+T}_{t_{0}}f(t)dt$
+		\item $a_{k}=\frac{2}{T}\int^{t_{0}+T}_{t_{0}}f(t)\cos{(k\omega_{0}t)}dt$
+		\item $b_{k}=\frac{2}{T}\int^{t_{0}+T}_{t_{0}}f(t)\sin{(k\omega_{0}t)}dt$
+	\end{itemize}
+	\subsection{Dirichlet's Conditions:}
+	4 items must be satisfied to a be Fouries transform:
+	\begin{enumerate}
+		\item Singled valued - when $t$ only one value for $f(t)$
+		\item Have a finite number of discontinunity in period
+		\item Have a finite number of maxima and minima in one period
+		\item The $\int^{t_{0}+T}_{t_{0}}|f(t)|dt$ exist
+	\end{enumerate}
+	\subsection{Signal Symmetry and Fourier Coefficients:}
+	\subsubsection{Even}
+	\begin{center}
+		\includegraphics[scale=0.5]{even-symmetry.png}
+	\end{center}
+	$$f(t)=f(-t)$$
+	\begin{align*}
+		a_{v}&=\frac{2}{T}\int^{\frac{T}{2}}_{0}f(t)dt\\
+		a_{k}&=\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\cos{(k\omega_{0}t)}dt\\
+		b_{k}&=0
+	\end{align*}
+	\subsubsection{Odd}
+	\begin{center}
+		\includegraphics[scale=0.5]{odd-symmetry.png}
+	\end{center}
+	$$f(t)=-f(-t)$$
+	\begin{align*}
+		a_{v}&=0\\
+		a_{k}&=0\\
+		b_{k}&=\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\sin{(k\omega_{0}t)}dt
+	\end{align*}
+	\subsubsection{Non-symmetric}
+	Shift signal until even or odd is found ($T$). Then shift resulting output.
+	$$\sin{(k\omega_{0}[t+T])}$$
+	$$\cos{(k\omega_{0}[t+T])}$$
+	\subsection{Half-wave Symmetry:}
+	\begin{center}
+		\includegraphics[scale=0.5]{half-wave-symmetry.png}
+	\end{center}
+	$$f(t)=-f(t-\frac{T}{2})$$
+	\begin{align*}
+		a_{v}&=0\\
+		a_{k}&=\left\{\begin{array}{ll}
+			0, & k\;\text{is even}\\
+			\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\cos{(k\omega_{0}t)}dt, & k\;\text{is odd}
+		\end{array}\right.\\
+		b_{k}&=\left\{\begin{array}{ll}
+			0, & k\;\text{is even}\\
+			\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\sin{(k\omega_{0}t)}dt, & k\;\text{is odd}
+		\end{array}\right.
+	\end{align*}
+	\subsubsection{Even and Half-wave}
+	\begin{align*}
+		a_{v}&=0\\
+		a_{k}&=\left\{\begin{array}{ll}
+			0, & k\;\text{is even}\\
+			\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\cos{(k\omega_{0}t)}dt, & k\;\text{is odd}
+		\end{array}\right.\\
+		b_{k}&=0
+	\end{align*}
+	\subsubsection{Odd and Half-wave}
+	\begin{align*}
+		a_{v}&=0\\
+		a_{k}&=0\\
+		b_{k}&=\left\{\begin{array}{ll}
+			0, & k\;\text{is even}\\
+			\frac{4}{T}\int^{\frac{T}{2}}_{0}f(t)\sin{(k\omega_{0}t)}dt, & k\;\text{is odd}
+		\end{array}\right.
+	\end{align*}
+	\subsection{Quater-wave Symmetry:}
+	A signal that is half-wave symmetric and symmetric around the mid-point.
+	\begin{center}
+		\includegraphics[scale=0.25]{quater-waver-symmetry.png}
+	\end{center}
+	\subsubsection{Even and Quater-wave}
+	\begin{align*}
+		a_{v}&=0\\
+		a_{k}&=\left\{\begin{array}{ll}
+			0, & k\;\text{is even}\\
+			\frac{8}{T}\int^{\frac{T}{4}}_{0}f(t)\cos{(k\omega_{0}t)}dt, & k\;\text{is odd}
+		\end{array}\right.\\
+		b_{k}&=0
+	\end{align*}
+	\subsubsection{Odd and Quater-wave}
+	\begin{align*}
+		a_{v}&=0\\
+		a_{k}&=0\\
+		b_{k}&=\left\{\begin{array}{ll}
+			0, & k\;\text{is even}\\
+			\frac{8}{T}\int^{\frac{T}{4}}_{0}f(t)\sin{(k\omega_{0}t)}dt, & k\;\text{is odd}
+		\end{array}\right.
+	\end{align*}
+	\subsection{Steady-state Response:}
+	A $\cos{(\omega t+\theta)}$ is applied with a transfer $H(s)$.
+	$$y(t)=A|H(j\omega)|\cos{(\omega t+\varphi+\theta(\omega))}v(t)+r(t)$$
+	$|H(j\omega)|$ is the steady-state response.
+	\begin{center}
+	\begin{tikzpicture}
+	    % Main circuit loop
+	    \draw (0,2.5) 
+		to[V] (0,0)
+		-- (3.5,0)
+		to[C, l=$C$] (3.5,2.5)
+		to[R, l_=$R$] (0,2.5);
+	    
+	    % Output voltage terminals
+	    \draw (3.5,2.5) -- (5,2.5) to[open, v^=$v_o$, o-o] (5,0) -- (3.5,0);
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		v_{g}(t)&=\frac{4V_{m}}{\pi}\sum^{\infty}_{k=\text{odd}}\frac{\sin{(k\omega_{0}t)}}{k}\\
+		H(s)&=\frac{1}{1+sRC}\\
+		H(j\omega)&=\frac{1}{1+j\omega RC}\\
+		|H(j\omega)|&=\frac{1}{\sqrt{1+\omega^{2}R^{2}C^{2}}}\\
+		&=\frac{1-j\omega RC}{1+\omega^{2}R^{2}C^{2}}\\
+		\angle H(j\omega)&=-\arctan{(\omega RC)}
+	\end{align*}
+	$$v_{0}(t)=\frac{4V_{m}}{\pi}\sum^{\infty}_{k=\text{odd}}\frac{|H(j\omega k)|\sin{(k\omega_{0}t-\arctan{[k\omega_{0}RC]})}}{k}$$
+	As $C$ increases the phase approaches $90^{\circ}$ and magnitude is approximately\\$\frac{4V_{m}}{k^{2}\pi\omega_{0}RC}$.
+	\begin{align*}
+		v_{0}(t)&\approx\frac{4V_{m}}{\pi\omega_{0}RC}\sum^{\infty}_{k=\text{odd}}\frac{\sin{(k\omega_{0}t-90^{\circ})}}{k^{2}}\\
+		&=\frac{-4V_{m}}{\pi\omega_{0}RC}\sum^{\infty}_{k=\text{odd}}\frac{\cos{(k\omega_{0}t)}}{k^{2}}
+	\end{align*}
+	\subsection{Fourier Series - Alternative Form:}
+	$$z\cos{(x-y)}=z\cos{(x)}\cos{(y)}+z\sin{(x)}\sin{(y)}$$
+	$$\text{Let: }z\cos{(y)}=a \;\;\;\; z\sin{(y)}=b$$
+	\begin{align*}
+		a^{2}+b^{2}&=z^{2}\cos{^{2}(y)}+z^{2}\sin{^{2}(y)}\\
+		&=z^{2}\\
+		z&=\sqrt{a^{2}+b^{2}}\\
+		\frac{b}{a}&=\frac{z\sin{(y)}}{z\cos{(y)}}\\
+		&=\tan{(y)}\\
+		y&=\arctan{(\frac{b}{a})}\\\\
+		a\cos{(x)}+b\sin{(x)}&=z\cos{(x-y)}\\
+		&=\sqrt{a^{2}+b^{2}}\cos{(x-\arctan{(\frac{b}{a})}}
+	\end{align*}
+	Fourier be written
+	\begin{align*}
+		f(t)&=a_{v}+\sum^{\infty}_{k=1}a_{k}\cos{(k\omega_{0}t)}+b_{k}\sin{(k\omega_{0}t)}\\
+		&=a_{v}\sum^{\infty}_{k=1}\sqrt{a_{k}^{2}+b_{k}^{2}}\cos{(k\omega_{0}t-\arctan{(\frac{b_{k}}{a_{k}})})}
+	\end{align*}
+	\subsection{Average Power of Periodic Signal:}
+	\begin{align*}
+		v(t)&=v_{DC}+\sum^{\infty}_{k=1}v_{k}\cos{(k\omega_{0}t-\theta_{vk})}\\
+		i(t)&=i_{DC}+\sum^{\infty}_{k=1}i_{k}\cos{(k\omega_{0}t-\theta_{ik})}\\
+		P_{av}&=\frac{1}{T}\int^{t_{0}+T}_{t_{0}}v(t)i(t)dt\\
+		&=v_{DC}i_{DC}+\sum^{\infty}_{k=1}\frac{v_{k}i_{k}}{2}\cos{(\theta_{ik}-\theta_{vk})}
+	\end{align*}
+	\subsection{RMS of Periodic Signals:}
+	\begin{align*}
+		F_{RMs}&=\sqrt{\frac{1}{T}\int^{t_{0}+T}_{t_{0}}f(t)^{2}dt}\\
+		&=\sqrt{\frac{1}{T}\int^{t_{0}+T}_{t_{0}}[f_{DC}+\sum^{\infty}_{k=1}f_{k}\cos{^{2}(k\omega_{0}t-\theta_{vk})}dt}\\
+		&=\sqrt{f_{DC}^{2}+\sum^{\infty}_{k=1}f_{k(RMS)}^{2}}
+	\end{align*}
+	\subsection{Exponential Form of Fourier Series:}
+	Using $\sin$ and $\cos$ identities in Euler form, it can be written in complex exponential.
+	$$\cos{(\theta)}=\frac{e^{j\theta}+e^{-j\theta}}{2}$$
+	$$\sin{(\theta)}=\frac{e^{j\theta}-e^{-j\theta}}{2j}$$
+	\begin{align*}
+		f(t)&=a_{v}+\sum^{\infty}_{k=1}a_{k}\cos{(k\omega_{0}t+b_{k})}+b_{k}\sin{(k\omega_{0}t)}\\
+		&=a_{v}+\sum^{\infty}_{k=1}a_{k}\frac{e^{jk\omega_{0}t}+e^{-jk\omega_{0}t}}{2}+b_{k}\frac{e^{jk\omega_{0}t}-e^{-jk\omega_{0}t}}{2j}\\
+		&=a_{v}+\sum^{\infty}_{k=1}\frac{a_{k}-jb_{k}}{2}e^{jk\omega_{0}t}+\frac{a_{k}+jb_{k}}{2}e^{-jk\omega_{0}t}\\
+		\text{Let: }c_{k}=\frac{a_{k}-jb_{k}}{2}\;\text{\&}&\;\overline{c_{k}}=\frac{a_{k}+jb_{k}}{2}\\
+		\therefore f(t)&=a_{v}+\sum^{\infty}_{k=1}c_{k}e^{jk\omega_{0}t}+\overline{c_{k}}e^{-jk\omega_{0}}\\
+		c_{k}&=\frac{1}{T}\int^{t_{0}+T}_{t_{0}}f(t)e^{-jk\omega_{0}t}dt
+	\end{align*}
+	Take $k=0$
+	$$c_{0}=\frac{1}{T}\int^{t_{0}+T}_{t_{0}}f(t)dt$$
+	For $k<0$
+	\begin{align*}
+		c_{k}&=\frac{1}{T}\int^{t_{0}+T}_{t_{0}}f(t)e^{jk\omega_{0}t}dt\\
+		&=\overline{c_{k}}
+	\end{align*}
+	Combining all Coefficeints:
+	\begin{align*}
+		f(t)&=a_{v}+\sum^{\infty}_{k=1}c_{k}e^{jk\omega_{0}t}+\overline{c_{k}}e^{-jk\omega_{0}t}\\
+		&=c_{0}+\sum^{\infty}_{k=1}c_{k}e^{jk\omega_{0}t}+\sum^{\infty}_{k=1}\overline{c_{k}}e^{-jk\omega_{0}t}\\
+		&=c_{0}+\sum^{\infty}_{k=1}c_{k}e^{jk\omega_{0}t}+\sum^{-\infty}_{k=-1}c_{k}e^{jk\omega_{0}t}\\
+		&=\sum^{\infty}_{k=-\infty}c_{k}e^{jk\omega_{0}t}
+	\end{align*}
+	\subsection{Summary of Exponential Form:}
+	$$f(t)=\sum^{\infty}_{k=-\infty}c_{k}e^{jk\omega_{0}t}$$
+	$$c_{k}=\frac{1}{T}\int^{t_{0}+T}_{t_{0}}f(t)e^{-jk\omega_{0}t}dt$$
+	$$F_{RMS}=\sqrt{c_{0}^{2}+2\sum^{\infty}_{k=1}|c_{k}|^{2}}$$
 \end{document}
