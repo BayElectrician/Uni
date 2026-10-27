@@ -5,7 +5,7 @@
 \setlength{\columnsep}{1cm}
 \usepackage[margin=0.75in]{geometry}
 \usepackage{graphicx}
-\graphicspath{ {../../../Images/COIT11240/} }
+\graphicspath{ {../../../Images/ENEE12016/} }
 \usepackage[breaklinks, hidelinks]{hyperref}
 \usepackage{siunitx}
 \usepackage{tikz}
@@ -538,4 +538,312 @@
 		Ke^{-at}u(t)&\Leftrightarrow\frac{K}{s+a}
 	\end{align*}
 	$$f(t)=K_{1}u(t)+K_{2}e^{-3t}u(t)+K_{3}e^{-t}u(t)+K_{4}te^{-t}u(t)$$
+
+	\section{s-Domain Analysis}
+	\subsection{Circuit Elements in s-Domain:}
+	Similar to analysis done on AC circuits in time domain. Using Laplace transforms, the time domain formulas can be converted to s-Domain. They key difference is that the initial conditions are taken into during the conversion.
+	\begin{center}
+		\includegraphics[scale=0.5]{s-domain-elements.jpg}
+	\end{center}
+	\subsubsection{Resistor}
+	\begin{align*}
+		v(t)&=Ri(t)\\
+		\Lap\{v(t)\}&=V(s)=\int^{\infty}_{0}v(t)e^{-st}dt\\
+		&=\int^{\infty}_{0}Ri(t)e^{-st}dt\\
+		&=R\int^{\infty}_{0}i(t)e^{-st}dt\\
+		\therefore V(s)&=RI(s)\\
+		I(s)&=\frac{V(s)}{R}
+	\end{align*}
+	The units change in s-Domain to volt-seconds and amp-seconds.
+	\subsubsection{Inductor}
+	\begin{align*}
+		v(t)&=L\frac{di(t)}{dt}\\
+		\Lap\{v(t)\}&=V(s)=\int^{\infty}_{0}L\frac{di(t)}{dt}e^{-st}dt\\
+		&=L\int^{\infty}_{0}\frac{di(t)}{dt}e^{-st}dt\\
+		&=L(sI(s)-i(0^{-}))\\
+		\therefore V(s)&=sLI(s)-LI_{0}\\
+		I(s)&=\frac{V(s)}{sL}+\frac{I_{0}}{s}
+	\end{align*}
+	The $LI_{0}$ is the initial conditions of the inductor at $t=0^{-}$. $LI_{0}$ is a voltage sourse in series when finding voltage in s-Domain. $\frac{I_{0}}{s}$ is a current source in parrallel.
+	\subsubsection{Capacitor}
+	\begin{align*}
+		i(t)&=C\frac{dv(t)}{dt}\\
+		\Lap\{i(t)\}&=I(s)=\int^{\infty}_{0}C\frac{dv(t)}{dt}e^{-st}dt\\
+		&=C\int^{\infty}_{0}\frac{dv(t)}{dt}e^{-st}dt\\
+		&=C(sV(s)-v(0^{-}))\\\
+		\therefore I(s)&=sCV(s)-CV_{0}\\
+		V(s)&=\frac{I(s)}{sC}+\frac{V_{0}}{s}
+	\end{align*}
+	$V_{0}$ is the voltage at $t=0^{-}$.
+	\subsection{Circuit Analysis:}
+	All of Kirchoff's Laws (KCL and KVL) that applied in time domain, apply in s-Domain. The only important part is to have everything in one domain before analysis. The $R$, $sL$, and $\frac{1}{sC}$ are the s-Domain impedances for resistors, inductors and capacitors respectively.
+
+	\section{Transfer Functions}
+	\subsection{Complex Frequency:}
+	In Laplace, it is taken in s-domain analysis, or complex frequency.
+	$$s=\sigma+j\omega$$
+	$$e^{s}=e^{\sigma+j\omega}=e^{\sigma}e^{j\omega}$$
+	This expansion produces a sinusoidal damped function. Using this, the s-plane can be identified.
+	\begin{center}
+	\begin{tikzpicture}
+	    % Axes
+	    \draw[<->, thick] (-3, 0) -- (3, 0) node[right=2pt] {$\text{Re}\{s\}$};
+	    \node[below right] at (2.7, 0) {$\sigma$};
+	    
+	    \draw[<->, thick] (0, -3) -- (0, 3) node[above=2pt] {$\text{Im}\{s\}$};
+	    \node[below right] at (0, 2.7) {$j\omega$};
+
+	    % Quadrant I (Top-Right)
+	    \node at (1.5, 1.8) {$\sigma > 0$};
+	    \node at (1.5, 1.0) {$\omega > 0$};
+
+	    % Quadrant II (Top-Left)
+	    \node at (-1.5, 1.8) {$\sigma < 0$};
+	    \node at (-1.5, 1.0) {$\omega > 0$};
+
+	    % Quadrant III (Bottom-Left)
+	    \node at (-1.5, -1.0) {$\sigma < 0$};
+	    \node at (-1.5, -1.8) {$\omega < 0$};
+
+	    % Quadrant IV (Bottom-Right)
+	    \node at (1.5, -1.0) {$\sigma > 0$};
+	    \node at (1.5, -1.8) {$\omega < 0$};
+	\end{tikzpicture}
+	\end{center}
+	\subsection{Pole Zero Diagram:}
+	When analysis on 3D functions they are calculation intensive and often hard to visualize. Instead shown the extreme ends of functions mangnitude:
+	\begin{itemize}
+		\item Where Function is $0$ - Zeros (Numerator is 0)
+		\item Where Function is $\infty$ - Poles (Denominator is 0)
+	\end{itemize}
+	$$F(s)=\frac{10(s+5)(s+3-j4)(s+3+j4)}{s(s+10)(s+6-j8)(s+6+j8)}$$
+	$$0\;\text{at:}\;-5,\;-3+j4,\;-3-j4$$
+	$$\infty\;\text{at:}\;0,\;10,\;-6+j8,\;-6-j8$$
+	\begin{center}
+		\begin{tikzpicture}
+	    \begin{scope}[xscale=0.5, yscale=0.5]
+		% Axes
+		\draw[<->, thick] (-12, 0) -- (3, 0) node[right=2pt] {$\text{Re}\{s\}$};
+		\draw[<->, thick] (0, -10) -- (0, 10) node[above=2pt] {$\text{Im}\{s\}$};
+
+		% Title
+		\node[anchor=south west, font=\large\bfseries] at (1, 8.5) {$s$-plane};
+
+		% Poles (Crosses)
+		% Pole at 0
+		\draw[thick] (-0.3, -0.3) -- (0.3, 0.3);
+		\draw[thick] (-0.3, 0.3) -- (0.3, -0.3);
+		\node[above right=1pt] at (0, 0) {$0$};
+
+		% Pole at -10
+		\draw[thick] (-10.3, -0.3) -- (-9.7, 0.3);
+		\draw[thick] (-10.3, 0.3) -- (-9.7, -0.3);
+		\node[above=2pt] at (-10, 0) {$-10$};
+
+		% Pole at -6 + j8
+		\draw[thick] (-6.3, 7.7) -- (-5.7, 8.3);
+		\draw[thick] (-6.3, 8.3) -- (-5.7, 7.7);
+		\node[above=2pt] at (-6, 8) {$-6 + j8$};
+
+		% Pole at -6 - j8
+		\draw[thick] (-6.3, -8.3) -- (-5.7, -7.7);
+		\draw[thick] (-6.3, -7.7) -- (-5.7, -8.3);
+		\node[below=2pt] at (-6, -8) {$-6 - j8$};
+
+		% Zeros (Unfilled Circles)
+		\draw[thick, fill=white] (-3, 4) circle (6pt);
+		\node[above right=2pt] at (-3, 4) {$-3 + j4$};
+
+		\draw[thick, fill=white] (-3, -4) circle (6pt);
+		\node[below right=2pt] at (-3, -4) {$-3 - j4$};
+	    \end{scope}
+	\end{tikzpicture}
+	\end{center}
+	\subsection{LTI Systems in Differentials:}
+	For example RLC circuits are discribed with differential equations, such as charging a capacitor:
+	$$C\frac{dv}{dt}+\frac{V}{R}=I_{s}$$
+	Parallel RLC Circuit:
+	$$\frac{d^{2}v}{dt^{2}}+\frac{1}{RC}\frac{dv}{dt}+\frac{1}{LC}v=0$$
+	\subsection{Linear Constand Coefficient Differential Equations:}
+	$$\sum^{N}_{k=0}a_{k}\frac{d^{k}y(t)}{dt^{k}}=\sum^{M}_{k=0}b_{k}\frac{d^{k}x(t)}{dt^{k}}$$
+	\begin{itemize}
+		\item $k=0$, results in $x(t)$ and $y(t)$
+		\item Order of the system is given by the highest derivative of $y(t)$
+		\item This equation does not give an explicit expression of system output
+		\item For $N=0$, an explicit relationship of $y(t)$
+	\end{itemize}
+	$$y(t)=\frac{1}{a_{0}}\sum^{M}_{k=0}b_{k}\frac{d^{k}x(t)}{dt^{k}}$$
+	\subsection{Transfer Function:}
+	Taking Laplace of generic formula.
+	$$\Lap\{\frac{d^{k}y(t)}{dt^{k}}\}=s^{k}Y(s)-s^{k-1}y(0)-s^{k-2}\frac{dy(0)}{dt}-s^{k-3}\frac{d^{2}y(0)}{dt^{2}}-\ldots-\frac{d^{k-1}y(0)}{dt^{-1}}$$
+	If $y(0)=0$, then:
+	$$\Lap\{\frac{d^{k}y(t)}{dt^{k}}\}=s^{k}Y(s)$$
+	Take Laplace of both sides:
+	$$\Lap\{\sum^{N}_{k=0}a_{k}\frac{d^{k}y(t)}{dt^{k}}\}=\Lap\{\sum^{M}_{k=0}b_{k}\frac{d^{k}y(t)}{dt^{k}}\}$$
+	Assuming initial conditions are 0:
+	$$\sum^{N}_{k=0}a_{k}s^{k}Y(s)=\sum^{M}_{k=0}b_{k}s^{k}Y(s)$$
+	$$H(s)=\frac{Y(s)}{X(s)}=\frac{b_{m}s^{m}+b_{m-1}s^{m-1}+\ldots+b_{1}s+b_{0}}{a_{n}s^{n}+a_{n-1}s^{n-1}+\ldots+a_{1}s+a_{0}}$$
+	In general for any system the transfer function is the ratio of output to input.
+	\subsection{Poles and Zeros of Transfer Function:}
+	Any rational function, $H(s)$, can be expressed as the ratio of 2 polynomials.
+	$$H(s)=\frac{K(s+z_{1})(s+z_{2})+\ldots+(s+z_{m})}{(s+p_{1})(s+p_{2})+\ldots+(s+p_{n})}$$
+	From thos form, the poles and zeros can be found.
+	\subsection{Impulse Response:}
+	Recall that $\Lap\{\delta(t)\}=\Delta(s)=1$. As such $Y(s)=H(s)$.
+	\subsection{Use of Convolution Integral:}
+	\begin{align*}
+		y(t)&=x(t)\otimes h(t)\\
+		&=\int^{\infty}_{\infty}h(t)x(t-\tau)d\tau\\
+		&=\int^{\infty}_{\infty}x(t)h(t-\tau)d\tau
+	\end{align*}
+	If $x(t)$ and $h(t)$ are known and Laplace transformable, the transfer function can be utilized.
+	\begin{center}
+	\begin{tikzpicture}
+	    % Leftmost Branch: Current Source
+	    \draw (0,0) to[isource, l=$i_g$] (0,3);
+
+	    % Top and Bottom Rails
+	    \draw (0,3) -- (2.5,3);
+	    \draw (0,0) -- (2.5,0);
+
+	    % Middle Branch: Inductor (1 H / s \Omega) + Resistor (2 \Omega)
+	    \draw (2.5,3) to[L, l=$1\text{ H}$ ($s\,\Omega$)] (2.5,1.5) 
+			  to[R, l=$2\,\Omega$] (2.5,0);
+	    \filldraw[black] (2.5,3) circle (1.5pt);
+	    \filldraw[black] (2.5,0) circle (1.5pt);
+
+	    % Connect to Right Branch
+	    \draw (2.5,3) -- (5,3);
+	    \draw (2.5,0) -- (5,0);
+
+	    % Right Branch: Capacitor (0.1 F / 10/s \Omega)
+	    \draw (5,3) to[C, l=$0.1\text{ F}$ ($\frac{10}{s}\,\Omega$)] (5,0);
+	    \filldraw[black] (5,3) circle (1.5pt);
+	    \filldraw[black] (5,0) circle (1.5pt);
+
+	    % Output Terminals & Voltage Label v_o
+	    \draw (4.5, 3) to[short, -o] (6, 3);
+	    \draw (4.5, 0) to[short, -o] (6, 0);
+
+	    \node at (6.5, 2.3) {$+$};
+	    \node at (6.5, 1.5) {$v_o$};
+	    \node at (6.5, 0.7) {$-$};
+	\end{tikzpicture}
+	\end{center}
+	Find transfer function $\frac{V_{o}}{i_{g}}$, Assume no stored energy in circuit.
+	\begin{align*}
+		Z_{eq}&=\frac{1}{\frac{1}{s+2}+\frac{1}{\frac{10}{s}}}\\
+		&=\frac{10(s+2)}{s^{2}2s+10}\\\\
+		V_{0}(s)&=i_{g}(s)\cdot Z_{eq}(s)\\
+		H(s)&=\frac{V_{0}(s)}{i_{g}(s)}=Z_{eq}(s)
+	\end{align*}
+	Zeros at: $-2$.\\
+	Poles at: $-1+j3,\;-1-j3$
+	\subsection{Initial and Final Value Theorem:}
+	Laplace can be use to find values of $f(t)$ at $0$ and $\infty$. This is useful as there values can be had to determine dineetly.
+	\subsubsection{Initial Value}
+	$$\lim_{t\to0^{+}}f(t)=\lim_{s\to\infty}sF(s)$$
+	Where:
+	\begin{itemize}
+		\item $f(t)$ does not contain an impulse function
+		\item $f(0^{+})$ exists
+		\item $F(s)$ can be found
+	\end{itemize}
+	\subsubsection{Final Value}
+	$$\lim_{t\to\infty}f(t)=\lim_{t\to0}sF(s)$$
+	Final value does not exist if:
+	\begin{itemize}
+		\item $sF(s)$ has poles on right side of plane - growing exponentially
+		\item $sF(s)$ has conjugate pole on $j\omega$ axis - sinusodial function
+		\item $sF(s)$ has poles on origin - $t^{n}$ function
+	\end{itemize}
+	\subsection{L'Hopital's Rule:}
+	If $f(t)$ is not defined when $t\to a$ then:
+	$$f(a)=\lim_{t\to a}f(t)=\frac{n'(a)}{d'(a)}$$
+	If the first derivative of function cannot be evaluated, then the second derivative is taken. Repeat until resolved. Find initial and final values:
+	\begin{align*}
+		F(s)&=\frac{s^{2}-5s+6}{s^{3}+4s^{2}+3s}\\
+		\lim_{t\to\infty}f(t)&=\lim_{s\to0}sF(s)\\
+		&=\lim_{s\to0}\frac{s(s^{2}-5s+6)}{s^{3}+4s^{2}+3s}\\
+		&=\lim_{s\to0}\frac{s^{2}-5s+6}{s^{2}+4s^{2}+3}\\
+		&=\frac{6}{3}\\
+		&=2\\\\
+		\lim_{t\to0^{+}}f(t)&=\lim_{s\to\infty}sF(s)\\
+		&=\lim_{s\to\infty}\frac{s^{2}-5s+6}{s^{2}+4s+3}\\
+		\text{Using}&\;\text{L'Hopital}\\
+		&=\lim_{s\to\infty}\frac{2s-5}{2s+4}\\
+		\text{Using}&\;\text{L'Hopital}\\
+		&=\lim_{s\to\infty}\frac{2}{2}\\
+		&=1
+	\end{align*}
+	\subsection{Complete System Response:}
+	$$H(s)=\frac{Y(s)}{X(s)}$$
+	$$\therefore Y(s)=H(s)X(s)$$
+	\begin{itemize}
+		\item Partial fraction expansion of $Y(s)$ includes terms from partial fractions (poles) of $H(s)$ and $Y(s)$
+		\item Poles of $H(s)$ result in transient response of the system
+		\item Poles of $X(s)$ results in steady-state response
+	\end{itemize}
+	\begin{center}
+	\begin{tikzpicture}
+	    % Input Voltage Source
+	    \draw (0,0) to[vsource, l=$V_{\text{in}}$] (0,3);
+
+	    % Switch closing at t=0
+	    \draw (0,3) to[switch, l=$t{=}0$] (2.5,3);
+
+	    % Resistor 1 ohm
+	    \draw (2.5,3) to[R, l=$1\,\Omega$] (5,3);
+
+	    % Capacitor 1 F (1/s)
+	    \draw (5,3) to[C, l_=$1\text{ F}$ ($\frac{1}{s}\,\Omega$)] (5,0);
+
+	    % Bottom wire
+	    \draw (0,0) -- (5,0);
+
+	    % Junction nodes
+	    \filldraw[black] (5,3) circle (1.5pt);
+	    \filldraw[black] (5,0) circle (1.5pt);
+
+	    % Output terminals (-o creates open terminal circles)
+	    \draw (5,3) to[short, -o] (6.5,3);
+	    \draw (5,0) to[short, -o] (6.5,0);
+
+	    % Output voltage label v_o
+	    \node at (6.5, 2.3) {$+$};
+	    \node at (6.5, 1.5) {$v_o$};
+	    \node at (6.5, 0.7) {$-$};
+	\end{tikzpicture}
+	\end{center}
+	\begin{align*}
+		\frac{V_{0}(s)}{V_{in}(s)}&=H(s)\\
+		V_{0}(s)&=\frac{\frac{1}{sC}\times V_{in}}{R+\frac{1}{sC}}\\
+		\frac{V_{0}(s)}{V_{in}(s)}&=\frac{\frac{1}{s}}{1+\frac{1}{s}}\\
+		&=\frac{1}{1+s}
+	\end{align*}
+	\begin{align*}
+		\text{Response}\;&\text{for}\;V_{in}\\
+		V_{0}(s)&=\frac{1}{s+1}V_{in}(s)\\
+		&=\frac{1}{s+1}\cdot\frac{1}{s}\\
+		&=\frac{1}{s(s+1)}\\
+		&=\frac{K_{1}}{s}+\frac{K_{2}}{s+1}
+	\end{align*}
+	\begin{align*}
+		K_{1}&=[\frac{1}{s+1}]_{s=0}=1\\
+		K_{2}&=[\frac{1}{s}]_{s=1}=-1\\\\
+		\therefore V_{0}(s)&=\frac{1}{s}+\frac{-1}{s+1}\\
+		\therefore v_{0}(t)&=\Lap^{-1}\{V_{0}(s)\}\\
+		&=(1-e^{-t})u(t)
+	\end{align*}
+	\begin{align*}
+		\text{Response}\;&\text{of}\;V_{in}(t)=\sin(t)\\
+		\Lap\{V_{in}(t)\}&=\frac{1}{s^{2}+1}\\
+		V_{0}(s)&=\frac{1}{s+1}\times\frac{1}{s^{2}+1}\\
+		&=\frac{1}{(s+1)(s-j)(s+j)}\\
+		&=\frac{0.5}{s+1}+\frac{-0.25\sqrt{2}e^{j45^{\circ}}}{s-j}+\frac{-0.25\sqrt{2}e^{-j45^{\circ}}}{s+j}\\
+		\therefore v_{0}(t)&=\Lap^{-1}\{V_{0}(s)\}\\
+		&=(0.5e^{-t}-0.5\sqrt{2}\cos{(t-45^{\circ})})u(t)
+	\end{align*}
+	Transient Response: $0.5e^{-t}$\\
+	Steady-state Response: $0.5\sqrt{2}\cos{(t-45^{\circ})}$
 \end{document}
