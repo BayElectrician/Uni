@@ -24,6 +24,7 @@
 \newcommand{\sech}{\mathrm{sech}}
 \newcommand{\csch}{\mathrm{csch}}
 \newcommand{\Lap}{\mathcal{L}}
+\newcommand{\For}{\mathcal{F}}
 \setcounter{secnumdepth}{4}
 \renewcommand\paragraph{\@startsection{paragraph}{4}{\z@}%
 % display heading, like subsubsection
@@ -40,7 +41,7 @@
 \begin{document}
 	\begin{titlepage}
 		\centering
-		{\Huge \textsc{COIT11240 - Dashboard Design}\par}
+		{\Huge \textsc{ENEE12016 - Signals and Systems}\par}
 		\vspace{1cm}
 		{\Large \textsc{Lecture Notes}\par}
 		\vspace{2.5cm}
@@ -1239,4 +1240,130 @@
 	$$f(t)=\sum^{\infty}_{k=-\infty}c_{k}e^{jk\omega_{0}t}$$
 	$$c_{k}=\frac{1}{T}\int^{t_{0}+T}_{t_{0}}f(t)e^{-jk\omega_{0}t}dt$$
 	$$F_{RMS}=\sqrt{c_{0}^{2}+2\sum^{\infty}_{k=1}|c_{k}|^{2}}$$
+
+	\section{Fourier Transform}
+	\subsection{Fourier Series:}
+	$$f(t)=\sum^{\infty}_{k=-\infty}c_{k}e^{j\omega_{0}t}$$
+	$$c_{k}=\frac{1}{T}\int^{t_{0}+T}_{t_{0}}f(t)e^{-jk\omega_{0}t}$$
+	\subsection{Fourier Transform:}
+	As the period increases, the fundamental frequency decreases. When the period is infinite, spacing converges towards $0$. This causes the summation to become an integral.
+	$$F(j\omega)=\int^{\infty}_{-\infty}f(t)e^{-j\omega t}dt$$
+	$$f(t)=\frac{1}{2\pi}\int^{\infty}_{-\infty}F(j\omega)e^{j\omega t}d\omega$$
+	The Fourier tansofmr provides a frequency view of the function. Specifically showing frequencies of energy/power of signals contained.
+	\begin{center}
+		\includegraphics[scale=0.25]{fourier-transform.png}
+	\end{center}
+	\begin{align*}
+		f(t)&=e^{-at}u(t)\\
+		F(j\omega)&=\int^{\infty}_{-\infty}e^{-at}u(t)e^{-j\omega t}dt\\
+		&=\int^{\infty}_{0}e^{-t(j\omega+a)}dt\\
+		&=\left[\frac{-1}{j\omega+a}e^{-t(j\omega+a)}\right]^{\infty}_{0}\\
+		&=\left[\frac{-1}{j\omega+a}e^{-\infty}\right]-\left[\frac{-1}{j\omega+a}\right]\\
+		&=\frac{1}{j\omega+a}\\
+		\left|F(j\omega)\right|&=\frac{1}{\sqrt{\omega^{2}+a^{2}}}\\
+		\angle F(j\omega)&=-\arctan{\left(\frac{\omega}{a}\right)}
+	\end{align*}
+	\subsection{Inverse Fourier Transform:}
+	Unlike Laplace transforms, the inverse fourier is quite simple.
+	$$f(t)=\frac{1}{2\pi}\int^{\infty}_{-\infty}F(j\omega)e^{j\omega t}d\omega$$
+	Similar to Laplace it is easier to do it in partial fractions.
+	\subsection{Laplace vs. Fourier:}
+	The fourier transform is a special case of the laplace transform. If all poles are on the left-side of the s-plane, the Fourier series converges. Then substitute $s=j\omega$.
+	\begin{itemize}
+		\item If $f(t)=0$ for $t\leq0$, $\For\{f(t)\}=\Lap\{f(t)\}|_{s=j\omega}$.
+		\item Else $f(t)=0$ for $t\geq0$, $\For\{f(t)\}=\Lap\{f(t)\}|_{s=j\omega}$.
+		\item Else $f(t)=a\;\forall\;t\in(-\infty,\infty)$:
+			$$f(t)=f(t)^{+}+f(t)^{-}$$
+			$$F(j\omega)=\Lap\{f(t)^{+}\}|_{s=j\omega}+\Lap\{f(-t)^{-}\}|_{s=-j\omega}$$
+	\end{itemize}
+	\subsection{Convergence of Fourier Integral:}
+	Must meet the following conditions:
+	\begin{enumerate}
+		\item Single valued
+		\item Have a finite number of discontinuities within any finite interval
+		\item Have finite maxima and minima within finite interval
+		\item $\int^{\infty}_{-\infty}|f(t)|dt$ exists
+	\end{enumerate}
+	An example of constant value A
+	\begin{align*}
+		f(t)&=A\\
+		&=Ae^{-\epsilon|t|}\\
+		\text{When}\;&\epsilon\to0\;\;f(t)\to A\\
+		F(j\omega)&=\frac{2\epsilon A}{\epsilon^{2}+\omega^{2}}\\
+		F(0)&=\frac{2A}{\epsilon}\\
+		\text{At}\;\omega\neq0,\;& F(j\omega)\to0\;\text{when}\;\epsilon\to0\\
+		\int^{\infty}_{-\infty}\frac{2\epsilon A}{\epsilon^{2}+\omega^{2}}d\omega&=\left[2\epsilon A\frac{1}{\epsilon}\arctan{\left(\frac{\omega}{a}\right)}\right]^{\infty}_{-\infty}\\
+		&=2\pi A\\\\
+		\therefore f(t)&=A\\
+		F(j\omega)&=2\pi A\delta(\omega)
+	\end{align*}
+	\subsection{Fourier Transform of Periodic:}
+	\begin{align*}
+		\For\{\cos{(\omega_{0}t)}\}&=\pi\delta(\omega-\omega_{0})+\pi\delta(\omega-\omega_{0})\\
+		\For\{\sin{(\omega_{0}t)}\}&=j\pi\delta(\omega-\omega_{0})-j\pi\delta(\omega+\omega_{0})\\
+		\For\{e^{j\omega_{0}t}\}&=2\pi\delta(\omega-\omega_{0})
+	\end{align*}
+	The fourier tansform of any periodic signal can be experssed as an infinite of impulse functions.
+	$$f(t)=\sum^{\infty}_{k=-\infty}c_{k}e^{j\omega_{0}kt}$$
+	$$F(j\omega)=\sum^{\infty}_{k=-\infty}2\pi c_{k}\delta(\omega-k\omega_{0})$$
+	\subsection{Operational Transforms:}
+	\subsubsection{Linearity}
+	$$\For\{k_{1}f_{1}(t)\pm k_{2}f_{2}(t)\}=k_{1}F_{1}(j\omega)\pm k_{2}F_{2}(j\omega)$$
+	\subsubsection{Differentiation}
+	$$\For\left\{\frac{d^{n}f(t)}{dt^{n}}\right\}=(j\omega)^{n}F(j\omega)$$
+	\subsubsection{Integration}
+	$$\For\left\{\int^{t}_{-\infty}f(\tau)d\tau\right\}=frac{F(j\omega)}{j\omega}+\pi F(0)\delta(\omega)$$
+	\subsubsection{Translation in t-Domain}
+	$$\For\{f(t-t_{0})\}=e^{-j\omega t_{0}}F(j\omega)$$
+	\subsubsection{Translation in w-Domain}
+	$$\For\{e^{j\omega_{0}t}f(t)\}=F(j[\omega-\omega_{0}])$$
+	\subsubsection{Scale Change}
+	$$\For\{f(at)\}=\frac{1}{|a|}F(\frac{j\omega}{a})$$
+	\subsubsection{Convolution in t-Domain}
+	$$\For\{f(t)\otimes g(t)\}=F(j\omega)G(j\omega)$$
+	\subsubsection{Convolution in w-Domain}
+	$$\For\{f(t)g(t)\}=\frac{1}{2\pi}\int^{\infty}_{-\infty}F(j\theta)G(j[\omega-\theta])$$
+	\subsubsection{Modulation}
+	$$\For\{f(t)\cos{(\omega_{0}t)}\}=\frac{1}{2}[F(\omega-\omega_{0})+F(\omega+\omega_{0})]$$
+	\subsection{Conjugate Symmetry:}
+	\begin{align*}
+		\For\{f(t)\}&=F(j\omega)\\
+		\For\{\overline{f(t)}\}&=F(-j\omega)\\
+		\text{If}\;f(t)&=\overline{f(t)}\\
+		F(j\omega)&=\overline{F(-j\omega)}\\
+		\overline{F(j\omega)}&=F(-j\omega)
+	\end{align*}
+	\begin{align*}
+		F(j\omega)&=\Re\{F(j\omega)\}+j\Im\{F(j\omega)\}\\
+		\overline{F(j\omega)}&=\Re\{F(j\omega)\}-j\Im\{F(j\omega)\}\\
+		&=\Re\{F(-j\omega)\}+j\Im\{F(-j\omega)\}
+	\end{align*}
+	If $f(t)$ is Real
+	$$\Re\{F(j\omega)\}=\Re\{F(-j\omega)\}$$
+	$$\Im\{F(j\omega)\}=-\Im\{F(-j\omega)\}$$
+	Express $F(j\omega$ in polar form
+	\begin{align*}
+		F(j\omega)&=|F(j\omega)|e^{j\angle  F(j\omega)}\\
+		|F(j\omega)|&=\sqrt{\Re\{F(j\omega)\}^{2}+\Im\{F(j\omega)\}^{2}}\\
+		\angle F(j\omega)&=\arctan{\left(\frac{\Im\{F(j\omega)\}}{\Re\{F(j\omega)\}}\right)}
+	\end{align*}
+	If $f(t)$ is real and even:
+	\begin{align*}
+		F(j\omega)&=\int^{\infty}_{-\infty}f(t)e^{-j\omega t}dt\\
+		\overline{F(j\omega)}&=F(-j\omega)\\
+		&=\int^{\infty}_{-\infty}f(t)e^{j\omega t}dt\\
+		\text{Sub}&\;t=-\tau\\
+		F(-j\omega)&=-\int^{-\infty}_{\infty}f(-\tau)e^{-j\omega\tau}d\tau\\
+		&=F(j\omega)\\
+		&=\overline{F(j\omega)}
+	\end{align*}
+	If $f(t)$ is real and even, $F(j\omega)$ is real and even. Else $f(t)$ is real and odd, $F(j\omega)$ is imaginary and odd.
+	\subsection{Duality Principle:}
+	Between a Fourier Transform and its inverse are similar when applied in pairs. Generally:
+	$$\For\{f(t)\}=F(\omega)$$
+	$$\For\{F(\omega)\}=2\pi f(-\omega)$$
+	\subsection{Parseval's Theorem:}
+	If $f(t)$ and $F(j\omega)$ are Fourier pairs,
+	$$\int^{\infty}_{-\infty}|f(t)|^{2}dt=\frac{1}{2\pi}\int^{\infty}_{-\infty}|F(j\omega)|^{2}d\omega$$
+	The total energy within a signal can be found with either side of the above equation. As such $|F(j\omega)|^{2}$ is referred to the energy density spectrum. Note that if a finite amount of energy is calculated over an infinite interval, the power is $0$.
 \end{document}
