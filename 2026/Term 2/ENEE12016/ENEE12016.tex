@@ -1366,4 +1366,203 @@
 	If $f(t)$ and $F(j\omega)$ are Fourier pairs,
 	$$\int^{\infty}_{-\infty}|f(t)|^{2}dt=\frac{1}{2\pi}\int^{\infty}_{-\infty}|F(j\omega)|^{2}d\omega$$
 	The total energy within a signal can be found with either side of the above equation. As such $|F(j\omega)|^{2}$ is referred to the energy density spectrum. Note that if a finite amount of energy is calculated over an infinite interval, the power is $0$.
+
+	\section{Frequency Selective Circuits}
+	\subsection{Time vs. Frequency Domain:}
+	Usually signals are most intuative in t-Domain (e.g. Audio, Power, or Control Systems). However, sometimes frequency-domain is intuative (e.g. Mixed Noise Signals). In this case the fouries transform shows how the signal energy is spread throughout the freqencies.
+	\subsection{Signal Transmission:}
+	To transmit a signal, all frequencies must be transmitted. This requiries a large amount of bandwidth, increasing the overall cost of the transmission. By finding where the energy is concentrated, only this part of the signal can be sent, reducing the bandwidth requirement.
+	\subsection{Circuit Components and Frequency:}
+	The impedance of certain circuit components varies with frequencies. These include capacitors, inductors and diodes.
+	\subsection{Effects of Phase Changes:}
+	\begin{itemize}
+		\item Effects of magnitude change with many frequencies are easier to identify.
+		\item Phase change can have a significant effect on output but harder to see.
+	\end{itemize}
+	\subsection{Frequency Response of an LTI System:}
+	\begin{align*}
+		H(j\omega)&=\frac{V_{out}(j\omega)}{V_{in}(j\omega)}\\
+		&=|H(j\omega)|e^{j\angle H(j\omega)}\\
+		&=|H(j\omega)|\angle H(j\omega)
+	\end{align*}
+	\subsection{Effects of Phase Response:}
+	Linear Phase - Has the following response:
+	\begin{align*}
+		H(j\omega)&=e^{-j\omega t_{0}}\\
+		|H(j\omega)|&=1\\
+		\angle H(j\omega)&=-\omega t_{0}
+	\end{align*}
+	This system has a linear phase response, the output:
+	\begin{align*}
+		V_{o}(j\omega)&=H(j\omega)V_{i}(j\omega)\\
+		&=e^{-j\omega t_{0}}V_{i}(j\omega)\\
+		v_{o}(t)&=v_{i}(t-t_{0})\\
+		\For\{f(t-t_{0})\}&=e^{-j\omega t_{0}}F(j\omega)
+	\end{align*}
+	\subsection{Bode Plot:}
+	The frequency response of a system is understood better with a plot of it Magnitude and angle (in degrees) responses. This is usually done with a logarithmic scale.
+	$$dB=20\log_{10}(|H(j\omega)|)$$
+	\subsection{Frequency Selective Circuits:}
+	System impedance for some circuits allow a high frequency to product a low amplitude. This allows certain frequencies to be passed or blocked. Some of these filter circuits include:
+	\begin{itemize}
+		\item Low Pass
+		\item High Pass
+		\item Band-pass
+		\item Band-reject (Notch)
+	\end{itemize}
+	\subsection{Filter Categories - Ideal:}
+	\begin{center}
+		\includegraphics[scale=0.5]{ideal-passive-filters.png}
+	\end{center}
+	\subsubsection{Low Pass}
+	\begin{center}
+		\includegraphics[scale=0.25]{passive-low-pass.png}
+	\end{center}
+	Using voltage divider:
+	\begin{align*}
+		H(j\omega)&=\frac{V_{o}(j\omega)}{V_{i}(j\omega)}\\
+		&=\frac{R}{R+j\omega L}\\
+		&=\frac{\frac{R}{L}}{j\omega+\frac{R}{L}}\\
+		|H(j\omega)|&=\frac{\frac{R}{L}}{\sqrt{\omega^{2}+\left(\frac{R}{L}\right)^{2}}}\\
+		\angle H(j\omega)&=-\arctan\left(\frac{\omega L}{R}\right)
+	\end{align*}
+	Cut off Frequency defines the frequency where the average power is $\frac{1}{2}$ of Max:
+	\begin{align*}
+		P_{av}&=\frac{1}{2}\frac{V_{o}^{2}}{R}\\
+		P_{av(max)}&=\frac{1}{2}\frac{V_{o(max)}^{2}}{R}\\
+		P_{av(\omega_{c})}&=\frac{1}{2}\frac{V_{o(\omega_{c})}^{2}}{R}\\
+		V_{o(\omega_{c})}^{2}&=\frac{1}{2}V_{o(max)}^{2}\\
+		|H(j\omega_{c})|^{2}V_{i}^{2}&=\frac{1}{2}|H(j\omega)_{max}|^{2}V_{i}^{2}\\
+		|H(j\omega_{c})|&=\frac{1}{\sqrt{2}}|H(j\omega)_{max}|
+	\end{align*}
+	Calculating $H(j\omega)_{max}$ is at $\omega=0$
+	$$|H(j\omega)_{max}|=\frac{\frac{R}{L}}{\sqrt{\frac{R}{L}^{2}}}=1$$
+	Cut off it at $H(j\omega_{c})=\frac{1}{\sqrt{2}}$
+	\begin{align*}
+		\frac{\frac{R}{L}}{\sqrt{\omega_{c}^{2}+\left(\frac{R}{L}\right)^{2}}}&=\frac{1}{\sqrt{2}}\\
+		\omega_{c}^{2}+\left(\frac{R}{L}\right)^{2}&=2\left(\frac{R}{L}\right)^{2}\\
+		\omega_{c}&=\frac{R}{L}
+	\end{align*}
+	The transfer function is best done in s-Domain, even if designed in frequency or t-Domain.
+	\pagebreak
+	$$\text{Sub}\;j\omega=s$$
+	\begin{align*}
+		H(j\omega)&=\frac{\frac{R}{L}}{j\omega+\frac{R}{L}}\\
+		H(s)&=\frac{\frac{R}{L}}{s+\frac{R}{L}}\\
+		\text{Since}\;\frac{R}{L}&=\omega_{c}\\
+		H(s)&=\frac{\omega_{c}}{s+\omega_{c}}
+	\end{align*}
+	Cut off magnitude  is dB is 0 since the maximum magnitude is 1. At cutoff magnitude is $\frac{1}{\sqrt{2}}$, the dB is -3. In Bode plots, the cut off is identified as magnitude is 3dB below maximum magnitude.\\
+	Rolloff is the slope of the magnitude response as it drops after the cut off frequency. Usually this is expressed in dB/decade.
+	$$|H(j\omega)|=\frac{\omega_{c}}{\sqrt{\omega^{2}+\omega_{c}^{2}}}$$
+	$$|H(j10\omega)|=\frac{\omega_{c}}{\sqrt{10^{2}\omega^{2}+\omega_{c}^{2}}}$$
+	For frequencies where $\omega\gg\omega_{c}$:
+	$$|H(j\omega)|=\frac{\omega_{c}}{\omega}$$
+	$$|H(j10\omega)|=\frac{\omega_{c}}{10\omega}$$
+	Converting the different to dB
+	\begin{align*}
+		&20\log_{10}\left(\frac{\omega_{c}}{\omega}\right)-20\log_{10}\left(\frac{\omega_{c}}{10\omega}\right)\\
+		=&20\log_{10}(10)\\
+		=&20\text{dB/decade}
+	\end{align*}
+	\subsubsection{High Pass Filter}
+	\begin{center}
+		\includegraphics[scale=0.5]{passive-high-pass.png}
+	\end{center}
+	\begin{align*}
+		H(j\omega)&=\frac{V_{o}(j\omega)}{V_{i}(j\omega)}\\
+		&=\frac{R}{R+\frac{1}{j\omega C}}\\
+		&=\frac{j\omega}{j\omega+\frac{1}{RC}}
+	\end{align*}
+	Magnitude Response:
+	$$|H(j\omega)|=\frac{\omega}{\sqrt{\omega^{2}+\left(\frac{1}{RC}\right)^{2}}}$$
+	Phase Response:
+	$$\angle H(j\omega)=\arctan\left(\frac{1}{\omega RC}\right)=90^{\circ}-\arctan(\omega RC)$$
+	Cut off Frequency and Transfer Function:
+	\begin{align*}
+		H(j\omega)_{max}&=1\\
+		\text{Then}\;H(j\omega_{c})&=\frac{1}{\sqrt{2}}\\
+		\frac{\omega}{\sqrt{\omega^{2}+\left(\frac{1}{RC}\right)^{2}}}&=\frac{1}{\sqrt{2}}\\
+		\omega_{c}^{2}+\left(\frac{1}{RC}\right)^{2}&=2\omega_{c}^{2}\\
+		\omega_{c}&=\frac{1}{RC}\\\\
+		H(j\omega)&=\frac{j\omega}{j\omega+\frac{1}{RC}}\\
+		H(s)&=\frac{s}{s+\omega_{c}}
+	\end{align*}
+	\subsubsection{Band-pass Filter}
+	\begin{center}
+		\includegraphics[scale=0.5]{passive-bandpass-filter.png}
+	\end{center}
+	\begin{align*}
+		H(j\omega)&=\frac{V_{o}(j\omega)}{V_{i}(j\omega)}\\
+		&=\frac{R}{R+j\omega L+\frac{1}{j\omega C}}\\
+		&=\frac{j\omega\frac{R}{L}}{-\omega^{2}+\frac{1}{LC}+j\omega\frac{R}{L}}
+	\end{align*}
+	Magnitude Response:
+	$$h(j\omega)|=\frac{\omega\frac{R}{L}}{\sqrt{\left(\frac{1}{LC}-\omega^{2}\right)^{2}+\left(\frac{\omega R}{L}\right)^{2}}}$$
+	Phase Response:
+	$$\angle H(j\omega)=\arctan\left(\frac{\frac{1}{LC}-\omega^{2}}{\frac{\omega R}{L}}\right)=90^{\circ}-\arctan\left(\frac{\frac{\omega R}{L}}{\frac{1}{LC}-\omega^{2}}\right)$$
+	\begin{center}
+		\includegraphics[scale=0.2]{passive-bandpass-cutoff.png}
+	\end{center}
+	\subsubsection{Band-pass Characteristics}
+	At the centre frequency, the capacitor and inductor impendance cancel each other out.
+	$$H(j\omega_{0})=\frac{R}{R+j\omega_{0}L+\frac{1}{j\omega_{0}C}}=\frac{R}{R}=1$$
+	When $|H(j\omega)_{max}|=1$:
+	$$j\omega_{0}L-\frac{j}{\omega_{0}C}=0$$
+	$$\omega_{0}=\sqrt{\frac{1}{LC}}$$
+	Cut off Frequency:
+	\begin{align*}
+		|H(j\omega_{c})|&=\frac{\frac{\omega_{c}R}{L}}{\sqrt{\left(\frac{1}{LC}-\omega_{c}^{2}\right)+\left(\frac{\omega_{c}R}{L}\right)^{2}}}\\
+		&=\frac{1}{\sqrt{2}}\\\\
+		\therefore\omega_{c}^{2}L\pm\omega_{c}R-\frac{1}{C}&=0\\
+		\omega_{c1,2}&=\pm\frac{R}{2L}+\sqrt{\left(\frac{R}{2L}\right)^{2}+\frac{1}{LC}}\\
+		\omega_{c1}\omega_{c2}&=\omega_{0}^{2}\\
+		\therefore\omega_{0}&=\sqrt{\omega_{c1}\omega_{c2}}
+	\end{align*}
+	Bandwidth, $\beta$:
+	\begin{align*}
+		\beta&=|\omega_{c1}-\omega_{c2}|\\
+		&=\frac{R}{L}
+	\end{align*}
+	Quality factor, Q, is the width of the bandpass independent of the center frequency.
+	\begin{align*}
+		Q&=\frac{\omega_{0}}{\beta}=\frac{\sqrt{\frac{1}{LC}}}{\frac{R}{L}}\\
+		&=\frac{1}{R}\sqrt{\frac{L}{C}}\\
+		H(j\omega)&=\frac{j\omega\frac{R}{L}}{-\omega^{2}+j\omega\frac{R}{L}+\frac{1}{LC}}\\
+		H(s)&=\frac{s\frac{R}{L}}{s^{2}+s\frac{R}{L}+\frac{1}{LC}}\\
+		\omega_{0}&=\sqrt{\frac{1}{LC}}\\
+		\beta&=\frac{R}{L}\\
+		H(s)&=\frac{s\beta}{s^{2}+s\beta+\omega_{0}^{2}}
+	\end{align*}
+	\subsubsection{Band-reject Filter}
+	\begin{center}
+		\includegraphics[scale=0.5]{passive-bandreject-filter.png}
+	\end{center}
+	\begin{align*}
+		H(j\omega)&=\frac{j\omega L+\frac{1}{j\omega C}}{R+j\omega L+\frac{1}{j\omega C}}\\
+		&=\frac{-\omega^{2}+\frac{1}{LC}}{-\omega^{2}+j\omega\frac{R}{L}+\frac{1}{LC}}
+	\end{align*}
+	Magnitude Response:
+	$$|H(j\omega)|=\frac{|\frac{1}{LC}-\omega^{2}|}{\sqrt{\left(\frac{1}{LC}-\omega^{2}\right)^{2}+\left(\frac{\omega R}{L}\right)^{2}}}$$
+	Phase Response:
+	\begin{align*}
+		\angle H(j\omega)&=\arctan\left(\frac{\frac{-\omega R}{L}}{\frac{1}{LC}-\omega^{2}}\right)\\
+		&=-\arctan\left(\frac{\frac{\omega R}{L}}{\frac{1}{LC}-\omega^{2}}\right)
+	\end{align*}
+	Cut off Frequency:
+	$$\omega_{c1,2}=\pm\frac{R}{2L}+\sqrt{\left(\frac{R}{2L}\right)^{2}+\left(\frac{1}{LC}\right)}$$
+	Center Frequency:
+	$$\omega_{c}=\sqrt{\frac{1}{LC}}$$
+	Bandwidth:
+	$$\beta=\frac{R}{L}$$
+	Q Factor:
+	$$Q=\frac{1}{R}\sqrt{\frac{L}{C}}$$
+	Transfer Function:
+	\begin{align*}
+		H(j\omega)&=\frac{-\omega^{2}+\frac{1}{LC}}{-\omega^{2}+j\omega\frac{R}{L}+\frac{1}{LC}}\\
+		H(s)&=\frac{s+\frac{1}{LC}}{s^{2}+s\frac{R}{L}+\frac{1}{LC}}\\\\
+		\omega_{0}&=\sqrt{\frac{1}{LC}}\\
+		\beta&=\frac{R}{L}\\
+		H(s)&=\frac{s+\omega_{0}^{2}}{s+s\beta+\omega_{0}^{2}}
+	\end{align*}
 \end{document}
