@@ -1565,4 +1565,168 @@
 		\beta&=\frac{R}{L}\\
 		H(s)&=\frac{s+\omega_{0}^{2}}{s+s\beta+\omega_{0}^{2}}
 	\end{align*}
+
+	\section{Active Filter Design}
+	\subsection{Filter Design:}
+	A filter can be designed when the caracteristic parameters of the filter are provided:
+	\begin{itemize}
+		\item Type
+		\item Center Frequency
+		\item Cut off frequencies
+		\item Q Factor
+		\item Bandwidth
+		\item Magnitude and Phase Responses
+	\end{itemize}
+	As all parameters are inter-related, not all need to be specified.
+	\subsection{Filter Gain:}
+	\begin{itemize}
+		\item Some applications need the filters to select and amplify certain frequencies.
+		\item This requires the magnitude response to be greater than 1.
+		\item One method of adding gain is to have the filter combined with an OpAmp.
+	\end{itemize}
+	\begin{center}
+	\begin{tabular}{ c | c }
+		Low Pass & High Pass\\
+		$H(s)=\frac{K\omega_{c}}{s+\omega_{c}}$ & $H(s)=\frac{Ks}{s+\omega_{c}}$\\\\
+		\hline\\
+		Bandpass & Band reject\\
+		$H(s)=\frac{Ks\beta}{s^{2}+s\beta+\omega_{0}^{2}}$ & $H(s)=\frac{K(s^{2}\omega_{0}^{2}}{s^{2}+s\beta+\omega^{2}}$
+	\end{tabular}
+	\end{center}
+	\subsection{Filter Order:}
+	For continuous time filters, the number of poles of the filter $H(s)$ is the "order of the filter". As the filter order increases it becomes closer to the ideal characteristics of the filter.
+	\subsection{Active Filters:}
+	Analogue filters include active devices, such as amplifiers. Common active filters use OpAmps. They include advantages such as, 
+	\begin{itemize}
+		\item Flexibility to adjust frequency and gain,
+		\item Can aviod using inductors, and
+		\item No loading issues.
+	\end{itemize}
+	\subsubsection{First Order Active Low Pass}
+	\begin{center}
+		\includegraphics[scale=0.5]{one-active-low-pass.png}
+	\end{center}
+	\begin{align*}
+		\frac{0-V_{i}}{R_{1}}+\frac{0-V_{0}}{R_{2}}+\frac{0-V_{0}}{\frac{1}{sC}}&=0\\
+		V_{0}\left(\frac{1}{R_{2}}+sC\right)&=\frac{-V_{i}}{R_{1}}\\
+		H(s)=\frac{V_{0}}{V_{i}}&=\frac{-\frac{1}{R_{1}}}{\frac{1}{R_{2}}+sC}\\
+		&=\frac{-\frac{1}{R_{1}}}{\frac{1+sR_{2}C}{R_{2}}}\\
+		&=\frac{-R_{2}}{R_{1}(1+sR_{2}C)}\\
+		&=\frac{\frac{R_{2}}{R_{1}}\frac{1}{R_{2}C}}{s+\frac{1}{CR_{2}}}
+	\end{align*}
+	$$\text{Gain}=K=\frac{R_{2}}{R_{1}}$$
+	$$\omega_{c}=\frac{1}{CR_{2}}$$
+	The negative sign indicateds the phase will be inverted when compared to the passive design.
+	\subsubsection{First Order Active High Pass}
+	\begin{center}
+		\includegraphics[scale=0.5]{one-active-high-pass.png}
+	\end{center}
+	\begin{align*}
+		\frac{0-V_{i}}{R_{1}+\frac{1}{sC}}+\frac{0-V_{o}}{R_{2}}&=0\\
+		V_{o}\left(\frac{1}{R_{2}}\right)&=\frac{-V_{i}}{R_{1}+\frac{1}{sC}}\\
+		H(s)=\frac{V_{o}}{V_{i}}&=\frac{s\frac{R_{2}}{R_{1}}}{s+\frac{1}{sR_{1}C}}
+	\end{align*}
+	$$\text{Gain}=K=\frac{R_{2}}{R_{1}}$$
+	$$\omega_{c}=\frac{1}{CR_{1}}$$
+	\subsubsection{Active Bandpass Filter}
+	A bandpass filter frequency response can be though of as consisting of 3 seperate responses:
+	\begin{enumerate}
+		\item Unity gain low passs with $\omega_{c2}$
+		\item Unity gain high pass with $\omega_{c1}$
+		\item Gain provided by seperate amplifier
+	\end{enumerate}
+	Hence a bandpass filter can be constructed by cascading a low pass, high pass and amplifier together in series. For the $\omega_{c2}\geq2\omega_{c1}$. A filter with this frequency characteristic are called broadband filters.
+	\begin{center}
+		\includegraphics[scale=0.25]{active-bandpass-filter.png}
+	\end{center}
+	\begin{align*}
+		H(s)&=\left(\frac{-\omega_{c2}}{s+\omega_{c2}}\right)\left(\frac{-s}{s+\omega_{c1}}\right)\left(\frac{-R_{f}}{R_{i}}\right)\\
+		&=\frac{K\omega_{c2}s}{(s+\omega_{c2})(s+\omega_{c1})}\\
+		&=\frac{K\omega_{c2}s}{s^{2}+(\omega_{c2}+\omega_{c1})s+\omega_{c1}\omega_{c2}}
+	\end{align*}
+	If $\omega_{c2}\gg\omega_{c1}$, then:
+	$$\omega_{c2}-\omega_{c1}\approx\omega_{c2}$$
+	$$H(s)=\frac{K\omega_{c2}s}{s^{2}+\omega_{c2}s+\omega_{c1}\omega_{c2}}$$
+	\subsubsection{Active Bandreject Filters}
+	Similar to the bandpass filter, this can be thought of in 2 stages:
+	\begin{itemize}
+		\item Unity gain low pass with $\omega_{c1}$
+		\item Unity gain high pass with $\omega_{c2}$, in parallel in with the low pass
+		\item Gain by seperate amplifier
+	\end{itemize}
+	This filter cannot be cascading. As such the filters are in parrallel.
+	\begin{center}
+		\includegraphics[scale=0.35]{active-bandreject-filter.png}
+	\end{center}
+	\begin{align*}
+		H(s)&=\left(\frac{-\omega_{c1}}{s+\omega_{c1}+\frac{-s}{s+\omega_{c2}}}\right)\left(\frac{-R_{f}}{R_{i}}\right)\\
+		&=-K\frac{-\omega_{c1}s-\omega_{c1}\omega_{c2}-s^{2}-\omega_{c1}s}{(s+\omega_{c2})(s+\omega_{c1})}\\
+		&=K\frac{s^{2}+2\omega_{c1}s+\omega_{c1}\omega_{c2}}{s^{2}+(\omega_{c2}+\omega_{c1})s+\omega_{c1}\omega_{c2}}
+	\end{align*}
+	Assuming $\omega_{c2}\gg\omega_{c1}$, then:
+	$$\omega_{c2}-\omega_{c1}\approx\omega_{c2}$$
+	$$H(s)=K\frac{s^{2}+2\omega_{c1}s+\omega_{c1}\omega_{c2}}{s^{2}+\omega_{c2}s+\omega_{c1}\omega_{c2}}$$
+	\subsection{Cascading Filters:}
+	Since, the circuis is in s-Domain, each transfer function is multiplied:
+	$$H(s)=H_{1}(s)H_{2}(s)H_{3}(s)\ldots$$
+	$$|H(j\omega)|=|H_{1}(j\omega)||H_{2}(j\omega)||H_{3}(j\omega)|\ldots$$
+	$$\angle H(j\omega)=\angle H_{1}(j\omega)+\angle H_{2}(j\omega)+\angle H_{3}(j\omega)+\ldots$$
+	\subsection{n Order Low Pass Filter:}
+	\begin{center}
+		\includegraphics[scale=0.25]{multiple-active-low-pass.png}
+	\end{center}
+	\begin{align*}
+		H(s)&=\left(\frac{-K\omega_{c}}{s+\omega_{c}}\right)^{n}\\
+		H(j\omega)&=\left(\frac{-K\omega_{c}}{j\omega+\omega_{c}}\right)^{n}\\
+		|H(j\omega)|&=\left|\frac{K\omega_{c}}{j\omega+\omega_{c}}\right|^{n}\\
+		&=\frac{(K\omega_{c})^{n}}{\left(\sqrt{\omega_{c}^{2}+\omega^{2}}\right)^{2}}\\
+		\angle H(j\omega)&=-n\times\arctan\left(\frac{\omega}{\omega_{c}}\right)
+	\end{align*}
+	Cut off Frequency:\\
+	For low $\omega$ the gain is $K^{n}$. Then at cut off gain is $\frac{K^{n}}{\sqrt{2}}$.
+	\begin{align*}
+		|H(j\omega_{cn})|&=\frac{K^{n}}{\sqrt{2}}=\frac{(K\omega_{c})^{n}}{\left(\sqrt{\omega_{c}^{2}+\omega_{cn}^{2}}\right)^{n}}\\
+		\sqrt{\omega_{c}^{2}+\omega_{cn}^{2}}&=\sqrt[n]{2}\omega_{c}\\
+		\omega_{cn}&=\left(\sqrt{\sqrt[n]{2}-1}\right)\omega_{c}
+	\end{align*}
+	Roll off:\\
+	the difference in dB gain aat the frequency $\omega\gg\omega_{c}$.
+	\begin{align*}
+		&20\log_{10}\left(\frac{\omega_{cn}}{\omega}\right)-20\log_{10}\left(\frac{\omega_{cn}}{10\omega}\right)^{n}\\
+		=&20n\log_{10}(10)\\
+		=&20n\;\text{dB/decade}
+	\end{align*}
+	\subsection{Unity Design and Scaling:}
+	For simplicity it is usually assumed that $\omega_{c}$ for filters is 1rad/s. And then these values are achieved throuhg using component vlaues of $1\Omega$, $1F$, and $1H$. The actual values are these values scaled according to the actual values specified.
+	\begin{align*}
+		R'&=k_{m}R\\
+		L'&=\frac{k_{m}}{k_{f}}L\\
+		C'&=\frac{1}{k_{m}k_{f}}C
+	\end{align*}
+	\subsection{Filter Gain around Cutoff:}
+	Consider the gain of an n-stage low pass filter.
+	$$|H(j\omega)|=\frac{(\omega_{cn})^{n}}{\left(\sqrt{\omega_{cn}^{2}+\omega^{2}}\right)^{n}}$$
+	At low frequency, $\omega\ll\omega_{cn}$, the gain is 1. When $\omega\to\omega_{cn}$.
+	$$|H(j\omega)|=\frac{1}{\left(\sqrt{1+\frac{\omega^{2}}{\omega_{cn}^{2}}}\right)^{n}}<1$$
+	Hence around cut off, the gain drops below 1. This make the filter less sharp around $\omega_{c}$.
+	\subsection{Butterworth Filter:}
+	Butterworth filters are designed to provide a gain of 1, very close to the cut off frequency. As such the transfer function of the butterworth filter low of order n.
+	$$|H(j\omega)|=\frac{1}{\sqrt{1+\left(\frac{\omega}{\omega_{c}}\right)^{2n}}}$$
+	\begin{itemize}
+		\item The cut off frequency is independent of the filter order
+		\item For large n gin is close to unity for $\omega<\omega_{c}$
+		\item Exponent of $\frac{\omega}{\omega_{c}}$ is always even.
+	\end{itemize}
+	\begin{align*}
+		|H(j\omega)|^{2}&=H(j\omega)\overline{H(j\omega)}\\
+		&=H(j\omega)H(-j\omega)\\
+		&=H(s)H(-s)\\
+		&=\frac{1}{1+\omega^{2n}}\\\\
+		H(s)H(-s)&=\frac{1}{1+(-s^{2})^{n}}\\
+		&=\frac{1}{1+(-1)^{n}s^{2n}}
+	\end{align*}
+	The poles of a butterworth are $1+(-1)^{n}s^{2n}$.
+	\begin{center}
+		\includegraphics[scale=0.25]{butterworth.png}
+	\end{center}
 \end{document}
