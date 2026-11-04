@@ -1218,7 +1218,7 @@
 		f(t)&=a_{v}+\sum^{\infty}_{k=1}a_{k}\cos{(k\omega_{0}t+b_{k})}+b_{k}\sin{(k\omega_{0}t)}\\
 		&=a_{v}+\sum^{\infty}_{k=1}a_{k}\frac{e^{jk\omega_{0}t}+e^{-jk\omega_{0}t}}{2}+b_{k}\frac{e^{jk\omega_{0}t}-e^{-jk\omega_{0}t}}{2j}\\
 		&=a_{v}+\sum^{\infty}_{k=1}\frac{a_{k}-jb_{k}}{2}e^{jk\omega_{0}t}+\frac{a_{k}+jb_{k}}{2}e^{-jk\omega_{0}t}\\
-		\text{Let: }c_{k}=\frac{a_{k}-jb_{k}}{2}\;\text{\&}&\;\overline{c_{k}}=\frac{a_{k}+jb_{k}}{2}\\
+		\text{Let: }c_{k}&=\frac{a_{k}-jb_{k}}{2}\;\text{and}\;\overline{c_{k}}=\frac{a_{k}+jb_{k}}{2}\\
 		\therefore f(t)&=a_{v}+\sum^{\infty}_{k=1}c_{k}e^{jk\omega_{0}t}+\overline{c_{k}}e^{-jk\omega_{0}}\\
 		c_{k}&=\frac{1}{T}\int^{t_{0}+T}_{t_{0}}f(t)e^{-jk\omega_{0}t}dt
 	\end{align*}
