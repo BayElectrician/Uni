@@ -859,4 +859,219 @@
 	\end{tikzpicture}
 	\end{center}
 	Subtractive polarity is standard for all single-phase transformers above 200kVA provided the HV winding is 8660V. Most others are additive polarity.
+
+	\section{Per Unit Systems}
+	\subsection{Introduction:}
+	The PU values give a vibe about all quantities within a transformer. They are a unitless measurement. PU impedance values fall within a narrow range, and is somewhat independent of equipment ratings. This make erroneous data conspicuous. PU voltages are often better indicators of voltage levels. The PU system eliminates ideal transformers as circuit elements. This simplifies the transformers model and system solution.
+	\subsection{Single Phase Systems:}
+	\begin{itemize}
+		\item Select an arbitrary apparent power base for the whole system ($S_{base}$). A better choice would be to pick the power rating of the largest generator or source.
+		\item Select a voltage base ($V_{base}$) for one of the circuits. Typically the rated voltage in the source circuit is used as the starting point.
+		\item Establish $V_{base}$ in other circuits based on transformer turn ratios.
+		\item Find base current:
+		$$I_{base}=\frac{S_{base}}{V_{base}}$$
+		\item Find base impedance:
+		$$Z_{base}=\frac{V_{base}}{I_{base}}=\frac{{V_{base}}^{2}}{S_{base}}$$
+		\item Establish PU values for all quantities:
+		\begin{align*}
+			V_{pu}&=\frac{V_{act}}{V_{base}}\\
+			I_{pu}&=\frac{I_{act}}{I_{base}}\\
+			Z_{pu}&=\frac{Z_{act}}{Z_{base}}\\
+			S_{pu}&=\frac{S_{act}}{S_{base}}
+		\end{align*}
+		\item Consider act Z:
+		$$Z_{pu}=\frac{Z}{Z_{base}}=\frac{R+jX}{Z_{base}}=\frac{R}{Z_{base}}+j\frac{X}{Z_{base}}=R_{pu}+jX_{pu}$$
+		$$\therefore R_{base}=X_{base}=Z_{base}$$
+		\item Consider act S:
+		$$S_{pu}=\frac{S}{S_{base}}=\frac{P+jQ}{S_{base}}=\frac{P}{S_{base}}+j\frac{Q}{S_{base}}=P_{pu}+jQ_{pu}$$
+		$$\therefore P_{base}=Q_{base}=S_{base}$$
+		\item Using all the values, solve the circuit
+	\end{itemize}
+	\subsection{Converting to PU Values:}
+	\begin{center}
+		\includegraphics[scale=0.25]{pu-trans.png}
+	\end{center}
+	\begin{align*}
+		V_{s(base)}&=\frac{V_{p(base)}}{n}\\
+		E_{p(pu)}&=\frac{E_{p}}{V_{p(base)}}\\
+		E_{s(pu)}&=\frac{E_{s}}{V_{s(base)}}\\
+		&=E_{p(pu)}\\
+		I_{p(pu)}&=I_{s(pu)}
+	\end{align*}
+	\begin{center}
+		\includegraphics[scale=0.25]{pu-trans-2.png}\\
+		\includegraphics[scale=0.25]{pu-trans-3.png}
+	\end{center}
+	\subsection{Further Simplification:}
+	Value of $R_{c}$ and $X_{m}$ are much large (by magnitude of 1000) compared to $Z_{p}$ and $Z_{s}$. As such it is common to ignore the shunt branch.
+	\subsection{3-Phase Systems:}
+	\begin{itemize}
+		\item The procedure and conceps used in single phase are still valid. The only difference is in $V_{LL}$.
+		\item All connected devices are assumed to be star connected, with all delta to be converted to the star equivalents.
+		\item Select the apparent power base as the 3-phase rating ($S_{3p}$).
+		\item Voltage bases must be defined:
+		$$V_{l(base)}$$
+		$$V_{p(base)}=\frac{V_{l(base)}}{\sqrt{3}}$$
+		\item Line current:
+		$$I_{l(base)}=\frac{S_{3p}}{\sqrt{3}V_{l(base)}}$$
+		$$I_{p(base)}=I_{l(base)}$$
+		\item Assuming star connected impedances are defined as:
+		$$Z_{base}=\frac{V_{p(base)}}{I_{p(base)}}=\frac{V_{l(base)}}{\sqrt{3}I_{l(base)}}=\frac{{V_{l(base)}}^{2}}{S_{3p}}$$
+	\end{itemize}
+	\subsection{Advanced Concepts:}
+	When analyzing 3-phase conditions in transient, time-domain differential equations are used.
+	
+	\section{3-Phase Transformer}
+	\subsection{Dual Voltage Transformer:}
+	These are used to supply power to residental areas. The normal rating of this is 3kVA-500kVA.
+	\begin{center}
+		\includegraphics[scale=0.25]{dual-voltage-trans.png}
+	\end{center}
+	\subsection{Auto Transformer:}
+	This has a single winding with taps within the winding to create the turns ratio.
+	\begin{center}
+		\includegraphics[scale=0.25]{auto-trans.png}
+	\end{center}
+	\begin{align*}
+		I_{1}(N_{1}-N_{2})&=(I_{2}-I_{1})N_{2}\\
+		I_{1}N_{1}&=I_{2}N_{2}\\
+		|S|&=E_{1}I_{1}=E_{2}I_{2}
+	\end{align*}
+	Eliminates a need for a secondary winding. This saves on weight, size and cost. However there is no electrical isolation for the secondary circuit.
+	\begin{center}
+		\includegraphics[scale=0.5]{auto-trans-2.png}
+	\end{center}
+	Source Voltage: $V_{1}=V_{p}+V_{s}$\\
+	Source Current: $I_{1}=I_{p}$\\
+	Rated Load Voltage: $V_{s}=V_{2}$\\
+	Rated Load Current: $I_{2}=I_{p}+I_{s}$\\
+	Apparent Load Power: $S_{L}=V_{2}I_{2}=V_{s}(I_{p}+I_{s})$
+	\subsection{Conventional Transformer as an Auto Transformer:}
+	A normal 2 winding transformer can be connected as an auto transformer if:
+	\begin{itemize}
+		\item Current in any winding does not exceed nominal
+		\item Voltage across windings does not exceed nominal
+		\item Current flow in one winding will automatically flow in another
+		\item Voltage across one winding is automatically across another.
+	\end{itemize}
+	\begin{center}
+		\includegraphics[scale=0.25]{normal-as-auto-trans.png}
+	\end{center}
+	\subsection{Voltage Transformer:}
+	\begin{itemize}
+		\item High precision transformer: $P\to S$ voltage ratio is constant
+		\item Secondary voltage is in phase with the primary
+		\item Usual secondary voltage of 115V
+		\item Usually HV line measure Line-Nuetral
+	\end{itemize}
+	\subsection{Current Transformers:}
+	\begin{itemize}
+		\item High precision transformers
+		\item $I_{p}$ and $I_{s}$ are functionally in phase
+		\item Usual $I_{s}$ is SA
+		\item $I_{1}\:I_{2}=N_{1}\:N_{2}$
+		\item Do not leave open circuit in current transformers
+	\end{itemize}
+	\begin{center}
+		\includegraphics[scale=0.5]{current-trans.png}
+	\end{center}
+	\subsection{Toroidal Current Transformer:}
+	\begin{itemize}
+		\item Used on line carrying more then 100A
+		\item Primary has a single turn
+		\item A laminated ring shaped core cariries the secondary
+	\end{itemize}
+	\subsection{Variable Auto-Transformer:}
+	\begin{itemize}
+		\item Used to obtain a variable AC voltage from a fixed AC source
+		\item Has a single layer winding uniformly wound on a toroidal core
+	\end{itemize}
+	\subsection{Induction Heating Transformer:}
+	\begin{itemize}
+		\item High power induction furnaces use the transformer principle
+		\item The only difference is that it operates at 500Hz
+		\item Coil is primary whilst molten is secondary
+		\item $|S|$ rating of 15kVA-40MVA
+	\end{itemize}
+	\subsection{High Impedance Transformer:}
+	\begin{itemize}
+		\item Some applications need much high leakage reactances (0.9pu) compared to normal (0.03pu)
+		\item Main purpose is to suppress current under short circuit conditions
+	\end{itemize}
+	\subsection{High Frequency Transformer:}
+	\begin{itemize}
+		\item Electronic PSUs need to isolate output from input
+		\item Operating at frequency of 5kHz-50kHz
+		\item Increase frequency reduces the size of components needed
+	\end{itemize}
+	\subsection{3-Phase Transformers Core Config:}
+	\begin{center}
+		\includegraphics[scale=0.25]{3-phase-trans-core.png}
+	\end{center}
+	\subsection{3-Phase Connections:}
+	These are number of different connections for 3-phase operation. An important aspect to note is that the connection change between types introduces a phase shift on the signal.
+	\subsubsection{Delta-Delta}
+	\begin{center}
+		\includegraphics[scale=0.25]{d-d.png}
+	\end{center}
+	All in phase
+	$$V_{A}=V_{AB}$$
+	$$V_{1}=V_{12}$$
+	\subsubsection{Delta-Wye}
+	\begin{center}
+		\includegraphics[scale=0.25]{d-y.png}
+	\end{center}
+	Wye-Delta is functionally the same. Just primary and secondary connections are swapped.
+	$$V_{AB}=\sqrt{3}V_{AN}\angle30^{\circ}$$
+	$$V_{ab}=\frac{N_{2}}{\sqrt{3}N_{1}}V_{AB}\angle-30^{\circ}$$
+	\subsubsection{Wye-Wye}
+	\begin{center}
+		\includegraphics[scale=0.25]{y-y.png}
+	\end{center}
+	Care must be taken to distant severe distortion of Line-Neutral voltage. Connect nuetral of primary to nuetral of secondary. Provide a tertiary winding, so line voltages are in phase.
+	$$\frac{V_{an}}{V_{AN}}=\frac{N_{2}}{N_{1}}$$
+	$$V_{AB}=\sqrt{3}V_{AN}\angle30^{\circ}$$
+	\subsubsection{Open-Delta Connection}
+	\begin{center}
+		\includegraphics[scale=0.25]{o-d.png}
+	\end{center}
+	A method to transform 3-phase using 2 transformers. The connection type is identical to Delta-Delta connection. An important notes is the load capacity is 86.6\% of the install transformer capacity.
+	
+	\subsection{Vector Group for Transformer Connections:}
+	Y - HV Wye Connection\\
+	D - HV Delta Connection\\
+	y - LV Wye Connection\\
+	d - LV Delta Connection\\
+	11 - A phase lead of $30^{\circ}$ in LV with respect to primary\\
+	1 - A phase lag of $30^{\circ}$ in LV with respect to primary\\
+	0 - No phase difference
+	\begin{center}
+	\begin{tabular}{ c c }
+		Wye-Wye & Yy0\\
+		Delta-Delta & Dd0\\
+		Wye-Delta & Yd1\\
+		Delta-Wye & Dy11
+	\end{tabular}
+	\end{center}
+	\subsection{ANSI Standard Connection:}
+	When lines are connected in parallel, there can be no phase difference between the voltage lines. In the case of Wye-Delta transformer windings, the connection are always done in a way, so HV quatities lead LV quantities by $30^{\circ}$.
+	\subsection{Special 3-Phase Auto Transformers:}
+	\begin{center}
+		\includegraphics[scale=0.25]{special-connection-trans.png}
+	\end{center}
+	Used when 3-Phase line voltage has to be stepped up or down by a considerable amount. It is cheaper to connect 3-single phase wye connected autotransformers.
+	\subsection{Phase Shift Principle:}
+	\begin{center}
+		\includegraphics[scale=0.25]{phase-shift-principle.png}
+	\end{center}
+	Phase shifting enables creating 2-phase, 6-phase, or even 12-phase systems from an ordinary 3-phase power transfer.
+	\subsection{Analyzing 3-Phase Transformers within Circuits:}
+	\begin{itemize}
+		\item Assume P and S are wye connected (if not derive the equivalent circuit configuration).
+		\item Consider 1-phase of the entire 3-phase system.
+		\item $V_{p}$ of the transformer must be taken as the L-N of the line.
+		\item $V_{s}$ is the L-N of the out going line.
+		\item Nominal power rating of the transformer is $\frac{1}{3}$ of the 3-phase transformer bank.
+		\item The load is $\frac{1}{3}$ of the load rating.
+	\end{itemize}
 \end{document}
